@@ -4,15 +4,16 @@
 <br />
 <div align="center">
 
-  <h2 align="center">NAME OF CHOSEN GAME</h2>
+  <h2 align="center">Cave Story+</h2>
 
   <p align="center">
-    Short description of the game.
+Cave Story+ is an enhanced commercial version of the original CaveStory.
+Cave Story is a 2004 Metroidvania game. It was developed over five years by Japanese independent developer Daisuke "Pixel" Amaya in his free time. It blends tight shooting mechanics, nonlinear exploration, and multiple endings in a retro pixel-art world inspired by classic 8- and 16-bit games.
     <br />
     <strong>Original game : </strong>
-    <a href="https://www.google.be/"><strong>General info »</strong></a>
+    <a href="https://en.wikipedia.org/wiki/Cave_Story#Cave_Story+"><strong>General info »</strong></a>
     ·
-    <a href="https://www.google.be/"><strong>Youtube video »<strong></a>
+    <a href="https://youtu.be/el2GUSEyMGU"><strong>Youtube video »<strong></a>
     <br />
     <br />
   </p>
@@ -46,12 +47,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-TODO: add screenshot 
-
+![alt text](image.png)
 Here's why:
-TODO: describe why you chose this game 
-* reason 1
-* reason .. 
+* It is a remaster of a classic indie game with a passionate fanbase I somehow haven't gotten around to play before.
+* The game high variety of worlds with lively and rich characters.
+* Focused and strong core gameplay loop.
+* I think it serves great for learning how to program platformers.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -61,16 +62,17 @@ TODO: describe why you chose this game
 This section gives a clear and detailed overview of which parts of the original game I planned to make.
 
 ### The minimum I will most certainly develop:
-* .. 
-* .. 
+* Move character around
+* First "Cave" level 
+* Enemies that you can shoot
+* Beginning of second "Mimiga Village" level with dialog boxes. (see video)
 
 ### What I will probably make as well:
-* .. 
-* .. 
+* Boss battle at the end of the second level.
 
 ### What I plan to create if I have enough time left:
-* .. 
-* .. 
+* Entirety of the second level, not just begin and end.
+* Smaller details like particles
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -144,9 +146,9 @@ Explain where you applied inheritance (mandatory).
 <!-- CONTACT -->
 ## Contact
 
-Your Name - email@student.howest.be
+Your Name - bram.deraeve@student.howest.be
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/HowestDAE/gd25-bramderaeve](https://github.com/HowestDAE/gd25-bramderaeve)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
