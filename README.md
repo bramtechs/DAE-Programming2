@@ -49,7 +49,7 @@ Cave Story is a 2004 Metroidvania game. It was developed over five years by Japa
 
 ![alt text](image.png)
 Here's why:
-* It is a remaster of a classic indie game with a passionate fanbase I somehow haven't gotten around to play before.
+* It is a remaster of a classic indie game with a passionate fanbase I somehow haven't gotten around to play earlier.
 * The game high variety of worlds with lively and rich characters.
 * Focused and strong core gameplay loop.
 * I think it serves great for learning how to program platformers.
