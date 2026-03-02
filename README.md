@@ -63,12 +63,13 @@ This section gives a clear and detailed overview of which parts of the original 
 
 ### The minimum I will most certainly develop:
 * Move character around
-* First "Cave" level 
+* First "Cave" level **as seen in the video**
 * Enemies that you can shoot
-* Beginning of second "Mimiga Village" level with dialog boxes. (see video)
+* Beginning of second "Mimiga Village" level with dialog boxes. **as seen in the video**
 
 ### What I will probably make as well:
 * Boss battle at the end of the second level.
+* Save station in first level
 
 ### What I plan to create if I have enough time left:
 * Entirety of the second level, not just begin and end.
