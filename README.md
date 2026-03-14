@@ -62,18 +62,39 @@ Here's why:
 This section gives a clear and detailed overview of which parts of the original game I planned to make.
 
 ### The minimum I will most certainly develop:
-* Move character around
-* First "Cave" level **as seen in the video**
-* Enemies that you can shoot
-* Beginning of second "Mimiga Village" level with dialog boxes. **as seen in the video**
+* Overlay  first cave level as a texture and lay-out collision shapes.
+* Player with horizontal movement, jumping, and basic air control
+* Collision detection between player
+* Camera that follows player within level bounds
+* Rendering the player sprite and animation states (idle, run, jump)
+* Basic enemy entity with position and simple movement pattern
+* Player projectile system (spawn bullet, movement, lifetime)
+* Collision detection between bullets and enemies
+* Enemy damage, hit feedback, and removal on defeat
+* Player damage on enemy contact
+* Basic HUD showing player health
+* Beginning of Mimiga Village area layout
+* Trigger zone that stops player and opens dialog
+* Dialog box UI with text rendering
+* Input handling to advance dialog text
+* Camera lock during dialog events
 
 ### What I will probably make as well:
-* Boss battle at the end of the second level.
-* Save station in first level
+* Save station entity placed in first level
+* Interaction key to activate save station
+* Save system storing player position and health
+* Boss entity with larger sprite and multiple hit points
+* Boss attack pattern (projectiles or movement phases)
+* Boss health display
+* Boss defeat event triggering dialog or transition
+* Transition between cave level and Mimiga Village
+* NPC entity system for characters in village
+* NPC interaction trigger and dialog scripts
 
 ### What I plan to create if I have enough time left:
-* Entirety of the second level, not just begin and end.
 * Smaller details like particles
+* Full Mimiga Village map layout
+* Multiple NPCs with unique dialog lines
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
