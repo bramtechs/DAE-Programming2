@@ -2,12 +2,15 @@
 #include "Game.h"
 #include "Texture.h"
 #include "Level.h"
+#include "Player.h"
 #include "Camera.h"
 
 Game::Game(const Window& window)
-	:BaseGame{ window }, m_Camera{ GetViewPort() }, m_pActiveLevel{}
+	:BaseGame{ window }, m_Camera{ GetViewPort() }, m_pActiveLevel{}, m_pPlayer{}
 {
 	Initialize();
+
+	m_Camera.SetCenter(m_pPlayer->GetCameraFocusPos());
 }
 
 Game::~Game()
@@ -18,19 +21,27 @@ Game::~Game()
 void Game::Initialize()
 {
 	m_pActiveLevel = new Level("cave_first_map.png", "cave_first_map_outline.svg");
+	m_pPlayer = new Player();
 }
 
 void Game::Cleanup()
 {
 	delete m_pActiveLevel;
+	delete m_pPlayer;
 }
 
 void Game::Update(float elapsedSec)
 {
-	m_Camera.MoveWithKeyboard(elapsedSec);
-
-	m_pActiveLevel->Update(elapsedSec);
-	m_pActiveLevel->UpdateDebug(elapsedSec, m_Camera);
+	if (m_IsDebugging)
+	{
+		m_Camera.MoveWithKeyboard(elapsedSec);
+		m_pActiveLevel->UpdateDebug(elapsedSec, m_Camera);
+	}
+	else
+	{
+		m_Camera.MoveTowards(m_pPlayer->GetCameraFocusPos(), elapsedSec);
+		m_pActiveLevel->Update(elapsedSec);
+	}
 }
 
 void Game::Draw() const
@@ -39,9 +50,13 @@ void Game::Draw() const
 
 	ClearBackground();
 	m_pActiveLevel->Draw();
+	m_pPlayer->Draw();
 
-	m_pActiveLevel->DrawDebug();
-	m_pActiveLevel->DrawDebugGUI();
+	if (m_IsDebugging)
+	{
+		m_pActiveLevel->DrawDebug();
+		m_pActiveLevel->DrawDebugGUI();
+	}
 
 	m_Camera.End();
 }
@@ -49,6 +64,12 @@ void Game::Draw() const
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
 {
 	//std::cout << "KEYDOWN event: " << e.keysym.sym << std::endl;
+
+	if (e.keysym.sym == SDLK_F3)
+	{
+		m_IsDebugging = !m_IsDebugging;
+	}
+
 }
 
 void Game::ProcessKeyUpEvent(const SDL_KeyboardEvent& e)

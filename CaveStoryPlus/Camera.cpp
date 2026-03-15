@@ -3,7 +3,7 @@
 #include "Game.h"
 
 Camera::Camera(const Rectf& viewPort)
-	: m_Center{}, m_ViewPort{ viewPort }, m_Zoom{ 2.f }
+	: m_Center{}, m_ViewPort{ viewPort }, m_Zoom{ 2.f }, m_MoveSpeed{ 10.f }
 {
 }
 
@@ -22,6 +22,11 @@ void Camera::Begin() const
 void Camera::End() const
 {
 	glPopMatrix();
+}
+
+void Camera::SetCenter(const Vector2f& pos)
+{
+	m_Center = pos;
 }
 
 void Camera::MoveWithKeyboard(float delta)
@@ -46,7 +51,13 @@ void Camera::MoveWithKeyboard(float delta)
 		move.y -= 1.f;
 	}
 
-	m_Center += move * delta * 10.f;
+	m_Center += move * delta * m_MoveSpeed;
+}
+
+void Camera::MoveTowards(const Vector2f& pos, float delta)
+{
+	// https://lisyarus.github.io/blog/posts/exponential-smoothing.html
+	m_Center += (pos - m_Center) * (1.f - expf(-m_MoveSpeed * delta));
 }
 
 Vector2f Camera::ScreenToWorldPos(const Vector2f& screenPos) const
