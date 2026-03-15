@@ -5,7 +5,7 @@
 #include "Camera.h"
 
 Game::Game(const Window& window)
-	:BaseGame{ window }
+	:BaseGame{ window }, m_Camera{ GetViewPort() }, m_pActiveLevel{}
 {
 	Initialize();
 }
@@ -28,14 +28,20 @@ void Game::Cleanup()
 void Game::Update(float elapsedSec)
 {
 	m_Camera.MoveWithKeyboard(elapsedSec);
+
+	m_pActiveLevel->Update(elapsedSec);
+	m_pActiveLevel->UpdateDebug(elapsedSec, m_Camera);
 }
 
 void Game::Draw() const
 {
-	m_Camera.Begin(GetViewPort());
+	m_Camera.Begin();
 
 	ClearBackground();
 	m_pActiveLevel->Draw();
+
+	m_pActiveLevel->DrawDebug();
+	m_pActiveLevel->DrawDebugGUI();
 
 	m_Camera.End();
 }

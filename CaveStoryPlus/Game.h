@@ -30,8 +30,8 @@ public:
 	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e) override;
 
 private:
-	Camera m_Camera{};
-	Level* m_pActiveLevel{};
+	Camera m_Camera;
+	Level* m_pActiveLevel;
 
 	// FUNCTIONS
 	void Initialize();

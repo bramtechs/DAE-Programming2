@@ -2,10 +2,15 @@
 #include "Camera.h"
 #include "Game.h"
 
-void Camera::Begin(const Rectf& viewPort) const
+Camera::Camera(const Rectf& viewPort)
+	: m_Center{}, m_ViewPort{ viewPort }, m_Zoom{ 2.f }
+{
+}
+
+void Camera::Begin() const
 {
 	glPushMatrix();
-	glTranslatef(viewPort.width * 0.5f, viewPort.height * 0.5f, 0.f);
+	glTranslatef(m_ViewPort.width * 0.5f, m_ViewPort.height * 0.5f, 0.f);
 
 	const float combinedZoom{ g_TileSize * m_Zoom };
 	glScalef(combinedZoom, combinedZoom, 1.f);
@@ -42,4 +47,18 @@ void Camera::MoveWithKeyboard(float delta)
 	}
 
 	m_Center += move * delta * 10.f;
+}
+
+Vector2f Camera::ScreenToWorldPos(const Vector2f& screenPos) const
+{
+	const float combinedZoom{ g_TileSize * m_Zoom };
+	return Vector2f(
+		(screenPos.x - m_ViewPort.width * 0.5f) / combinedZoom + m_Center.x,
+		(screenPos.y - m_ViewPort.height * 0.5f) / combinedZoom + m_Center.y
+	);
+}
+
+Rectf Camera::GetViewPort() const
+{
+	return m_ViewPort;
 }
