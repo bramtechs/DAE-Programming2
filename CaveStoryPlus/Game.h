@@ -1,6 +1,12 @@
 #pragma once
 #include "BaseGame.h"
+#include "Camera.h"
 
+constexpr float g_TileSize{ 32.f };
+constexpr float g_TileCols{ 1280.f / 32.f };
+constexpr float g_TileRows{ 720.f / 32.f };
+
+class Level;
 class Texture;
 class Game : public BaseGame
 {
@@ -24,11 +30,8 @@ public:
 	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e) override;
 
 private:
-	constexpr const static float m_TileSize{ 32.f };
-	constexpr const static float m_TileCols{ 1280.f / 32.f };
-	constexpr const static float m_TileRows{ 720.f / 32.f };
-
-	Texture* pFirstLevelMapTexture{};
+	Camera m_Camera{};
+	Level* m_pActiveLevel{};
 
 	// FUNCTIONS
 	void Initialize();

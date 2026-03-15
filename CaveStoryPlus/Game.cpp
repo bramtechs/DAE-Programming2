@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Game.h"
 #include "Texture.h"
+#include "Level.h"
+#include "Camera.h"
 
 Game::Game(const Window& window)
 	:BaseGame{ window }
@@ -15,32 +17,27 @@ Game::~Game()
 
 void Game::Initialize()
 {
-	pFirstLevelMapTexture = new Texture("cave_first_map.png");
+	m_pActiveLevel = new Level("cave_first_map.png", "cave_first_map_outline.svg");
 }
 
 void Game::Cleanup()
 {
-	delete pFirstLevelMapTexture;
+	delete m_pActiveLevel;
 }
 
 void Game::Update(float elapsedSec)
 {
-	// Check keyboard state
-	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );
-	//if ( pStates[SDL_SCANCODE_RIGHT] )
-	//{
-	//	std::cout << "Right arrow key is down\n";
-	//}
-	//if ( pStates[SDL_SCANCODE_LEFT] && pStates[SDL_SCANCODE_UP])
-	//{
-	//	std::cout << "Left and up arrow keys are down\n";
-	//}
+	m_Camera.MoveWithKeyboard(elapsedSec);
 }
 
 void Game::Draw() const
 {
+	m_Camera.Begin(GetViewPort());
+
 	ClearBackground();
-	pFirstLevelMapTexture->Draw(Vector2f{ 0,0 });
+	m_pActiveLevel->Draw();
+
+	m_Camera.End();
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
