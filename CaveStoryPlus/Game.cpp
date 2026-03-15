@@ -1,27 +1,29 @@
 #include "pch.h"
 #include "Game.h"
+#include "Texture.h"
 
-Game::Game( const Window& window ) 
+Game::Game(const Window& window)
 	:BaseGame{ window }
 {
 	Initialize();
 }
 
-Game::~Game( )
+Game::~Game()
 {
-	Cleanup( );
+	Cleanup();
 }
 
-void Game::Initialize( )
+void Game::Initialize()
 {
-	
+	pFirstLevelMapTexture = new Texture("cave_first_map.png");
 }
 
-void Game::Cleanup( )
+void Game::Cleanup()
 {
+	delete pFirstLevelMapTexture;
 }
 
-void Game::Update( float elapsedSec )
+void Game::Update(float elapsedSec)
 {
 	// Check keyboard state
 	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );
@@ -35,17 +37,18 @@ void Game::Update( float elapsedSec )
 	//}
 }
 
-void Game::Draw( ) const
+void Game::Draw() const
 {
-	ClearBackground( );
+	ClearBackground();
+	pFirstLevelMapTexture->Draw(Vector2f{ 0,0 });
 }
 
-void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
+void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
 {
 	//std::cout << "KEYDOWN event: " << e.keysym.sym << std::endl;
 }
 
-void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
+void Game::ProcessKeyUpEvent(const SDL_KeyboardEvent& e)
 {
 	//std::cout << "KEYUP event: " << e.keysym.sym << std::endl;
 	//switch ( e.keysym.sym )
@@ -63,12 +66,12 @@ void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
 	//}
 }
 
-void Game::ProcessMouseMotionEvent( const SDL_MouseMotionEvent& e )
+void Game::ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e)
 {
 	//std::cout << "MOUSEMOTION event: " << e.x << ", " << e.y << std::endl;
 }
 
-void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
+void Game::ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
 {
 	//std::cout << "MOUSEBUTTONDOWN event: ";
 	//switch ( e.button )
@@ -83,10 +86,10 @@ void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
 	//	std::cout << " middle button " << std::endl;
 	//	break;
 	//}
-	
+
 }
 
-void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
+void Game::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
 	//std::cout << "MOUSEBUTTONUP event: ";
 	//switch ( e.button )
@@ -103,8 +106,8 @@ void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 	//}
 }
 
-void Game::ClearBackground( ) const
+void Game::ClearBackground() const
 {
-	glClearColor( 0.0f, 0.0f, 0.3f, 1.0f );
-	glClear( GL_COLOR_BUFFER_BIT );
+	glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
