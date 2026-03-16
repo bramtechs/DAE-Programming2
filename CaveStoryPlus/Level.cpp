@@ -57,6 +57,11 @@ void Level::DrawDebugGUI() const
 {
 }
 
+const Level::Colliders& Level::GetColliders() const
+{
+	return m_Colliders;
+}
+
 void Level::DrawTileGrid() const
 {
 	utils::SetColor(Color4f{ 0.8f,0.8f,0.8f,1.f });

@@ -10,7 +10,7 @@ Game::Game(const Window& window)
 {
 	Initialize();
 
-	m_Camera.SetCenter(m_pPlayer->GetCameraFocusPos());
+	m_Camera.SetCenter(m_pPlayer->GetCameraFocusPosition());
 }
 
 Game::~Game()
@@ -39,8 +39,12 @@ void Game::Update(float elapsedSec)
 	}
 	else
 	{
-		m_Camera.MoveTowards(m_pPlayer->GetCameraFocusPos(), elapsedSec);
+		m_Camera.MoveTowards(m_pPlayer->GetCameraFocusPosition(), elapsedSec);
 		m_pActiveLevel->Update(elapsedSec);
+		if (m_pActiveLevel)
+		{
+			m_pPlayer->Update(elapsedSec, *m_pActiveLevel);
+		}
 	}
 }
 
