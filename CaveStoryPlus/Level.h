@@ -29,7 +29,7 @@ private:
 	Texture* m_pFullTexture{};
 	Colliders m_Colliders{
 		std::vector<Vector2f>{
-			Vector2f{36.f,33.f},
+			Vector2f{-336.f,33.f},
 			Vector2f{42.f,33.f},
 			Vector2f{42.f,29.f},
 			Vector2f{31.f,29.f}

@@ -83,4 +83,10 @@ namespace utils
 
 #pragma endregion CollisionFunctionality
 
+#pragma region MyOwnUtils
+
+    float EaseTowards(float src, float dest, float delta);
+
+#pragma endregion
+
 }

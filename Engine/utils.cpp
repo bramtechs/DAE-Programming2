@@ -684,3 +684,22 @@ bool utils::IntersectRectLine(const Rectf& r, const Vector2f& p1, const Vector2f
 }
 
 #pragma endregion CollisionFunctionality
+
+
+#pragma region MyOwnUtils
+
+float utils::EaseTowards(float src, float dest, float delta)
+{
+    if (src < dest)
+    {
+        src += std::min(delta, std::abs(dest - src));
+    }
+    else // (dest < src)
+    {
+        src -= std::min(delta, std::abs(dest - src));
+    }
+
+    return src;
+}
+
+#pragma endregion
