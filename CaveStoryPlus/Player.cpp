@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "utils.h"
 #include "Level.h"
+#include "utils.h"
 #include "Texture.h"
 #include "Game.h"
 
@@ -25,17 +26,29 @@ void Player::Update(float delta, const Level& level)
         // when going in opposite direction add more velocity for tighter movement
         const float boost{ m_Velocity.x < 0.f ? 2.f : 1.f };
         m_Velocity.x = std::min(m_MaxHorizontalVelocity, m_Velocity.x + m_HorizontalMoveForce * delta * boost);
+        m_CurrentAnimationState = AnimState::walking;
+        m_LookingLeft = false;
     }
 
     if (m_IsHoldingLeft)
     {
         const float boost{ m_Velocity.x > 0.f ? 2.f : 1.f };
         m_Velocity.x = std::max(-m_MaxHorizontalVelocity, m_Velocity.x - m_HorizontalMoveForce * delta * boost);
+        m_CurrentAnimationState = AnimState::walking;
+        m_LookingLeft = true;
     }
 
     if (!(m_IsHoldingLeft || m_IsHoldingRight))
     {
         m_Velocity.x = utils::EaseTowards(m_Velocity.x, 0.f, delta * m_DragForce);
+        if (std::abs(m_Velocity.x) > 0.f)
+        {
+            m_CurrentAnimationState = AnimState::sliding;
+        }
+        else
+        {
+            m_CurrentAnimationState = AnimState::idle;
+        }
     }
 
     utils::HitInfo hit{};
@@ -49,16 +62,31 @@ void Player::Update(float delta, const Level& level)
     {
         m_IsOnGround = false;
         m_Velocity.y += -m_Gravity * delta;
+
+        if (m_Velocity.y > 0)
+        {
+            m_CurrentAnimationState = AnimState::jumping;
+        }
+        else
+        {
+            m_CurrentAnimationState = AnimState::falling;
+        }
     }
 
     m_Position += m_Velocity * delta;
 
+    ProcessAnimationFrames(delta);
 }
 
 void Player::Draw() const
 {
     const Rectf dest{ m_Position.x,m_Position.y,1.f,1.f };
-    const Rectf source{ 0.f,0.f,m_CellSize,m_CellSize };
+    Rectf source{ 0.f,0.f,m_CellSize,m_CellSize };
+
+    const int row{ m_LookingLeft ? 0 : 1 };
+    source.left = source.width * m_CurrentAnimationFrame;
+    source.bottom = source.height * row;
+
     m_pSpriteSheet->Draw(dest, source);
 }
 
@@ -123,6 +151,68 @@ void Player::TryJump()
     {
         m_Velocity.y = m_JumpForce;
         m_Position.y += 1.f / g_TileSize * 2.f; // ensure not in ground
+    }
+}
+
+void Player::ProcessAnimationFrames(float delta)
+{
+    // player.png
+    const int idleFrame{ 0 };
+    const int walkStartFrame{ 0 };
+    const int walkEndFrame{ 2 };
+    const int jumpStartFrame{ 3 };
+    const int jumpEndFrame{ 5 };
+    const int fallFrame{ 6 };
+    const int usingDoorFrame{ 7 };
+    const int slideFrame{ 8 };
+
+    switch (m_CurrentAnimationState)
+    {
+
+    case AnimState::idle:
+        m_CurrentAnimationFrame = idleFrame;
+        break;
+
+    case AnimState::walking:
+        ProcessAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
+        break;
+
+    case AnimState::sliding:
+        m_CurrentAnimationFrame = slideFrame;
+        break;
+
+    case AnimState::jumping:
+        ProcessAnimationState(AnimState::jumping, jumpStartFrame, jumpEndFrame);
+        break;
+
+    case AnimState::falling:
+        m_CurrentAnimationFrame = fallFrame;
+        break;
+
+    case AnimState::usingdoor:
+        m_CurrentAnimationFrame = usingDoorFrame;
+        break;
+
+    default:
+        break;
+    }
+
+
+    m_AnimTimer += delta;
+}
+
+void Player::ProcessAnimationState(AnimState state, int startFrame, int endFrame)
+{
+    m_CurrentAnimationFrame = utils::Clamp(m_CurrentAnimationFrame, startFrame, endFrame);
+    if (m_AnimTimer > m_TimePerFrame)
+    {
+        ++m_CurrentAnimationFrame;
+        m_AnimTimer = 0.f;
+
+        if (m_CurrentAnimationFrame > endFrame)
+        {
+            m_CurrentAnimationFrame = startFrame;
+        }
     }
 }
 
