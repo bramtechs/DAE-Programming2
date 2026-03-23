@@ -29,9 +29,9 @@ private:
     {
         idle,
         walking,
-        sliding,
         jumping,
         falling,
+        sliding,
         usingdoor,
     };
 
@@ -46,7 +46,7 @@ private:
     constexpr static float m_CellSize{ 32.f };
     constexpr static int m_SpriteSheetCols{ 11 };
     constexpr static int m_SpriteSheetRows{ 2 };
-    constexpr static float m_TimePerFrame{ 0.2f };
+    constexpr static float m_TimePerFrame{ 0.15f };
 
     Texture* m_pSpriteSheet{};
     Vector2f m_Position{ 37.f, 33.f };

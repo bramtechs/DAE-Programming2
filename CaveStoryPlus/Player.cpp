@@ -26,29 +26,27 @@ void Player::Update(float delta, const Level& level)
         // when going in opposite direction add more velocity for tighter movement
         const float boost{ m_Velocity.x < 0.f ? 2.f : 1.f };
         m_Velocity.x = std::min(m_MaxHorizontalVelocity, m_Velocity.x + m_HorizontalMoveForce * delta * boost);
-        m_CurrentAnimationState = AnimState::walking;
         m_LookingLeft = false;
+        m_CurrentAnimationState = AnimState::walking;
     }
 
     if (m_IsHoldingLeft)
     {
         const float boost{ m_Velocity.x > 0.f ? 2.f : 1.f };
         m_Velocity.x = std::max(-m_MaxHorizontalVelocity, m_Velocity.x - m_HorizontalMoveForce * delta * boost);
-        m_CurrentAnimationState = AnimState::walking;
         m_LookingLeft = true;
+        m_CurrentAnimationState = AnimState::walking;
     }
 
-    if (!(m_IsHoldingLeft || m_IsHoldingRight))
+    const bool movingHorizontal{ m_IsHoldingLeft || m_IsHoldingRight };
+    if (!movingHorizontal)
     {
         m_Velocity.x = utils::EaseTowards(m_Velocity.x, 0.f, delta * m_DragForce);
-        if (std::abs(m_Velocity.x) > 0.f)
-        {
-            m_CurrentAnimationState = AnimState::sliding;
-        }
-        else
-        {
-            m_CurrentAnimationState = AnimState::idle;
-        }
+    }
+
+    if (m_Velocity.y > 0.f)
+    {
+        m_CurrentAnimationState = AnimState::jumping;
     }
 
     utils::HitInfo hit{};
@@ -57,13 +55,17 @@ void Player::Update(float delta, const Level& level)
         m_IsOnGround = true;
         m_Velocity.y = 0.f;
         m_Position.y = hit.intersectPoint.y;
+        if (!movingHorizontal && std::abs(m_Velocity.x) > 0.f)
+        {
+            m_CurrentAnimationState = AnimState::sliding;
+        }
     }
     else
     {
         m_IsOnGround = false;
         m_Velocity.y += -m_Gravity * delta;
 
-        if (m_Velocity.y > 0)
+        if (m_Velocity.y > 0.f)
         {
             m_CurrentAnimationState = AnimState::jumping;
         }
@@ -74,7 +76,6 @@ void Player::Update(float delta, const Level& level)
     }
 
     m_Position += m_Velocity * delta;
-
     ProcessAnimationFrames(delta);
 }
 
@@ -159,10 +160,9 @@ void Player::ProcessAnimationFrames(float delta)
     // player.png
     const int idleFrame{ 0 };
     const int walkStartFrame{ 0 };
-    const int walkEndFrame{ 2 };
-    const int jumpStartFrame{ 3 };
-    const int jumpEndFrame{ 5 };
-    const int fallFrame{ 6 };
+    const int walkEndFrame{ 1 };
+    const int fallingFrame{ 1 };
+    const int jumpingFrame{ 2 };
     const int usingDoorFrame{ 7 };
     const int slideFrame{ 8 };
 
@@ -177,16 +177,16 @@ void Player::ProcessAnimationFrames(float delta)
         ProcessAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
         break;
 
-    case AnimState::sliding:
-        m_CurrentAnimationFrame = slideFrame;
-        break;
-
     case AnimState::jumping:
-        ProcessAnimationState(AnimState::jumping, jumpStartFrame, jumpEndFrame);
+        m_CurrentAnimationFrame = jumpingFrame;
         break;
 
     case AnimState::falling:
-        m_CurrentAnimationFrame = fallFrame;
+        m_CurrentAnimationFrame = fallingFrame;
+        break;
+
+    case AnimState::sliding:
+        m_CurrentAnimationFrame = slideFrame;
         break;
 
     case AnimState::usingdoor:
