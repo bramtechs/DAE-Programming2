@@ -231,11 +231,11 @@ void Player::ProcessAnimationState(AnimState state, int startFrame, int endFrame
     }
 }
 
-bool Player::RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, const Level::Colliders& colliders, utils::HitInfo& outHitInfo) const
+bool Player::RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, const std::vector<PolygonCollider>& colliders, utils::HitInfo& outHitInfo) const
 {
     for (int i{}; i < colliders.size(); ++i)
     {
-        if (utils::Raycast(colliders[i], start, end, outHitInfo))
+        if (utils::Raycast(colliders[i].GetPolygon(), start, end, outHitInfo))
         {
             return true;
         }

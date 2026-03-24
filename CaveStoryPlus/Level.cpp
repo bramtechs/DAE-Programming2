@@ -57,11 +57,6 @@ void Level::DrawDebugGUI() const
 {
 }
 
-const Level::Colliders& Level::GetColliders() const
-{
-	return m_Colliders;
-}
-
 void Level::DrawTileGrid() const
 {
 	utils::SetColor(Color4f{ 0.8f,0.8f,0.8f,1.f });
@@ -81,23 +76,8 @@ void Level::DrawTileGrid() const
 
 void Level::DrawColliders() const
 {
-	const float alpha{0.5f};
-	const Color4f pRainbow[]{
-		Color4f{1.0f, 0.0f, 0.0f, alpha},
-		Color4f{1.0f, 0.5f, 0.0f, alpha},
-		Color4f{1.0f, 1.0f, 0.0f, alpha},
-		Color4f{0.0f, 1.0f, 0.0f, alpha},
-		Color4f{0.0f, 0.0f, 1.0f, alpha},
-		Color4f{0.29f, 0.0f, 0.51f, alpha},
-		Color4f{0.56f, 0.0f, 1.0f, alpha}
-	};
-
 	for (int i{}; i < m_Colliders.size(); ++i)
 	{
-		const int index{ i % std::size(pRainbow) };
-		utils::SetColor(pRainbow[i]);
-		utils::FillPolygon(m_Colliders[i]);
-		utils::SetColor(Color4f{ pRainbow[i].r * 0.5f, pRainbow[i].g * 0.5f, pRainbow[i].b * 0.5f, 1.f });
-		utils::DrawPolygon(m_Colliders[i], true, 0.3f);
+		m_Colliders[i].Draw();
 	}
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "PolygonCollider.h"
 #include <string>
 #include <vector>
 
@@ -7,36 +8,37 @@ class Texture;
 class Level
 {
 public:
-	using Colliders = std::vector<std::vector<Vector2f>>;
+    Level(const std::string& fullTexturePath, const std::string& levelPath);
+    ~Level();
 
-	Level(const std::string& fullTexturePath, const std::string& levelPath);
-	~Level();
+    void Update(float delta);
+    void UpdateDebug(float delta, const Camera& camera);
 
-	void Update(float delta);
-	void UpdateDebug(float delta, const Camera& camera);
+    void Draw() const;
 
-	void Draw() const;
+    void DrawDebug() const;
+    void DrawDebugGUI() const;
 
-	void DrawDebug() const;
-	void DrawDebugGUI() const;
-
-	const Colliders& GetColliders() const;
+    const std::vector<PolygonCollider>& GetColliders() const
+    {
+        return m_Colliders;
+    }
 
 private:
-	void DrawTileGrid() const;
-	void DrawColliders() const;
+    void DrawTileGrid() const;
+    void DrawColliders() const;
 
-	Texture* m_pFullTexture{};
-	Colliders m_Colliders{
-		std::vector<Vector2f>{
-			Vector2f{-336.f,33.f},
-			Vector2f{42.f,33.f},
-			Vector2f{42.f,29.f},
-			Vector2f{31.f,29.f}
-		}
-	};
-	int m_LevelCols{};
-	int m_LevelRows{};
-	Vector2f m_CursorPos{};
+    Texture* m_pFullTexture{};
+    std::vector<PolygonCollider> m_Colliders{
+        PolygonCollider{std::vector<Vector2f>{
+            Vector2f{-336.f,33.f},
+            Vector2f{42.f,33.f},
+            Vector2f{42.f,29.f},
+            Vector2f{31.f,29.f}
+        }}
+    };
+    int m_LevelCols{};
+    int m_LevelRows{};
+    Vector2f m_CursorPos{};
 };
 

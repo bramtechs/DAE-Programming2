@@ -40,7 +40,7 @@ private:
     void ProcessAnimationFrames(float delta);
     void ProcessAnimationState(AnimState state, int startFrame, int endFrame);
 
-    bool RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, const Level::Colliders& colliders, utils::HitInfo& outHitInfo) const;
+    bool RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, const std::vector<PolygonCollider>& colliders, utils::HitInfo& outHitInfo) const;
 
     bool CheckIfInsideFloor(const Level& level, utils::HitInfo& outHitInfo) const;
 
