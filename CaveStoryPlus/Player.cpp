@@ -45,12 +45,12 @@ void Player::Update(float delta, const Level& level)
     }
 
     if (m_Velocity.y > 0.f)
-    {
+    {   
         m_CurrentAnimationState = AnimState::jumping;
     }
 
     utils::HitInfo hit{};
-    if (CheckIfInsideFloor(level, hit))
+    if (CheckIfInsideFloor(level, hit) && not m_IsHoldingJump)
     {
         m_IsOnGround = true;
         m_Velocity.y = 0.f;
@@ -72,6 +72,20 @@ void Player::Update(float delta, const Level& level)
         else
         {
             m_CurrentAnimationState = AnimState::falling;
+        }
+    }
+
+    if (m_JumpWindowTimer > 0.f)
+    {
+        m_JumpWindowTimer -= delta;
+
+        if (m_IsHoldingJump)
+        {
+            m_Velocity.y += m_JumpForce * delta * 2.3f;
+            if (m_IsOnGround)
+            {
+                m_Position.y += 1.f / g_TileSize * 2.f; // ensure not in ground
+            }
         }
     }
 
@@ -126,7 +140,13 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent& e)
         break;
     case SDLK_z:
     case SDLK_SPACE:
-        TryJump();
+        m_IsHoldingJump = true;
+        if (m_IsOnGround)
+        {
+            // apply initial jump impulse
+            m_Velocity.y += m_JumpForce;
+            m_JumpWindowTimer = m_JumpWindow;
+        }
         break;
     }
 }
@@ -143,15 +163,10 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent& e)
     case SDLK_LEFT:
         m_IsHoldingLeft = false;
         break;
-    }
-}
-
-void Player::TryJump()
-{
-    if (m_IsOnGround)
-    {
-        m_Velocity.y = m_JumpForce;
-        m_Position.y += 1.f / g_TileSize * 2.f; // ensure not in ground
+    case SDLK_SPACE:
+    case SDLK_z:
+        m_IsHoldingJump = false;
+        break;
     }
 }
 

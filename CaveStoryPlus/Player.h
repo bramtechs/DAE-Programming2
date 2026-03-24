@@ -3,6 +3,8 @@
 #include "Vector2f.h"
 #include "Level.h"
 
+#include <SDL_events.h>
+
 class Texture;
 class Player
 {
@@ -35,7 +37,6 @@ private:
         usingdoor,
     };
 
-    void TryJump();
     void ProcessAnimationFrames(float delta);
     void ProcessAnimationState(AnimState state, int startFrame, int endFrame);
 
@@ -44,9 +45,12 @@ private:
     bool CheckIfInsideFloor(const Level& level, utils::HitInfo& outHitInfo) const;
 
     constexpr static float m_CellSize{ 32.f };
+    constexpr static float m_TimePerFrame{ 0.15f };
     constexpr static int m_SpriteSheetCols{ 11 };
     constexpr static int m_SpriteSheetRows{ 2 };
-    constexpr static float m_TimePerFrame{ 0.15f };
+
+    // time to hold space for maximum jump power
+    constexpr static float m_JumpWindow{ 0.5f };
 
     Texture* m_pSpriteSheet{};
     Vector2f m_Position{ 37.f, 33.f };
@@ -54,13 +58,15 @@ private:
     float m_HorizontalMoveForce{ 24.f };
     float m_MaxHorizontalVelocity{ 4.f };
     float m_DragForce{ 20.f };
-    float m_JumpForce{ 6.f };
+    float m_JumpForce{ 4.0f };
     float m_Gravity{ 9.81f };
+    float m_AnimTimer{ 0.f };
+    float m_JumpWindowTimer{ 0.1f };
     AnimState m_CurrentAnimationState{ AnimState::idle };
     int m_CurrentAnimationFrame{};
-    float m_AnimTimer{ 0.f };
     bool m_LookingLeft{ false };
 
+    bool m_IsHoldingJump{};
     bool m_IsHoldingLeft{};
     bool m_IsHoldingRight{};
     bool m_IsOnGround{};
