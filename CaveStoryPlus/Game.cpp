@@ -4,9 +4,11 @@
 #include "Level.h"
 #include "Player.h"
 #include "Camera.h"
+#include "Editor.h"
 
 Game::Game(const Window& window)
-    :BaseGame{ window }, m_Camera{ GetViewPort() }, m_pActiveLevel{}, m_pPlayer{}
+    :BaseGame{ window }
+    , m_Camera{ GetViewPort() }, m_pActiveLevel{}, m_pPlayer{}, m_pEditor{}
 {
     Initialize();
 
@@ -26,16 +28,17 @@ void Game::Initialize()
 
 void Game::Cleanup()
 {
+    delete m_pEditor;
     delete m_pActiveLevel;
     delete m_pPlayer;
 }
 
 void Game::Update(float elapsedSec)
 {
-    if (m_IsDebugging)
+    if (m_pEditor)
     {
         m_Camera.MoveWithKeyboard(elapsedSec);
-        m_pActiveLevel->UpdateDebug(elapsedSec, m_Camera);
+        m_pEditor->Update(m_Camera);
     }
     else
     {
@@ -56,10 +59,9 @@ void Game::Draw() const
     m_pActiveLevel->Draw();
     m_pPlayer->Draw();
 
-    if (m_IsDebugging)
+    if (m_pEditor)
     {
-        m_pActiveLevel->DrawDebug();
-        m_pActiveLevel->DrawDebugGUI();
+        m_pEditor->Draw();
     }
 
     m_Camera.End();
@@ -71,7 +73,16 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
 
     if (e.keysym.sym == SDLK_F3)
     {
-        m_IsDebugging = !m_IsDebugging;
+        if (m_pEditor)
+        {
+            delete m_pEditor;
+            m_pEditor = nullptr;
+        }
+        else
+        {
+            m_pEditor = new Editor();
+            m_pEditor->SetLevel(m_pActiveLevel);
+        }
     }
 
     if (m_pPlayer)

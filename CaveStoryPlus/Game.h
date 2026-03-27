@@ -9,6 +9,7 @@ constexpr float g_TileRows{ 720.f / 32.f };
 class Player;
 class Level;
 class Texture;
+class Editor;
 class Game : public BaseGame
 {
 public:
@@ -34,8 +35,7 @@ private:
 	Camera m_Camera;
 	Level* m_pActiveLevel;
 	Player* m_pPlayer;
-
-	bool m_IsDebugging{};
+    Editor* m_pEditor;
 
 	// FUNCTIONS
 	void Initialize();

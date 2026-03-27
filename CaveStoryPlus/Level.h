@@ -12,12 +12,9 @@ public:
     ~Level();
 
     void Update(float delta);
-    void UpdateDebug(float delta, const Camera& camera);
-
     void Draw() const;
 
-    void DrawDebug() const;
-    void DrawDebugGUI() const;
+    void GetLevelSize(int& outWidth, int& outHeight) const;
 
     const std::vector<PolygonCollider>& GetColliders() const
     {
