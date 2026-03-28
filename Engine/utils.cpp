@@ -189,6 +189,11 @@ void utils::FillEllipse( const Vector2f& center, float radX, float radY )
 	FillEllipse( center.x, center.y, radX, radY );
 }
 
+void utils::FillEllipse(const Circlef& circle)
+{
+    FillEllipse(circle.center, circle.radius, circle.radius);
+}
+
 void utils::DrawArc( float centerX, float centerY, float radX, float radY, float fromAngle, float tillAngle, float lineWidth )
 {
 	if ( fromAngle > tillAngle )
@@ -700,6 +705,21 @@ float utils::EaseTowards(float src, float dest, float delta)
     }
 
     return src;
+}
+
+Rectf utils::RectWithCenter(const Vector2f& pos, float width, float height)
+{
+    return RectWithCenter(pos.x, pos.y, width, height);
+}
+
+Rectf utils::RectWithCenter(float left, float bottom, float width, float height)
+{
+    Rectf rect{};
+    rect.left = left - width * 0.5f;
+    rect.bottom = bottom - height * 0.5f;
+    rect.width = width;
+    rect.height = height;
+    return rect;
 }
 
 #pragma endregion

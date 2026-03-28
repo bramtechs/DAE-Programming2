@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "utils.h"
 #include "PolygonCollider.h"
+#include "Game.h"
 
 int PolygonCollider::m_ColliderCount{};
 
@@ -53,6 +54,34 @@ PolygonCollider::~PolygonCollider()
     --m_ColliderCount;
 }
 
+bool PolygonCollider::StartDragAround(const Vector2f& tileMousePos)
+{
+    for (int i{}; i < m_Vertices.size(); ++i)
+    {
+        const Rectf handle{ GetHandleOfPoint(i) };
+        if (utils::IsPointInRect(tileMousePos, handle))
+        {
+            m_HandleBeingDragged = i;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void PolygonCollider::StopDragAround()
+{
+    m_HandleBeingDragged = -1;
+}
+
+void PolygonCollider::Update(const Vector2f& snappedTileMousePos)
+{
+    if (m_HandleBeingDragged >= 0)
+    {
+        m_Vertices[m_HandleBeingDragged] = snappedTileMousePos;
+    }
+}
+
 void PolygonCollider::Draw() const
 {
     utils::SetColor(m_Color);
@@ -61,8 +90,22 @@ void PolygonCollider::Draw() const
     utils::DrawPolygon(m_Vertices, true, 0.3f);
 }
 
-void PolygonCollider::DrawVertices() const
+void PolygonCollider::DrawHandles(const Vector2f& tileMousePos) const
 {
+    for (int i{}; i < m_Vertices.size(); ++i)
+    {
+        const Rectf handle{ GetHandleOfPoint(i) };
+        if (utils::IsPointInRect(tileMousePos, handle))
+        {
+            utils::SetColor(Color4f{ 0.2f,1.0f,0.2f,1.f });
+        }
+        else
+        {
+            utils::SetColor(Color4f{ 0.2f,0.2f,0.2f,1.f });
+        }
+
+        utils::FillRect(handle);
+    }
 }
 
 void PolygonCollider::PickNextColor()
@@ -79,4 +122,14 @@ void PolygonCollider::PickNextColor()
     };
 
     m_Color = pRainbow[m_ColliderCount];
+}
+
+Rectf PolygonCollider::GetHandleOfPoint(int pointIndex) const
+{
+    Rectf region{};
+    if (pointIndex >= 0 && pointIndex < m_Vertices.size())
+    {
+        region = utils::RectWithCenter(m_Vertices[pointIndex], m_HandleRadius, m_HandleRadius);
+    }
+    return region;
 }

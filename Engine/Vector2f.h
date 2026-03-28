@@ -70,6 +70,10 @@ struct Vector2f final
 	// surfaceNormal: represents the normal of the surface at the reflection point
 	Vector2f Reflect( const Vector2f& surfaceNormal ) const;
 
+    Vector2f Floor() const;
+
+    Vector2f Round() const;
+
 	// Sets the values of x and y
 	void Set( float newX, float newY );
 

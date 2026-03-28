@@ -98,6 +98,16 @@ Vector2f Vector2f::Reflect( const Vector2f& surfaceNormal ) const
 	return (*this) - 2 * ( this->DotProduct( surfaceNormal ) * surfaceNormal );
 }
 
+Vector2f Vector2f::Floor() const
+{
+    return Vector2f(std::floor(x), std::floor(y));
+}
+
+Vector2f Vector2f::Round() const
+{
+    return Vector2f(std::round(x), std::round(y));
+}
+
 void Vector2f::Set(float newX, float newY)
 {
 	x = newX;

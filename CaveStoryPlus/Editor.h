@@ -10,13 +10,14 @@ class Editor
 public:
     explicit Editor();
 
-    void HandleColliders(std::vector<PolygonCollider>& colliders);
-
     void SetLevel(Level* pLevel);
     
     void Update(Camera& camera);
     void Draw() const;
     void DrawGUI() const;
+
+    void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e);
+    void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e);
 
 private:
     void DrawTileGrid() const;

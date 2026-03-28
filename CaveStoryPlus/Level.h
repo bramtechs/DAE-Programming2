@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 
+class Editor;
 class Camera;
 class Texture;
+
 class Level
 {
 public:
@@ -17,6 +19,11 @@ public:
     void GetLevelSize(int& outWidth, int& outHeight) const;
 
     const std::vector<PolygonCollider>& GetColliders() const
+    {
+        return m_Colliders;
+    }
+
+    std::vector<PolygonCollider>& GetColliders()
     {
         return m_Colliders;
     }

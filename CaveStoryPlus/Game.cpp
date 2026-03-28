@@ -6,6 +6,8 @@
 #include "Camera.h"
 #include "Editor.h"
 
+Vector2f Game::m_LastMousePos{};
+
 Game::Game(const Window& window)
     :BaseGame{ window }
     , m_Camera{ GetViewPort() }, m_pActiveLevel{}, m_pPlayer{}, m_pEditor{}
@@ -101,42 +103,24 @@ void Game::ProcessKeyUpEvent(const SDL_KeyboardEvent& e)
 
 void Game::ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e)
 {
-    //std::cout << "MOUSEMOTION event: " << e.x << ", " << e.y << std::endl;
+    m_LastMousePos.x = static_cast<float>(e.x);
+    m_LastMousePos.y = GetViewPort().height - static_cast<float>(e.y);
 }
 
 void Game::ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
 {
-    //std::cout << "MOUSEBUTTONDOWN event: ";
-    //switch ( e.button )
-    //{
-    //case SDL_BUTTON_LEFT:
-    //	std::cout << " left button " << std::endl;
-    //	break;
-    //case SDL_BUTTON_RIGHT:
-    //	std::cout << " right button " << std::endl;
-    //	break;
-    //case SDL_BUTTON_MIDDLE:
-    //	std::cout << " middle button " << std::endl;
-    //	break;
-    //}
-
+    if (m_pEditor)
+    {
+        m_pEditor->ProcessMouseDownEvent(e);
+    }
 }
 
 void Game::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
-    //std::cout << "MOUSEBUTTONUP event: ";
-    //switch ( e.button )
-    //{
-    //case SDL_BUTTON_LEFT:
-    //	std::cout << " left button " << std::endl;
-    //	break;
-    //case SDL_BUTTON_RIGHT:
-    //	std::cout << " right button " << std::endl;
-    //	break;
-    //case SDL_BUTTON_MIDDLE:
-    //	std::cout << " middle button " << std::endl;
-    //	break;
-    //}
+    if (m_pEditor)
+    {
+        m_pEditor->ProcessMouseUpEvent(e);
+    }
 }
 
 void Game::ClearBackground() const

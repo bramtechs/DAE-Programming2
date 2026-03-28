@@ -35,6 +35,7 @@ namespace utils
     void FillEllipse(float centerX, float centerY, float radX, float radY);
     void FillEllipse(const Ellipsef& ellipse);
     void FillEllipse(const Vector2f& center, float radX, float radY);
+    void FillEllipse(const Circlef& circle);
 
     // Draws an arc. The angle parameters are in radians, not in degrees.
     void DrawArc(float centerX, float centerY, float radX, float radY, float fromAngle, float tillAngle, float lineWidth = 1.0f);
@@ -88,6 +89,9 @@ namespace utils
 #pragma region MyOwnUtils
 
     float EaseTowards(float src, float dest, float delta);
+
+    Rectf RectWithCenter(const Vector2f& pos, float width, float height);
+    Rectf RectWithCenter(float left, float bottom, float width, float height);
 
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     T Clamp(T value, T min, T max)

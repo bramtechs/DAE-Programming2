@@ -10,10 +10,6 @@ Editor::Editor()
 {
 }
 
-void Editor::HandleColliders(std::vector<PolygonCollider>& collider)
-{
-}
-
 void Editor::Update(Camera& camera)
 {
     int mouseX{};
@@ -21,14 +17,17 @@ void Editor::Update(Camera& camera)
     SDL_GetMouseState(&mouseX, &mouseY);
     mouseY = static_cast<int>(camera.GetViewPort().height) - mouseY;
     m_CursorPos = camera.ScreenToWorldPos(Vector2f{ static_cast<float>(mouseX), static_cast<float>(mouseY) });
-    m_CursorPos.x = std::floor(m_CursorPos.x);
-    m_CursorPos.y = std::floor(m_CursorPos.y);
-
 
     char pText[64];
     sprintf_s(pText, std::size(pText), "%dx%d", static_cast<int>(m_CursorPos.x), static_cast<int>(m_CursorPos.y));
     SDL_SetWindowTitle(SDL_GL_GetCurrentWindow(), pText);
 
+    std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };
+    for (int i{}; i < colliders.size(); ++i)
+    {
+        const Vector2f snappedCursor{ m_CursorPos.Round() };
+        colliders[i].Update(snappedCursor);
+    }
 }
 
 void Editor::Draw() const
@@ -64,7 +63,10 @@ void Editor::DrawTileGrid() const
     }
 
     utils::SetColor(Color4f{ 1.f,1.f,0.f,1.f });
-    utils::DrawRect(m_CursorPos, 1.f, 1.f, 0.1f);
+
+    const float cursorX{ std::floor(m_CursorPos.x) };
+    const float cursorY{ std::floor(m_CursorPos.y) };
+    utils::DrawRect(Vector2f{ cursorX, cursorY }, 1.f, 1.f, 0.1f);
 }
 
 void Editor::DrawColliders() const
@@ -73,10 +75,35 @@ void Editor::DrawColliders() const
     for (int i{}; i < colliders.size(); ++i)
     {
         colliders[i].Draw();
+        colliders[i].DrawHandles(m_CursorPos);
     }
 }
 
 void Editor::SetLevel(Level* pLevel)
 {
     m_pLevel = pLevel;
+}
+
+void Editor::ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
+{
+    if (e.button == SDL_BUTTON_LEFT)
+    {
+        std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };
+        for (int i{}; i < colliders.size(); ++i)
+        {
+            colliders[i].StartDragAround(m_CursorPos);
+        }
+    }
+}
+
+void Editor::ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
+{
+    if (e.button == SDL_BUTTON_LEFT)
+    {
+        std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };
+        for (int i{}; i < colliders.size(); ++i)
+        {
+            colliders[i].StopDragAround();
+        }
+    }
 }
