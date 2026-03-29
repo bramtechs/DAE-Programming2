@@ -96,7 +96,10 @@ void Editor::ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
         std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };
         for (int i{}; i < colliders.size(); ++i)
         {
-            colliders[i].StartDragAround(m_CursorPos);
+            if (colliders[i].StartDragAround(m_CursorPos))
+            {
+                break;
+            }
         }
     }
 }
@@ -125,7 +128,20 @@ void Editor::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
     }
 
     if (m_GridScale < 0.25f)
+    {
         m_GridScale = 0.25f;
+    }
     if (m_GridScale > 1)
+    {
         m_GridScale = 1.f;
+    }
+
+    std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };
+    for (int i{}; i < colliders.size(); ++i)
+    {
+        if (colliders[i].ProcessKeyDownEvent(e))
+        {
+            break;
+        }
+    }
 }

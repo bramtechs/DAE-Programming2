@@ -74,6 +74,27 @@ void PolygonCollider::StopDragAround()
     m_HandleBeingDragged = -1;
 }
 
+void PolygonCollider::AddPointAfter(int index)
+{
+    const int endIndex{ (index + 1) % static_cast<int>(m_Vertices.size()) };
+    const Vector2f start{ m_Vertices[index] };
+    const Vector2f end{ m_Vertices[endIndex] };
+
+    const Vector2f interp{ start.Interpolate(end, 0.5f) };
+    m_Vertices.insert(std::next(m_Vertices.begin(), endIndex), interp);
+
+    m_HandleBeingDragged = -1;
+}
+
+void PolygonCollider::DeletePoint(int index)
+{
+    if (m_Vertices.size() > 3)
+    {
+        m_Vertices.erase(std::next(m_Vertices.begin(), index));
+        m_HandleBeingDragged = -1;
+    }
+}
+
 void PolygonCollider::Update(const Vector2f& snappedTileMousePos)
 {
     if (m_HandleBeingDragged >= 0)
@@ -132,4 +153,21 @@ Rectf PolygonCollider::GetHandleOfPoint(int pointIndex) const
         region = utils::RectWithCenter(m_Vertices[pointIndex], m_HandleRadius, m_HandleRadius);
     }
     return region;
+}
+
+bool PolygonCollider::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
+{
+    if (m_HandleBeingDragged >= 0)
+    {
+        if (e.keysym.sym == SDLK_i)
+        {
+            AddPointAfter(m_HandleBeingDragged);
+            return true;
+        }
+        if (e.keysym.sym == SDLK_x)
+        {
+            DeletePoint(m_HandleBeingDragged);
+        }
+    }
+    return false;
 }

@@ -25,9 +25,14 @@ public:
     bool StartDragAround(const Vector2f& tileMousePos);
     void StopDragAround();
 
+    void AddPointAfter(int index);
+    void DeletePoint(int index);
+
     void Update(const Vector2f& snappedTileMousePos);
     void Draw() const;
     void DrawHandles(const Vector2f& tileMousePos) const;
+
+    bool ProcessKeyDownEvent(const SDL_KeyboardEvent& e);
 
 private:
     void PickNextColor();
