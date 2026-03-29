@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2f.h"
 
+#include <cmath>
 #include <vector>
 #include <type_traits>
 
@@ -92,6 +93,12 @@ namespace utils
 
     Rectf RectWithCenter(const Vector2f& pos, float width, float height);
     Rectf RectWithCenter(float left, float bottom, float width, float height);
+
+    template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+    T SnapRounded(T value, T snapInterval)
+    {
+        return std::round(value / snapInterval) * snapInterval;
+    }
 
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     T Clamp(T value, T min, T max)

@@ -91,6 +91,11 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
     {
         m_pPlayer->HandleKeyDownEvent(e);
     }
+
+    if (m_pEditor)
+    {
+        m_pEditor->ProcessKeyDownEvent(e);
+    }
 }
 
 void Game::ProcessKeyUpEvent(const SDL_KeyboardEvent& e)
