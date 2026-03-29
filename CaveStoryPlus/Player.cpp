@@ -235,7 +235,8 @@ bool Player::RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, con
 {
     for (int i{}; i < colliders.size(); ++i)
     {
-        if (utils::Raycast(colliders[i].GetPolygon(), start, end, outHitInfo))
+        const std::vector<Vector2f>& vertices{ colliders[i].GetPolygon() };
+        if (utils::Raycast(vertices, start, end, outHitInfo))
         {
             return true;
         }

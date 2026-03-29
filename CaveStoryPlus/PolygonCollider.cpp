@@ -3,55 +3,9 @@
 #include "PolygonCollider.h"
 #include "Game.h"
 
-int PolygonCollider::m_ColliderCount{};
-
-PolygonCollider::PolygonCollider()
-{
-    PickNextColor();
-    ++m_ColliderCount;
-}
-
 PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices)
     : m_Vertices(std::move(vertices))
 {
-    PickNextColor();
-    ++m_ColliderCount;
-}
-
-PolygonCollider::PolygonCollider(PolygonCollider&& o) noexcept
-    : m_Vertices(std::move(o.m_Vertices)), m_Color(o.m_Color)
-{
-}
-
-PolygonCollider::PolygonCollider(const PolygonCollider& o)
-    : m_Vertices(o.m_Vertices), m_Color(o.m_Color)
-{
-    ++m_ColliderCount;
-}
-
-PolygonCollider& PolygonCollider::operator=(PolygonCollider&& o) noexcept
-{
-    if (this != &o)
-    {
-        m_Vertices = std::move(o.m_Vertices);
-        m_Color = o.m_Color;
-    }
-    return *this;
-}
-
-PolygonCollider& PolygonCollider::operator=(const PolygonCollider& o)
-{
-    if (this != &o)
-    {
-        m_Vertices = o.m_Vertices;
-        m_Color = o.m_Color;
-    }
-    return *this;
-}
-
-PolygonCollider::~PolygonCollider()
-{
-    --m_ColliderCount;
 }
 
 bool PolygonCollider::StartDragAround(const Vector2f& tileMousePos)
@@ -72,6 +26,16 @@ bool PolygonCollider::StartDragAround(const Vector2f& tileMousePos)
 void PolygonCollider::StopDragAround()
 {
     m_HandleBeingDragged = -1;
+}
+
+void PolygonCollider::AddPoint(const Vector2f& point)
+{
+    m_Vertices.emplace_back(point);
+}
+
+void PolygonCollider::AddPoint(float x, float y)
+{
+    m_Vertices.emplace_back(x, y);
 }
 
 void PolygonCollider::AddPointAfter(int index)
@@ -116,7 +80,7 @@ void PolygonCollider::DrawHandles(const Vector2f& tileMousePos) const
     for (int i{}; i < m_Vertices.size(); ++i)
     {
         const Rectf handle{ GetHandleOfPoint(i) };
-        if (utils::IsPointInRect(tileMousePos, handle))
+        if (utils::IsPointInRect(tileMousePos, handle) || m_HandleBeingDragged == i)
         {
             utils::SetColor(Color4f{ 0.2f,1.0f,0.2f,1.f });
         }
@@ -129,7 +93,7 @@ void PolygonCollider::DrawHandles(const Vector2f& tileMousePos) const
     }
 }
 
-void PolygonCollider::PickNextColor()
+void PolygonCollider::PickColor(int index)
 {
     const float alpha{ 0.5f };
     const Color4f pRainbow[]{
@@ -142,7 +106,7 @@ void PolygonCollider::PickNextColor()
         Color4f{0.56f, 0.0f, 1.0f, alpha}
     };
 
-    m_Color = pRainbow[m_ColliderCount];
+    m_Color = pRainbow[index % static_cast<int>(std::size(pRainbow))];
 }
 
 Rectf PolygonCollider::GetHandleOfPoint(int pointIndex) const

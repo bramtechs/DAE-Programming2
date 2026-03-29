@@ -2,6 +2,7 @@
 #include "PolygonCollider.h"
 #include <string>
 #include <vector>
+#include <fstream>
 
 class Editor;
 class Camera;
@@ -10,7 +11,7 @@ class Texture;
 class Level
 {
 public:
-    Level(const std::string& fullTexturePath, const std::string& levelPath);
+    Level(const std::string& fullTexturePath, const std::string& collidersPath);
     ~Level();
 
     void Update(float delta);
@@ -28,19 +29,15 @@ public:
         return m_Colliders;
     }
 
+    std::string GetCollidersFilePath() const;
+
 private:
     void DrawTileGrid() const;
     void DrawColliders() const;
 
     Texture* m_pFullTexture{};
-    std::vector<PolygonCollider> m_Colliders{
-        PolygonCollider{std::vector<Vector2f>{
-            Vector2f{-336.f,33.f},
-            Vector2f{42.f,33.f},
-            Vector2f{42.f,29.f},
-            Vector2f{31.f,29.f}
-        }}
-    };
+    std::string m_CollidersPath{};
+    std::vector<PolygonCollider> m_Colliders{};
     int m_LevelCols{};
     int m_LevelRows{};
     Vector2f m_CursorPos{};

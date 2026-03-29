@@ -22,6 +22,8 @@ public:
     void ProcessKeyDownEvent(const SDL_KeyboardEvent& e);
 
 private:
+    void SaveColliders() const;
+
     void DrawTileGrid() const;
     void DrawColliders() const;
 

@@ -24,7 +24,7 @@ Game::~Game()
 
 void Game::Initialize()
 {
-    m_pActiveLevel = new Level("cave_first_map.png", "cave_first_map_outline.svg");
+    m_pActiveLevel = new Level("cave_first_map.png", "cave_first_map.txt");
     m_pPlayer = new Player();
 }
 

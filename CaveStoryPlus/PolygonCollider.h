@@ -5,25 +5,16 @@
 class PolygonCollider
 {
 public:
-    explicit PolygonCollider();
+    PolygonCollider() = default;
     explicit PolygonCollider(std::vector<Vector2f> vertices);
 
-    PolygonCollider(PolygonCollider&& o) noexcept;
-    PolygonCollider(const PolygonCollider& o);
+    void PickColor(int index);
 
-    PolygonCollider& operator=(PolygonCollider&& o) noexcept;
-    PolygonCollider& operator=(const PolygonCollider& o);
-
-    ~PolygonCollider();
-
-    const std::vector<Vector2f>& GetPolygon() const
-    {
-        return m_Vertices;
-    }
-
-    // @returns True if mouse consumed.
     bool StartDragAround(const Vector2f& tileMousePos);
     void StopDragAround();
+
+    void AddPoint(const Vector2f& point);
+    void AddPoint(float x, float y);
 
     void AddPointAfter(int index);
     void DeletePoint(int index);
@@ -34,16 +25,18 @@ public:
 
     bool ProcessKeyDownEvent(const SDL_KeyboardEvent& e);
 
+    const std::vector<Vector2f>& GetPolygon() const
+    {
+        return m_Vertices;
+    }
+
 private:
-    void PickNextColor();
+    static constexpr float m_HandleRadius{ 0.5f };
 
     Rectf GetHandleOfPoint(int pointIndex) const;
 
-    static int m_ColliderCount;
-    static constexpr float m_HandleRadius{0.5f};
-
     std::vector<Vector2f> m_Vertices{};
-    Color4f m_Color{};
-    int m_HandleBeingDragged{-1};
+    Color4f m_Color{ 1.f,0.f,0.f,0.5f };
+    int m_HandleBeingDragged{ -1 };
 };
 

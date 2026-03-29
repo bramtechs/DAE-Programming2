@@ -3,6 +3,7 @@
 #include "Level.h"
 #include "utils.h"
 #include "Camera.h"
+#include "ColliderWriter.h"
 
 #include <cmath>
 
@@ -47,6 +48,24 @@ void Level::GetLevelSize(int& outWidth, int& outHeight) const
 {
     outWidth = m_LevelCols;
     outHeight = m_LevelRows;
+}
+
+std::string Level::GetCollidersFilePath() const
+{
+    return m_CollidersPath;
+}
+
+void Editor::SaveColliders() const
+{
+    if (m_pLevel)
+    {
+        ColliderWriter writer(m_pLevel->GetCollidersFilePath());
+        const std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };
+        for (int i{}; i < colliders.size(); ++i)
+        {
+            writer.Serialize(colliders[i]);
+        }
+    }
 }
 
 void Editor::DrawTileGrid() const
@@ -134,6 +153,11 @@ void Editor::ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
     if (m_GridScale > 1)
     {
         m_GridScale = 1.f;
+    }
+
+    if (e.keysym.sym == SDLK_RETURN)
+    {
+        SaveColliders();
     }
 
     std::vector<PolygonCollider>& colliders{ m_pLevel->GetColliders() };

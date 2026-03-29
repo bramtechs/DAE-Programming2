@@ -4,15 +4,24 @@
 #include "Game.h"
 #include "utils.h"
 #include "Editor.h"
+#include "ColliderReader.h"
 
 #include <iostream>
 
-Level::Level(const std::string& fullTexturePath, const std::string& levelPath)
+Level::Level(const std::string& fullTexturePath, const std::string& collidersPath)
+    : m_CollidersPath(collidersPath)
 {
     m_pFullTexture = new Texture(fullTexturePath);
 
     m_LevelCols = static_cast<int>(m_pFullTexture->GetWidth()) / 16;
     m_LevelRows = static_cast<int>(m_pFullTexture->GetHeight()) / 16;
+
+    ColliderReader reader(m_CollidersPath);
+    const size_t amount = reader.ReadAllInto(m_Colliders);
+    if (amount > 0)
+    {
+        std::cout << "Read " << amount << " colliders from " << m_CollidersPath << std::endl;
+    }
 }
 
 Level::~Level()
@@ -22,7 +31,7 @@ Level::~Level()
 
 void Level::Update(float delta)
 {
-    
+
 }
 
 void Level::Draw() const
