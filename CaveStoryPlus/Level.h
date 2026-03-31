@@ -19,6 +19,10 @@ public:
 
     void GetLevelSize(int& outWidth, int& outHeight) const;
 
+    void AddColliderAround(const Vector2f& center, float radius);
+
+    void DeleteCollider(int index);
+
     const std::vector<PolygonCollider>& GetColliders() const
     {
         return m_Colliders;
