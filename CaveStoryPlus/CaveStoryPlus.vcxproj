@@ -168,24 +168,30 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BatEnemy.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColliderReader.cpp" />
     <ClCompile Include="ColliderWriter.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PolygonCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BatEnemy.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderReader.h" />
     <ClInclude Include="ColliderWriter.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PolygonCollider.h" />

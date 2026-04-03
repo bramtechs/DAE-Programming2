@@ -53,7 +53,7 @@ private:
     constexpr static float m_JumpWindow{ 0.5f };
 
     Texture* m_pSpriteSheet{};
-    Vector2f m_Position{ 37.f, 33.f };
+    Vector2f m_Position{ 0.f,0.f };
     Vector2f m_Velocity{};
     float m_HorizontalMoveForce{ 24.f };
     float m_MaxHorizontalVelocity{ 4.f };

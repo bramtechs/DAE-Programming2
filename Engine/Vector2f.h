@@ -57,6 +57,7 @@ struct Vector2f final
 	// float angle = u.AngleWith(v);
 	float AngleWith( const Vector2f& other ) const;
 
+	float Distance(const Vector2f& other) const;
 
 	// Returns normalized form of a vector
 	// Vector2f n = v.Normalized();
@@ -71,6 +72,8 @@ struct Vector2f final
 	Vector2f Reflect( const Vector2f& surfaceNormal ) const;
 
     Vector2f Interpolate(const Vector2f& to, float perc) const;
+
+	Vector2f MoveTowards(const Vector2f& to, float distance) const;
 
     Vector2f Floor() const;
 

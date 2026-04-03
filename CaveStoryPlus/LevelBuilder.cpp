@@ -1,0 +1,23 @@
+#include "pch.h"
+#include "LevelBuilder.h"
+#include "BatEnemy.h"
+#include "Level.h"
+
+Level* LevelBuilder::BuildCaveLevel()
+{
+	Level* pLevel{ new Level("cave_first_map.png", "cave_first_map.txt") };
+	pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{ 10.5f, 17.5f }, Vector2f{ 10.5f, 22.5f }}));
+	pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{ 14.5f, 20.5f }, Vector2f{ 14.5f, 25.5f }}));
+	pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{ 18.5f, 14.5f }, Vector2f{ 18.5f, 10.5f }}));
+	pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{ 25.5f, 7.5f }, Vector2f{ 25.5f, 12.5f }}));
+	pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{ 24.5f, 7.5f }, Vector2f{ 24.5f, 12.5f }}, 0.f));
+	pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{ 34.5f, 10.5f }, Vector2f{ 34.5f, 5.5f }}));
+
+	m_SpawnPos = Vector2f{ 37.f, 33.f };
+	return pLevel;
+}
+
+Vector2f LevelBuilder::GetSpawnPos() const
+{
+	return m_SpawnPos;
+}

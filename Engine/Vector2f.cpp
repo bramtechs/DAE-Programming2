@@ -75,6 +75,11 @@ float Vector2f::AngleWith(const Vector2f& other) const
     return atan2(x * other.y - other.x * y, x * other.x + y * other.y);
 }
 
+float Vector2f::Distance(const Vector2f& other) const
+{
+    return (*this - other).Length();
+}
+
 Vector2f Vector2f::Normalized(float epsilon) const
 {
     float length{ Length() };
@@ -103,6 +108,11 @@ Vector2f Vector2f::Interpolate(const Vector2f& to, float perc) const
     const Vector2f diff{ to - *this };
     const Vector2f added{diff*perc};
     return *this + added;
+}
+
+Vector2f Vector2f::MoveTowards(const Vector2f& to, float distance) const
+{
+    return this->Interpolate(to, distance / this->Distance(to));
 }
 
 Vector2f Vector2f::Floor() const

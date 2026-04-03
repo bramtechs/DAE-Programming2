@@ -7,43 +7,47 @@
 class Editor;
 class Camera;
 class Texture;
+class Enemy;
 
 class Level
 {
 public:
-    Level(const std::string& fullTexturePath, const std::string& collidersPath);
-    ~Level();
+	Level(const std::string& fullTexturePath, const std::string& collidersPath);
+	~Level();
 
-    void Update(float delta);
-    void Draw() const;
+	void Update(float delta);
+	void Draw() const;
 
-    void GetLevelSize(int& outWidth, int& outHeight) const;
+	void GetLevelSize(int& outWidth, int& outHeight) const;
 
-    void AddColliderAround(const Vector2f& center, float radius);
+	void AddColliderAround(const Vector2f& center, float radius);
 
-    void DeleteCollider(int index);
+	void DeleteCollider(int index);
 
-    const std::vector<PolygonCollider>& GetColliders() const
-    {
-        return m_Colliders;
-    }
+	void SpawnEnemy(Enemy* pEnemy);
 
-    std::vector<PolygonCollider>& GetColliders()
-    {
-        return m_Colliders;
-    }
+	const std::vector<PolygonCollider>& GetColliders() const
+	{
+		return m_Colliders;
+	}
 
-    std::string GetCollidersFilePath() const;
+	std::vector<PolygonCollider>& GetColliders()
+	{
+		return m_Colliders;
+	}
+
+	std::string GetCollidersFilePath() const;
 
 private:
-    void DrawTileGrid() const;
-    void DrawColliders() const;
+	void DrawTileGrid() const;
+	void DrawColliders() const;
 
-    Texture* m_pFullTexture{};
-    std::string m_CollidersPath{};
-    std::vector<PolygonCollider> m_Colliders{};
-    int m_LevelCols{};
-    int m_LevelRows{};
-    Vector2f m_CursorPos{};
+	Texture* m_pFullTexture{};
+	std::string m_CollidersPath{};
+	std::vector<PolygonCollider> m_Colliders{};
+	std::vector<Enemy*> m_Enemies{};
+	int m_LevelCols{};
+	int m_LevelRows{};
+	Vector2f m_CursorPos{};
 };
 

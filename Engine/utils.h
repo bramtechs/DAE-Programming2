@@ -105,7 +105,7 @@ namespace utils
     {
         if (value < min)
         {
-            return value;
+            return min;
         }
 
         if (value > max)
@@ -115,6 +115,9 @@ namespace utils
 
         return value;
     }
+
+    float SineWave(float x, float amplitude, float stretch, float phaseShift, float offsetY);
+    float SineBetween(float x, float cycleDuration, float min, float max);
 
 #pragma endregion
 
