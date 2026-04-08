@@ -1,16 +1,14 @@
-#include "pch.h"
 #include "Player.h"
-#include "utils.h"
-#include "Level.h"
-#include "utils.h"
-#include "Texture.h"
 #include "Game.h"
+#include "Level.h"
+#include "Texture.h"
+#include "pch.h"
+#include "utils.h"
 
-#include <iostream>
 #include <cassert>
+#include <iostream>
 
-Player::Player()
-    : m_pSpriteSheet(new Texture("player.png"))
+Player::Player() : m_pSpriteSheet(new Texture("player.png"))
 {
 }
 
@@ -19,12 +17,12 @@ Player::~Player()
     delete m_pSpriteSheet;
 }
 
-void Player::Update(float delta, const Level& level)
+void Player::Update(float delta, const Level &level)
 {
     if (m_IsHoldingRight)
     {
         // when going in opposite direction add more velocity for tighter movement
-        const float boost{ m_Velocity.x < 0.f ? 2.f : 1.f };
+        const float boost{m_Velocity.x < 0.f ? 2.f : 1.f};
         m_Velocity.x = std::min(m_MaxHorizontalVelocity, m_Velocity.x + m_HorizontalMoveForce * delta * boost);
         m_LookingLeft = false;
         m_CurrentAnimationState = AnimState::walking;
@@ -32,20 +30,20 @@ void Player::Update(float delta, const Level& level)
 
     if (m_IsHoldingLeft)
     {
-        const float boost{ m_Velocity.x > 0.f ? 2.f : 1.f };
+        const float boost{m_Velocity.x > 0.f ? 2.f : 1.f};
         m_Velocity.x = std::max(-m_MaxHorizontalVelocity, m_Velocity.x - m_HorizontalMoveForce * delta * boost);
         m_LookingLeft = true;
         m_CurrentAnimationState = AnimState::walking;
     }
 
-    const bool movingHorizontal{ m_IsHoldingLeft || m_IsHoldingRight };
+    const bool movingHorizontal{m_IsHoldingLeft || m_IsHoldingRight};
     if (!movingHorizontal)
     {
         m_Velocity.x = utils::EaseTowards(m_Velocity.x, 0.f, delta * m_DragForce);
     }
 
     if (m_Velocity.y > 0.f)
-    {   
+    {
         m_CurrentAnimationState = AnimState::jumping;
     }
 
@@ -95,17 +93,17 @@ void Player::Update(float delta, const Level& level)
 
 void Player::Draw() const
 {
-    const Rectf dest{ m_Position.x,m_Position.y,1.f,1.f };
-    Rectf source{ 0.f,0.f,m_CellSize,m_CellSize };
+    const Rectf dest{GetRegion()};
+    Rectf source{0.f, 0.f, m_CellSize, m_CellSize};
 
-    const int row{ m_LookingLeft ? 0 : 1 };
+    const int row{m_LookingLeft ? 0 : 1};
     source.left = source.width * m_CurrentAnimationFrame;
     source.bottom = source.height * row;
 
     m_pSpriteSheet->Draw(dest, source);
 }
 
-void Player::SetPosition(const Vector2f& pos)
+void Player::SetPosition(const Vector2f &pos)
 {
     m_Position = pos;
 }
@@ -126,7 +124,12 @@ Vector2f Player::GetCameraFocusPosition() const
     return m_Position + Vector2f(0.5f, 0.5f);
 }
 
-void Player::HandleKeyDownEvent(const SDL_KeyboardEvent& e)
+Rectf Player::GetRegion() const
+{
+    return Rectf{m_Position.x, m_Position.y, 1.f, 1.f};
+}
+
+void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
@@ -151,7 +154,7 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent& e)
     }
 }
 
-void Player::HandleKeyUpEvent(const SDL_KeyboardEvent& e)
+void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
@@ -173,13 +176,13 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent& e)
 void Player::ProcessAnimationFrames(float delta)
 {
     // player.png
-    const int idleFrame{ 0 };
-    const int walkStartFrame{ 0 };
-    const int walkEndFrame{ 1 };
-    const int fallingFrame{ 1 };
-    const int jumpingFrame{ 2 };
-    const int usingDoorFrame{ 7 };
-    const int slideFrame{ 8 };
+    const int idleFrame{0};
+    const int walkStartFrame{0};
+    const int walkEndFrame{1};
+    const int fallingFrame{1};
+    const int jumpingFrame{2};
+    const int usingDoorFrame{7};
+    const int slideFrame{8};
 
     switch (m_CurrentAnimationState)
     {
@@ -212,7 +215,6 @@ void Player::ProcessAnimationFrames(float delta)
         break;
     }
 
-
     m_AnimTimer += delta;
 }
 
@@ -231,11 +233,12 @@ void Player::ProcessAnimationState(AnimState state, int startFrame, int endFrame
     }
 }
 
-bool Player::RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, const std::vector<PolygonCollider>& colliders, utils::HitInfo& outHitInfo) const
+bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
+                                 const std::vector<PolygonCollider> &colliders, utils::HitInfo &outHitInfo) const
 {
     for (int i{}; i < colliders.size(); ++i)
     {
-        const std::vector<Vector2f>& vertices{ colliders[i].GetPolygon() };
+        const std::vector<Vector2f> &vertices{colliders[i].GetPolygon()};
         if (utils::Raycast(vertices, start, end, outHitInfo))
         {
             return true;
@@ -245,11 +248,11 @@ bool Player::RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, con
     return false;
 }
 
-bool Player::CheckIfInsideFloor(const Level& level, utils::HitInfo& outHitInfo) const
+bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const
 {
     bool isInsideFloor{};
-    const Vector2f leftRayStart{ m_Position.x, m_Position.y + 1.f };
-    const Vector2f leftRayEnd{ m_Position.x, m_Position.y - 1.f / m_CellSize };
+    const Vector2f leftRayStart{m_Position.x, m_Position.y + 1.f};
+    const Vector2f leftRayEnd{m_Position.x, m_Position.y - 1.f / m_CellSize};
 
     if (RaycastAgainstLevel(leftRayStart, leftRayEnd, level.GetColliders(), outHitInfo))
     {
@@ -257,8 +260,8 @@ bool Player::CheckIfInsideFloor(const Level& level, utils::HitInfo& outHitInfo) 
     }
     else
     {
-        const Vector2f rightRayStart{ leftRayStart.x + 1.f, leftRayStart.y };
-        const Vector2f rightRayEnd{ leftRayEnd.x + 1.f, leftRayEnd.y };
+        const Vector2f rightRayStart{leftRayStart.x + 1.f, leftRayStart.y};
+        const Vector2f rightRayEnd{leftRayEnd.x + 1.f, leftRayEnd.y};
 
         if (RaycastAgainstLevel(rightRayStart, rightRayEnd, level.GetColliders(), outHitInfo))
         {

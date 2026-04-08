@@ -2,47 +2,56 @@
 #include "BaseGame.h"
 #include "Camera.h"
 
-constexpr float g_TileSize{ 32.f };
-constexpr float g_TileCols{ 1280.f / 32.f };
-constexpr float g_TileRows{ 720.f / 32.f };
+constexpr float g_TileSize{32.f};
+constexpr float g_TileCols{1280.f / 32.f};
+constexpr float g_TileRows{720.f / 32.f};
 
 class Player;
 class Level;
 class Texture;
 class Editor;
+
+struct GameContext
+{
+    Level *pLevel;
+    Player *pPlayer;
+};
+
 class Game : public BaseGame
 {
-public:
-    explicit Game(const Window& window);
-    Game(const Game& other) = delete;
-    Game& operator=(const Game& other) = delete;
-    Game(Game&& other) = delete;
-    Game& operator=(Game&& other) = delete;
+  public:
+    explicit Game(const Window &window);
+    Game(const Game &other) = delete;
+    Game &operator=(const Game &other) = delete;
+    Game(Game &&other) = delete;
+    Game &operator=(Game &&other) = delete;
     // http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-override
     ~Game();
 
     void Update(float elapsedSec) override;
     void Draw() const override;
 
+    GameContext GetContext() const;
+
     // Event handling
-    void ProcessKeyDownEvent(const SDL_KeyboardEvent& e) override;
-    void ProcessKeyUpEvent(const SDL_KeyboardEvent& e) override;
-    void ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e) override;
-    void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e) override;
-    void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e) override;
+    void ProcessKeyDownEvent(const SDL_KeyboardEvent &e) override;
+    void ProcessKeyUpEvent(const SDL_KeyboardEvent &e) override;
+    void ProcessMouseMotionEvent(const SDL_MouseMotionEvent &e) override;
+    void ProcessMouseDownEvent(const SDL_MouseButtonEvent &e) override;
+    void ProcessMouseUpEvent(const SDL_MouseButtonEvent &e) override;
 
     static inline Vector2f GetMousePosition()
     {
         return m_LastMousePos;
     }
 
-private:
+  private:
     static Vector2f m_LastMousePos;
 
     Camera m_Camera;
-    Level* m_pActiveLevel;
-    Player* m_pPlayer;
-    Editor* m_pEditor;
+    Level *m_pActiveLevel;
+    Player *m_pPlayer;
+    Editor *m_pEditor;
 
     // FUNCTIONS
     void Initialize();

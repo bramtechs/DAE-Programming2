@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "LevelBuilder.h"
 #include "Player.h"
+#include "SDL_keycode.h"
 #include "Texture.h"
 #include "pch.h"
 
@@ -70,6 +71,14 @@ void Game::Draw() const
     m_Camera.End();
 }
 
+GameContext Game::GetContext() const
+{
+    GameContext ctx{};
+    ctx.pLevel = m_pActiveLevel;
+    ctx.pPlayer = m_pPlayer;
+    return ctx;
+}
+
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
 {
     // std::cout << "KEYDOWN event: " << e.keysym.sym << std::endl;
@@ -85,6 +94,13 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
         {
             m_pEditor = new Editor();
             m_pEditor->SetLevel(m_pActiveLevel);
+        }
+    }
+    else if (e.keysym.sym == SDLK_w || e.keysym.sym == SDLK_RETURN)
+    {
+        if (m_pActiveLevel)
+        {
+            m_pActiveLevel->TriggerInteractables(GetContext());
         }
     }
 

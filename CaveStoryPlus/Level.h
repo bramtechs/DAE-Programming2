@@ -1,9 +1,11 @@
 #pragma once
 #include "PolygonCollider.h"
-#include <fstream>
 #include <string>
 #include <vector>
 
+class GameContext;
+class Interactable;
+class Game;
 class Editor;
 class Camera;
 class Texture;
@@ -26,6 +28,9 @@ class Level
     void DeleteCollider(int index);
 
     void SpawnEnemy(Enemy *pEnemy);
+    void SpawnInteractable(Interactable *pInteractable);
+
+    void TriggerInteractables(const GameContext &context);
 
     const std::vector<PolygonCollider> &GetColliders() const
     {
@@ -45,8 +50,11 @@ class Level
 
     Texture *m_pFullTexture{};
     std::string m_CollidersPath{};
+
     std::vector<PolygonCollider> m_Colliders{};
     std::vector<Enemy *> m_Enemies{};
+    std::vector<Interactable *> m_Interactables{};
+
     int m_LevelCols{};
     int m_LevelRows{};
     Vector2f m_CursorPos{};

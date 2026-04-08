@@ -1,14 +1,14 @@
 #pragma once
+#include "Vector2f.h"
 
 class Level;
 class LevelBuilder
 {
-public:
-	Level* BuildCaveLevel();
+  public:
+    Level *BuildCaveLevel();
 
-	Vector2f GetSpawnPos() const;
+    Vector2f GetSpawnPos() const;
 
-private:
-	Vector2f m_SpawnPos;
+  private:
+    Vector2f m_SpawnPos;
 };
-

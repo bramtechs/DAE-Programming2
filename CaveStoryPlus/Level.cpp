@@ -3,6 +3,7 @@
 #include "Editor.h"
 #include "Enemy.h"
 #include "Game.h"
+#include "Interactable.h"
 #include "Texture.h"
 #include "pch.h"
 #include "utils.h"
@@ -33,12 +34,35 @@ Level::~Level()
     {
         delete m_Enemies[i];
     }
+
+    for (int i{}; i < m_Interactables.size(); ++i)
+    {
+        delete m_Interactables[i];
+    }
 }
 
 void Level::SpawnEnemy(Enemy *pEnemy)
 {
     assert(pEnemy && "Passing a nullptr as enemy");
     m_Enemies.emplace_back(pEnemy);
+}
+
+void Level::SpawnInteractable(Interactable *pInteractable)
+{
+    assert(pInteractable && "Passing a nullptr as interactable");
+    m_Interactables.emplace_back(pInteractable);
+}
+
+void Level::TriggerInteractables(const GameContext &context)
+{
+    for (int i{}; i < m_Interactables.size(); ++i)
+    {
+        if (m_Interactables[i]->IsInside(*context.pPlayer))
+        {
+            m_Interactables[i]->Interact(context);
+            break;
+        }
+    }
 }
 
 void Level::Update(float delta, Player &player)
@@ -60,5 +84,10 @@ void Level::Draw() const
     {
         m_Enemies[i]->Draw();
         m_Enemies[i]->DrawDebug();
+    }
+
+    for (int i{}; i < m_Interactables.size(); ++i)
+    {
+        m_Interactables[i]->DrawDebug();
     }
 }

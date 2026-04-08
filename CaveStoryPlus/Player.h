@@ -1,32 +1,34 @@
 #pragma once
-#include "utils.h"
-#include "Vector2f.h"
 #include "Level.h"
+#include "Vector2f.h"
+#include "utils.h"
 
 #include <SDL_events.h>
 
 class Texture;
 class Player
 {
-public:
+  public:
     Player();
     ~Player();
 
-    void Update(float delta, const Level& level);
+    void Update(float delta, const Level &level);
     void Draw() const;
 
-    void SetPosition(const Vector2f& pos);
+    void SetPosition(const Vector2f &pos);
     void SetPosition(float left, float bottom);
 
     Vector2f GetPosition() const;
 
     Vector2f GetCameraFocusPosition() const;
 
-    void HandleKeyDownEvent(const SDL_KeyboardEvent& e);
+    Rectf GetRegion() const;
 
-    void HandleKeyUpEvent(const SDL_KeyboardEvent& e);
+    void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
 
-private:
+    void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
+
+  private:
     enum class AnimState
     {
         idle,
@@ -40,31 +42,32 @@ private:
     void ProcessAnimationFrames(float delta);
     void ProcessAnimationState(AnimState state, int startFrame, int endFrame);
 
-    bool RaycastAgainstLevel(const Vector2f& start, const Vector2f& end, const std::vector<PolygonCollider>& colliders, utils::HitInfo& outHitInfo) const;
+    bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,
+                             utils::HitInfo &outHitInfo) const;
 
-    bool CheckIfInsideFloor(const Level& level, utils::HitInfo& outHitInfo) const;
+    bool CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const;
 
-    constexpr static float m_CellSize{ 32.f };
-    constexpr static float m_TimePerFrame{ 0.15f };
-    constexpr static int m_SpriteSheetCols{ 11 };
-    constexpr static int m_SpriteSheetRows{ 2 };
+    constexpr static float m_CellSize{32.f};
+    constexpr static float m_TimePerFrame{0.15f};
+    constexpr static int m_SpriteSheetCols{11};
+    constexpr static int m_SpriteSheetRows{2};
 
     // time to hold space for maximum jump power
-    constexpr static float m_JumpWindow{ 0.5f };
+    constexpr static float m_JumpWindow{0.5f};
 
-    Texture* m_pSpriteSheet{};
-    Vector2f m_Position{ 0.f,0.f };
+    Texture *m_pSpriteSheet{};
+    Vector2f m_Position{0.f, 0.f};
     Vector2f m_Velocity{};
-    float m_HorizontalMoveForce{ 24.f };
-    float m_MaxHorizontalVelocity{ 4.f };
-    float m_DragForce{ 20.f };
-    float m_JumpForce{ 4.0f };
-    float m_Gravity{ 9.81f };
-    float m_AnimTimer{ 0.f };
-    float m_JumpWindowTimer{ 0.1f };
-    AnimState m_CurrentAnimationState{ AnimState::idle };
+    float m_HorizontalMoveForce{24.f};
+    float m_MaxHorizontalVelocity{4.f};
+    float m_DragForce{20.f};
+    float m_JumpForce{4.0f};
+    float m_Gravity{9.81f};
+    float m_AnimTimer{0.f};
+    float m_JumpWindowTimer{0.1f};
+    AnimState m_CurrentAnimationState{AnimState::idle};
     int m_CurrentAnimationFrame{};
-    bool m_LookingLeft{ false };
+    bool m_LookingLeft{false};
 
     bool m_IsHoldingJump{};
     bool m_IsHoldingLeft{};
