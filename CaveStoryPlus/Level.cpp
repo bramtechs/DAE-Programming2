@@ -72,6 +72,11 @@ void Level::Update(float delta, Player &player)
         m_Enemies[i]->InteractWithPlayer(player);
         m_Enemies[i]->Update(delta);
     }
+
+    for (int i{}; i < m_Interactables.size(); ++i)
+    {
+        m_Interactables[i]->Update(delta);
+    }
 }
 
 void Level::Draw() const
@@ -88,6 +93,7 @@ void Level::Draw() const
 
     for (int i{}; i < m_Interactables.size(); ++i)
     {
+        m_Interactables[i]->Draw();
         m_Interactables[i]->DrawDebug();
     }
 }
