@@ -53,13 +53,13 @@ void Level::SpawnInteractable(Interactable *pInteractable)
     m_Interactables.emplace_back(pInteractable);
 }
 
-void Level::TriggerInteractables(const GameContext &context)
+void Level::TriggerInteractables(const Game &game)
 {
     for (int i{}; i < m_Interactables.size(); ++i)
     {
-        if (m_Interactables[i]->IsInside(*context.pPlayer))
+        if (m_Interactables[i]->IsInside(*game.GetPlayer()))
         {
-            m_Interactables[i]->Interact(context);
+            m_Interactables[i]->Interact(game);
             break;
         }
     }

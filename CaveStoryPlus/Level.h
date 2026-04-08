@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-class GameContext;
 class Interactable;
 class Game;
 class Editor;
@@ -30,7 +29,7 @@ class Level
     void SpawnEnemy(Enemy *pEnemy);
     void SpawnInteractable(Interactable *pInteractable);
 
-    void TriggerInteractables(const GameContext &context);
+    void TriggerInteractables(const Game &game);
 
     const std::vector<PolygonCollider> &GetColliders() const
     {

@@ -20,6 +20,10 @@ add_executable(${PROJECT_NAME}
   Game.h
   Interactable.h
   Interactable.cpp
+  DialogManager.cpp
+  DialogManager.h
+  DialogMessage.cpp
+  DialogMessage.h
   LifeCapsule.h
   LifeCapsule.cpp
   LevelBuilder.cpp
@@ -31,6 +35,8 @@ add_executable(${PROJECT_NAME}
   pch.h
   Player.cpp
   Player.h
+  TextManager.cpp
+  TextManager.h
   PolygonCollider.cpp
   PolygonCollider.h
 )

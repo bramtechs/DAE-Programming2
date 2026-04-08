@@ -3,7 +3,7 @@
 #include "structs.h"
 
 class Texture;
-class GameContext;
+class Game;
 class Player;
 class Interactable
 {
@@ -15,7 +15,7 @@ class Interactable
 
     virtual void Update(float delta) = 0;
     virtual void Draw() const = 0;
-    virtual void Interact(const GameContext &context) = 0;
+    virtual void Interact(const Game &game) = 0;
 
     void DrawDebug() const;
 

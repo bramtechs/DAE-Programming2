@@ -1,16 +1,17 @@
 #include "Game.h"
 #include "Camera.h"
+#include "DialogManager.h"
 #include "Editor.h"
 #include "Level.h"
 #include "LevelBuilder.h"
 #include "Player.h"
 #include "SDL_keycode.h"
-#include "Texture.h"
+#include "TextManager.h"
 #include "pch.h"
 
 Vector2f Game::m_LastMousePos{};
 
-Game::Game(const Window &window) : BaseGame{window}, m_Camera{GetViewPort()}, m_pActiveLevel{}, m_pPlayer{}, m_pEditor{}
+Game::Game(const Window &window) : BaseGame(window), m_Camera(GetViewPort())
 {
     Initialize();
 }
@@ -22,10 +23,14 @@ Game::~Game()
 
 void Game::Initialize()
 {
+    m_pTextManager = new TextManager();
+
     LevelBuilder levelBuilder{};
     m_pActiveLevel = levelBuilder.BuildCaveLevel();
     m_pPlayer = new Player();
     m_pPlayer->SetPosition(levelBuilder.GetSpawnPos());
+
+    m_pDialogManager = new DialogManager(*m_pTextManager);
 
     m_Camera.SetCenter(m_pPlayer->GetCameraFocusPosition());
 }
@@ -34,6 +39,8 @@ void Game::Cleanup()
 {
     delete m_pEditor;
     delete m_pActiveLevel;
+    delete m_pDialogManager;
+    delete m_pTextManager;
     delete m_pPlayer;
 }
 
@@ -46,12 +53,16 @@ void Game::Update(float elapsedSec)
     }
     else
     {
-        m_Camera.MoveTowards(m_pPlayer->GetCameraFocusPosition(), elapsedSec);
-        m_pActiveLevel->Update(elapsedSec, *m_pPlayer);
-        if (m_pActiveLevel)
+        if (!m_pDialogManager->IsDialogOpen())
         {
-            m_pPlayer->Update(elapsedSec, *m_pActiveLevel);
+            m_Camera.MoveTowards(m_pPlayer->GetCameraFocusPosition(), elapsedSec);
+            m_pActiveLevel->Update(elapsedSec, *m_pPlayer);
+            if (m_pActiveLevel)
+            {
+                m_pPlayer->Update(elapsedSec, *m_pActiveLevel);
+            }
         }
+        m_pDialogManager->Update(elapsedSec);
     }
 }
 
@@ -69,14 +80,9 @@ void Game::Draw() const
     }
 
     m_Camera.End();
-}
 
-GameContext Game::GetContext() const
-{
-    GameContext ctx{};
-    ctx.pLevel = m_pActiveLevel;
-    ctx.pPlayer = m_pPlayer;
-    return ctx;
+    const Vector2f screenSize{GetViewPort().width, GetViewPort().height};
+    m_pDialogManager->Draw(screenSize);
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
@@ -96,16 +102,20 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
             m_pEditor->SetLevel(m_pActiveLevel);
         }
     }
-    else if (e.keysym.sym == SDLK_w || e.keysym.sym == SDLK_RETURN)
-    {
-        if (m_pActiveLevel)
-        {
-            m_pActiveLevel->TriggerInteractables(GetContext());
-        }
-    }
 
-    if (m_pPlayer)
+    if (m_pDialogManager->IsDialogOpen())
     {
+        m_pDialogManager->HandleKeyInput(e);
+    }
+    else if (m_pPlayer)
+    {
+        if (e.keysym.sym == SDLK_w || e.keysym.sym == SDLK_RETURN)
+        {
+            if (m_pActiveLevel)
+            {
+                m_pActiveLevel->TriggerInteractables(*this);
+            }
+        }
         m_pPlayer->HandleKeyDownEvent(e);
     }
 

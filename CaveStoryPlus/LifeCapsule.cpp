@@ -1,6 +1,7 @@
 #include "LifeCapsule.h"
+#include "DialogManager.h"
+#include "Game.h"
 #include "Texture.h"
-#include <iostream>
 
 LifeCapsule::LifeCapsule(const Vector2f &cell) : Interactable(cell)
 {
@@ -24,9 +25,9 @@ void LifeCapsule::Draw() const
     GetSpriteSheetTexture().Draw(GetRegion(), srcRect);
 }
 
-void LifeCapsule::Interact(const GameContext &context)
+void LifeCapsule::Interact(const Game &game)
 {
-    std::cout << "Collected life capsule" << std::endl;
+    game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."});
 }
 
 Rectf LifeCapsule::GetAnimationSource(int frame) const

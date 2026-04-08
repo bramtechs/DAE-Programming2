@@ -2,22 +2,20 @@
 #include "BaseGame.h"
 #include "Camera.h"
 
+#include <SDL_ttf.h>
+
 constexpr float g_TileSize{32.f};
 constexpr float g_TileCols{1280.f / 32.f};
 constexpr float g_TileRows{720.f / 32.f};
 
+class TextManager;
+class DialogManager;
 class Player;
 class Level;
 class Texture;
 class Editor;
 
-struct GameContext
-{
-    Level *pLevel;
-    Player *pPlayer;
-};
-
-class Game : public BaseGame
+class Game final : public BaseGame
 {
   public:
     explicit Game(const Window &window);
@@ -31,8 +29,6 @@ class Game : public BaseGame
     void Update(float elapsedSec) override;
     void Draw() const override;
 
-    GameContext GetContext() const;
-
     // Event handling
     void ProcessKeyDownEvent(const SDL_KeyboardEvent &e) override;
     void ProcessKeyUpEvent(const SDL_KeyboardEvent &e) override;
@@ -45,13 +41,35 @@ class Game : public BaseGame
         return m_LastMousePos;
     }
 
+    DialogManager *GetDialogManager() const
+    {
+        return m_pDialogManager;
+    }
+
+    TextManager *GetTextManager() const
+    {
+        return m_pTextManager;
+    }
+
+    Level *GetActiveLevel() const
+    {
+        return m_pActiveLevel;
+    }
+
+    Player *GetPlayer() const
+    {
+        return m_pPlayer;
+    }
+
   private:
     static Vector2f m_LastMousePos;
 
     Camera m_Camera;
-    Level *m_pActiveLevel;
-    Player *m_pPlayer;
-    Editor *m_pEditor;
+    DialogManager *m_pDialogManager{};
+    TextManager *m_pTextManager{};
+    Level *m_pActiveLevel{};
+    Player *m_pPlayer{};
+    Editor *m_pEditor{};
 
     // FUNCTIONS
     void Initialize();
