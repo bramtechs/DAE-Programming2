@@ -169,11 +169,6 @@ Vector2f& Vector2f::operator-=(const Vector2f& rhs)
     return *this;
 }
 
-Vector2f::operator Vector2f()
-{
-    return Vector2f{ x,y };
-}
-
 // -------------------------
 // Non-member operators
 // -------------------------

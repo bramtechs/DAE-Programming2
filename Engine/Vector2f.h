@@ -19,7 +19,6 @@ struct Vector2f final
 	Vector2f& operator/=( float rhs);
 	Vector2f& operator+=( const Vector2f& rhs);
 	Vector2f& operator-=( const Vector2f& rhs);
-	explicit operator Vector2f(); 
 
 	// -------------------------
 	// Methods
