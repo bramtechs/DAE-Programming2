@@ -1,25 +1,38 @@
 #pragma once
+#include "structs.h"
 
+class Player;
+class Texture;
 class Enemy
 {
-public:
-	Enemy(const Vector2f& size);
+  public:
+    Enemy(const Vector2f &size);
 
-	virtual ~Enemy() = default;
+    virtual ~Enemy();
 
-	virtual void Update(float delta) = 0;
+    virtual void InteractWithPlayer(Player &player) = 0;
 
-	virtual void Draw() const = 0;
+    virtual void Update(float delta) = 0;
 
-	virtual void DrawDebug() const;
+    virtual void Draw() const = 0;
 
-	void SetPosition(Vector2f position);
-	Vector2f GetPosition() const;
+    virtual void DrawDebug() const;
 
-	Rectf GetRegion() const;
+    void SetPosition(Vector2f position);
+    Vector2f GetPosition() const;
 
-protected:
-	Vector2f m_Position{};
-	Vector2f m_Size{};
+    Rectf GetRegion() const;
+
+  protected:
+    const Texture &GetSpriteSheet() const
+    {
+        return *m_pSpriteSheetTexture;
+    }
+
+    Vector2f m_Position{};
+    Vector2f m_Size{};
+
+  private:
+    static Texture *m_pSpriteSheetTexture;
+    static int m_InstanceCount;
 };
-

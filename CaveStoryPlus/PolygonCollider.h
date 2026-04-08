@@ -1,49 +1,50 @@
 #pragma once
 #include "Vector2f.h"
+#include "structs.h"
+#include <SDL.h>
 #include <vector>
 
 class PolygonCollider
 {
-public:
-	PolygonCollider() = default;
-	explicit PolygonCollider(std::vector<Vector2f> vertices);
+  public:
+    PolygonCollider() = default;
+    explicit PolygonCollider(std::vector<Vector2f> vertices);
 
-	void PickColor(int index);
+    void PickColor(int index);
 
-	bool StartDragAround(const Vector2f& tileMousePos);
-	void StopDragAround();
+    bool StartDragAround(const Vector2f &tileMousePos);
+    void StopDragAround();
 
-	void AddPoint(const Vector2f& point);
-	void AddPoint(float x, float y);
+    void AddPoint(const Vector2f &point);
+    void AddPoint(float x, float y);
 
-	void AddPointAfter(int index);
-	void DeletePoint(int index);
+    void AddPointAfter(int index);
+    void DeletePoint(int index);
 
-	void Update(const Vector2f& snappedTileMousePos);
-	void Draw() const;
-	void DrawHandles(const Vector2f& tileMousePos) const;
+    void Update(const Vector2f &snappedTileMousePos);
+    void Draw() const;
+    void DrawHandles(const Vector2f &tileMousePos) const;
 
-	enum class Signal
-	{
-		none,
-		handled,
-		destroy
-	};
+    enum class Signal
+    {
+        none,
+        handled,
+        destroy
+    };
 
-	Signal ProcessKeyDownEvent(const SDL_KeyboardEvent& e);
+    Signal ProcessKeyDownEvent(const SDL_KeyboardEvent &e);
 
-	const std::vector<Vector2f>& GetPolygon() const
-	{
-		return m_Vertices;
-	}
+    const std::vector<Vector2f> &GetPolygon() const
+    {
+        return m_Vertices;
+    }
 
-private:
-	static constexpr float m_HandleRadius{ 0.5f };
+  private:
+    static constexpr float m_HandleRadius{0.5f};
 
-	Rectf GetHandleOfPoint(int pointIndex) const;
+    Rectf GetHandleOfPoint(int pointIndex) const;
 
-	std::vector<Vector2f> m_Vertices{};
-	Color4f m_Color{ 1.f,0.f,0.f,0.5f };
-	int m_HandleBeingDragged{ -1 };
+    std::vector<Vector2f> m_Vertices{};
+    Color4f m_Color{1.f, 0.f, 0.f, 0.5f};
+    int m_HandleBeingDragged{-1};
 };
-
