@@ -1,2 +1,2 @@
 cd c:/dev/Prog2/gd25-bramderaeve/ && cmake --preset clang && cmake --build build --parallel && cd C:\dev\Prog2\gd25-bramderaeve\build\CaveStoryPlus && call CaveStoryPlus.exe
-e
+

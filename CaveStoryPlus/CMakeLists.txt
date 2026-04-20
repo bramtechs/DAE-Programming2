@@ -15,6 +15,8 @@ add_executable(${PROJECT_NAME}
   ColliderWriter.cpp
   ColliderWriter.h
   Editor.cpp
+  MultiLineLabel.h
+  MultiLineLabel.cpp
   Editor.h
   Enemy.cpp
   Enemy.h

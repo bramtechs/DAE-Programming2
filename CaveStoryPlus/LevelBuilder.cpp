@@ -22,8 +22,8 @@ Level *LevelBuilder::BuildCaveLevel()
     // 6x20 live capsule
     pLevel->SpawnInteractable(new LifeCapsule(Vector2f{6.f, 20.f}));
 
-    // 54x8 door
-    pLevel->SpawnInteractable(new Door(Vector2f{54.f, 8.f}, &LevelBuilder::BuildHermitGunsmithLevel));
+    // 53x8 door
+    pLevel->SpawnInteractable(new Door(Vector2f{53.f, 8.f}, &LevelBuilder::BuildHermitGunsmithLevel));
 
     return pLevel;
 }

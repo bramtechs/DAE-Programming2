@@ -8,7 +8,7 @@
 
 #include <cmath>
 
-Editor::Editor() : m_HelpLabel("Cave-Story.ttf", 48)
+Editor::Editor() : m_HelpLabel("Cave-Story.ttf", 32)
 {
     m_HelpLabel.RegisterLines(
         R"(C - Create new hitbox shape.
@@ -50,7 +50,7 @@ void Editor::Draw() const
 
 void Editor::DrawGUI() const
 {
-    m_pHelpTextTexture->Draw(Vector2f{0.f, 0.f});
+    m_HelpLabel.Draw(Vector2f{5.f, 5.f});
 }
 
 void Level::GetLevelSize(int &outWidth, int &outHeight) const
