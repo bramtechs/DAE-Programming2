@@ -11,7 +11,8 @@
 #include <cassert>
 #include <iostream>
 
-Level::Level(const std::string &fullTexturePath, const std::string &collidersPath) : m_CollidersPath(collidersPath)
+Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const Vector2f &spawnPos)
+    : m_CollidersPath(collidersPath), m_SpawnPos(spawnPos)
 {
     m_pFullTexture = new Texture(fullTexturePath);
 
@@ -53,7 +54,7 @@ void Level::SpawnInteractable(Interactable *pInteractable)
     m_Interactables.emplace_back(pInteractable);
 }
 
-void Level::TriggerInteractables(const Game &game)
+void Level::TriggerInteractables(Game &game)
 {
     for (int i{}; i < m_Interactables.size(); ++i)
     {

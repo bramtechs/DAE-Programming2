@@ -1,12 +1,13 @@
 #include "LevelBuilder.h"
 #include "BatEnemy.h"
+#include "Door.h"
 #include "Level.h"
 #include "LifeCapsule.h"
 #include "pch.h"
 
 Level *LevelBuilder::BuildCaveLevel()
 {
-    Level *pLevel{new Level("cave_first_map.png", "cave_first_map.txt")};
+    Level *pLevel{new Level("cave_first_map.png", "cave_first_map.txt", Vector2f(37.f, 33.f))};
 
     // enemies
     pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{10.5f, 17.5f}, Vector2f{10.5f, 22.5f}}));
@@ -18,16 +19,18 @@ Level *LevelBuilder::BuildCaveLevel()
 
     // interactables
 
-    // 6x20 live up
+    // 6x20 live capsule
     pLevel->SpawnInteractable(new LifeCapsule(Vector2f{6.f, 20.f}));
 
     // 54x8 door
+    pLevel->SpawnInteractable(new Door(Vector2f{54.f, 8.f}, &LevelBuilder::BuildHermitGunsmithLevel));
 
-    m_SpawnPos = Vector2f{37.f, 33.f};
     return pLevel;
 }
 
-Vector2f LevelBuilder::GetSpawnPos() const
+Level *LevelBuilder::BuildHermitGunsmithLevel()
 {
-    return m_SpawnPos;
+    Level *pLevel{new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", Vector2f())};
+    // pLevel->SpawnInteractable();
+    return pLevel;
 }

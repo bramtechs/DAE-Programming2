@@ -8,6 +8,8 @@ add_executable(${PROJECT_NAME}
   BatEnemy.h
   Camera.cpp
   Camera.h
+  Door.h
+  Door.cpp
   ColliderReader.cpp
   ColliderReader.h
   ColliderWriter.cpp

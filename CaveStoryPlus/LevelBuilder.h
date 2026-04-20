@@ -5,10 +5,7 @@ class Level;
 class LevelBuilder
 {
   public:
-    Level *BuildCaveLevel();
+    static Level *BuildCaveLevel();
 
-    Vector2f GetSpawnPos() const;
-
-  private:
-    Vector2f m_SpawnPos;
+    static Level *BuildHermitGunsmithLevel();
 };

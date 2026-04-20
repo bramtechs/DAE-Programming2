@@ -28,7 +28,7 @@ void Game::Initialize()
     LevelBuilder levelBuilder{};
     m_pActiveLevel = levelBuilder.BuildCaveLevel();
     m_pPlayer = new Player();
-    m_pPlayer->SetPosition(levelBuilder.GetSpawnPos());
+    m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
 
     m_pDialogManager = new DialogManager(*m_pTextManager);
 
@@ -83,6 +83,17 @@ void Game::Draw() const
 
     const Vector2f screenSize{GetViewPort().width, GetViewPort().height};
     m_pDialogManager->Draw(screenSize);
+
+    if (m_pEditor)
+    {
+        m_pEditor->DrawGUI();
+    }
+}
+
+void Game::SwitchLevel(Level *pLevel)
+{
+    delete m_pActiveLevel;
+    m_pActiveLevel = pLevel;
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)

@@ -14,7 +14,7 @@ class Player;
 class Level
 {
   public:
-    Level(const std::string &fullTexturePath, const std::string &collidersPath);
+    explicit Level(const std::string &fullTexturePath, const std::string &collidersPath, const Vector2f &spawnPos);
     ~Level();
 
     void Update(float delta, Player &player);
@@ -29,7 +29,7 @@ class Level
     void SpawnEnemy(Enemy *pEnemy);
     void SpawnInteractable(Interactable *pInteractable);
 
-    void TriggerInteractables(const Game &game);
+    void TriggerInteractables(Game &game);
 
     const std::vector<PolygonCollider> &GetColliders() const
     {
@@ -41,7 +41,15 @@ class Level
         return m_Colliders;
     }
 
-    std::string GetCollidersFilePath() const;
+    std::string GetCollidersFilePath() const
+    {
+        return m_CollidersPath;
+    }
+
+    const Vector2f &GetSpawnPos() const
+    {
+        return m_SpawnPos;
+    }
 
   private:
     void DrawTileGrid() const;
@@ -57,4 +65,5 @@ class Level
     int m_LevelCols{};
     int m_LevelRows{};
     Vector2f m_CursorPos{};
+    Vector2f m_SpawnPos{};
 };

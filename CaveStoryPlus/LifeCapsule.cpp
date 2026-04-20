@@ -25,7 +25,7 @@ void LifeCapsule::Draw() const
     GetSpriteSheetTexture().Draw(GetRegion(), srcRect);
 }
 
-void LifeCapsule::Interact(const Game &game)
+void LifeCapsule::Interact(Game &game)
 {
     game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."});
 }
