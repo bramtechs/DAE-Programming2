@@ -16,5 +16,5 @@ class Door final : public Interactable
     void Interact(Game &game) override;
 
   private:
-    const std::function<Level *()> &m_LevelBuilderFunc;
+    const std::function<Level *()> m_LevelBuilderFunc;
 };

@@ -27,6 +27,7 @@ void Game::Initialize()
 
     LevelBuilder levelBuilder{};
     m_pActiveLevel = levelBuilder.BuildCaveLevel();
+    // m_pActiveLevel = levelBuilder.BuildHermitGunsmithLevel();
     m_pPlayer = new Player();
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
 
@@ -94,6 +95,7 @@ void Game::SwitchLevel(Level *pLevel)
 {
     delete m_pActiveLevel;
     m_pActiveLevel = pLevel;
+    m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
