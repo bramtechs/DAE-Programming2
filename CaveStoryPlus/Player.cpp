@@ -48,6 +48,16 @@ void Player::Update(float delta, const Level &level)
     }
 
     utils::HitInfo hit{};
+    const float nextPositionX{m_Position.x + m_Velocity.x * delta};
+    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, nextPositionX, hit))
+    {
+        m_Velocity.x = 0.f;
+    }
+    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, nextPositionX, hit))
+    {
+        m_Velocity.x = 0.f;
+    }
+
     if (CheckIfInsideFloor(level, hit) && not m_IsHoldingJump)
     {
         m_IsOnGround = true;
@@ -248,26 +258,67 @@ bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
     return false;
 }
 
+bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
+{
+    const float inset{1.f / m_CellSize};
+    const Vector2f topRayStart{positionX, m_Position.y + 1.f - inset};
+    const Vector2f topRayEnd{positionX + inset, m_Position.y + 1.f - inset};
+    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    const Vector2f botRayStart{positionX, m_Position.y + inset};
+    const Vector2f botRayEnd{positionX + inset, m_Position.y + inset};
+    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
+{
+    const float inset{1.f / m_CellSize};
+    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f - inset};
+    const Vector2f topRayEnd{positionX + 1.f - inset, m_Position.y + 1.f - inset};
+    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
+    const Vector2f botRayEnd{positionX + 1.f - inset, m_Position.y + inset};
+    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const
 {
-    bool isInsideFloor{};
     const Vector2f leftRayStart{m_Position.x, m_Position.y + 1.f};
     const Vector2f leftRayEnd{m_Position.x, m_Position.y - 1.f / m_CellSize};
-
-    if (RaycastAgainstLevel(leftRayStart, leftRayEnd, level.GetColliders(), outHitInfo))
+    if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
     {
-        isInsideFloor = true;
-    }
-    else
-    {
-        const Vector2f rightRayStart{leftRayStart.x + 1.f, leftRayStart.y};
-        const Vector2f rightRayEnd{leftRayEnd.x + 1.f, leftRayEnd.y};
-
-        if (RaycastAgainstLevel(rightRayStart, rightRayEnd, level.GetColliders(), outHitInfo))
-        {
-            isInsideFloor = true;
-        }
+        return true;
     }
 
-    return isInsideFloor;
+    const Vector2f rightRayStart{leftRayStart.x + 1.f, leftRayStart.y};
+    const Vector2f rightRayEnd{leftRayEnd.x + 1.f, leftRayEnd.y};
+    if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end,
+                          utils::HitInfo &outHitInfo) const
+{
+    return RaycastAgainstLevel(start, end, level.GetColliders(), outHitInfo);
 }

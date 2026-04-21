@@ -45,7 +45,10 @@ class Player
     bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,
                              utils::HitInfo &outHitInfo) const;
 
+    bool CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, utils::HitInfo &outHitInfo) const;
     bool CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const;
+    bool CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
+    bool CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
 
     constexpr static float m_CellSize{32.f};
     constexpr static float m_TimePerFrame{0.15f};
