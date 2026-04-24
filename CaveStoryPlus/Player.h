@@ -71,6 +71,7 @@ class Player
     AnimState m_CurrentAnimationState{AnimState::idle};
     int m_CurrentAnimationFrame{};
     bool m_LookingLeft{false};
+    utils::HitInfo m_LastHitInfo{};
 
     bool m_IsHoldingJump{};
     bool m_IsHoldingLeft{};

@@ -98,6 +98,7 @@ float EaseTowards(float src, float dest, float delta);
 
 Rectf RectWithCenter(const Vector2f &pos, float width, float height);
 Rectf RectWithCenter(float left, float bottom, float width, float height);
+Rectf RectWithCenter(const Vector2f &pos, float size);
 
 template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> T SnapRounded(T value, T snapInterval)
 {

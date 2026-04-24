@@ -47,22 +47,24 @@ void Player::Update(float delta, const Level &level)
         m_CurrentAnimationState = AnimState::jumping;
     }
 
-    utils::HitInfo hit{};
-    const float nextPositionX{m_Position.x + m_Velocity.x * delta};
-    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, nextPositionX, hit))
+    m_Position += m_Velocity * delta;
+
+    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, m_Position.x, m_LastHitInfo))
     {
         m_Velocity.x = 0.f;
+        m_Position.x = m_LastHitInfo.intersectPoint.x;
     }
-    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, nextPositionX, hit))
+    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, m_Position.x, m_LastHitInfo))
     {
         m_Velocity.x = 0.f;
+        m_Position.x = m_LastHitInfo.intersectPoint.x - 1.f;
     }
 
-    if (CheckIfInsideFloor(level, hit) && not m_IsHoldingJump)
+    if (CheckIfInsideFloor(level, m_LastHitInfo) && not m_IsHoldingJump)
     {
         m_IsOnGround = true;
         m_Velocity.y = 0.f;
-        m_Position.y = hit.intersectPoint.y;
+        m_Position.y = m_LastHitInfo.intersectPoint.y;
         if (!movingHorizontal && std::abs(m_Velocity.x) > 0.f)
         {
             m_CurrentAnimationState = AnimState::sliding;
@@ -97,7 +99,6 @@ void Player::Update(float delta, const Level &level)
         }
     }
 
-    m_Position += m_Velocity * delta;
     ProcessAnimationFrames(delta);
 }
 
@@ -111,6 +112,12 @@ void Player::Draw() const
     source.bottom = source.height * row;
 
     m_pSpriteSheet->Draw(dest, source);
+
+    utils::SetColor(Color4f{0.2f, 0.2f, 1.f, 1.f});
+    utils::FillRect(utils::RectWithCenter(m_Position, 0.1f));
+
+    utils::SetColor(Color4f(1.f, 0.f, 0.f, 1.f));
+    utils::FillRect(utils::RectWithCenter(m_LastHitInfo.intersectPoint, 0.1f));
 }
 
 void Player::SetPosition(const Vector2f &pos)
@@ -261,16 +268,17 @@ bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
 bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
-    const Vector2f topRayStart{positionX, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{positionX + inset, m_Position.y + 1.f - inset};
-    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
-    {
-        return true;
-    }
 
     const Vector2f botRayStart{positionX, m_Position.y + inset};
     const Vector2f botRayEnd{positionX + inset, m_Position.y + inset};
     if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    const Vector2f topRayStart{positionX, m_Position.y + 1.f - inset};
+    const Vector2f topRayEnd{positionX + inset, m_Position.y + 1.f - inset};
+    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
     {
         return true;
     }
@@ -281,16 +289,17 @@ bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitIn
 bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
-    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{positionX + 1.f - inset, m_Position.y + 1.f - inset};
-    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
-    {
-        return true;
-    }
 
     const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
     const Vector2f botRayEnd{positionX + 1.f - inset, m_Position.y + inset};
     if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f - inset};
+    const Vector2f topRayEnd{positionX + 1.f - inset, m_Position.y + 1.f - inset};
+    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
     {
         return true;
     }
@@ -300,15 +309,17 @@ bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitI
 
 bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const
 {
+    const float inset{1.f / m_CellSize};
+
     const Vector2f leftRayStart{m_Position.x, m_Position.y + 1.f};
-    const Vector2f leftRayEnd{m_Position.x, m_Position.y - 1.f / m_CellSize};
+    const Vector2f leftRayEnd{m_Position.x, m_Position.y - inset};
     if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
     {
         return true;
     }
 
     const Vector2f rightRayStart{leftRayStart.x + 1.f, leftRayStart.y};
-    const Vector2f rightRayEnd{leftRayEnd.x + 1.f, leftRayEnd.y};
+    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, leftRayEnd.y};
     if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
     {
         return true;
