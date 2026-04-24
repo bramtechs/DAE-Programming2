@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Game.h"
+#include "GizmoManager.h"
 #include "Level.h"
 #include "Texture.h"
 #include "pch.h"
@@ -19,6 +20,8 @@ Player::~Player()
 
 void Player::Update(float delta, const Level &level)
 {
+    const float inset{1.f / m_CellSize};
+
     if (m_IsHoldingRight)
     {
         // when going in opposite direction add more velocity for tighter movement
@@ -49,22 +52,12 @@ void Player::Update(float delta, const Level &level)
 
     m_Position += m_Velocity * delta;
 
-    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, m_Position.x, m_LastHitInfo))
-    {
-        m_Velocity.x = 0.f;
-        m_Position.x = m_LastHitInfo.intersectPoint.x;
-    }
-    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, m_Position.x, m_LastHitInfo))
-    {
-        m_Velocity.x = 0.f;
-        m_Position.x = m_LastHitInfo.intersectPoint.x - 1.f;
-    }
-
-    if (CheckIfInsideFloor(level, m_LastHitInfo) && not m_IsHoldingJump)
+    utils::HitInfo hit{};
+    if (CheckIfInsideFloor(level, hit) && not m_IsHoldingJump)
     {
         m_IsOnGround = true;
         m_Velocity.y = 0.f;
-        m_Position.y = m_LastHitInfo.intersectPoint.y;
+        m_Position.y = hit.intersectPoint.y;
         if (!movingHorizontal && std::abs(m_Velocity.x) > 0.f)
         {
             m_CurrentAnimationState = AnimState::sliding;
@@ -83,6 +76,17 @@ void Player::Update(float delta, const Level &level)
         {
             m_CurrentAnimationState = AnimState::falling;
         }
+    }
+
+    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, m_Position.x, hit))
+    {
+        m_Velocity.x = 0.f;
+        m_Position.x = hit.intersectPoint.x;
+    }
+    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, m_Position.x, hit))
+    {
+        m_Velocity.x = 0.f;
+        m_Position.x = hit.intersectPoint.x - 1.f - inset;
     }
 
     if (m_JumpWindowTimer > 0.f)
@@ -116,8 +120,7 @@ void Player::Draw() const
     utils::SetColor(Color4f{0.2f, 0.2f, 1.f, 1.f});
     utils::FillRect(utils::RectWithCenter(m_Position, 0.1f));
 
-    utils::SetColor(Color4f(1.f, 0.f, 0.f, 1.f));
-    utils::FillRect(utils::RectWithCenter(m_LastHitInfo.intersectPoint, 0.1f));
+    m_GizmoManager.FlushAndDraw();
 }
 
 void Player::SetPosition(const Vector2f &pos)
@@ -269,15 +272,15 @@ bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitIn
 {
     const float inset{1.f / m_CellSize};
 
-    const Vector2f botRayStart{positionX, m_Position.y + inset};
-    const Vector2f botRayEnd{positionX + inset, m_Position.y + inset};
+    const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
+    const Vector2f botRayEnd{positionX - inset, m_Position.y + inset};
     if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
     {
         return true;
     }
 
-    const Vector2f topRayStart{positionX, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{positionX + inset, m_Position.y + 1.f - inset};
+    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f};
+    const Vector2f topRayEnd{positionX - inset, m_Position.y + 1.f};
     if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
     {
         return true;
@@ -290,15 +293,15 @@ bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitI
 {
     const float inset{1.f / m_CellSize};
 
-    const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
-    const Vector2f botRayEnd{positionX + 1.f - inset, m_Position.y + inset};
+    const Vector2f botRayStart{positionX, m_Position.y + inset};
+    const Vector2f botRayEnd{positionX + 1.f + inset, m_Position.y + inset};
     if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
     {
         return true;
     }
 
-    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{positionX + 1.f - inset, m_Position.y + 1.f - inset};
+    const Vector2f topRayStart{positionX, m_Position.y + 1.f};
+    const Vector2f topRayEnd{positionX + 1.f + inset, m_Position.y + 1.f};
     if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
     {
         return true;
@@ -311,15 +314,15 @@ bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) 
 {
     const float inset{1.f / m_CellSize};
 
-    const Vector2f leftRayStart{m_Position.x, m_Position.y + 1.f};
-    const Vector2f leftRayEnd{m_Position.x, m_Position.y - inset};
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + 1.f};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y - inset};
     if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
     {
         return true;
     }
 
-    const Vector2f rightRayStart{leftRayStart.x + 1.f, leftRayStart.y};
-    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, leftRayEnd.y};
+    const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y + 1.f};
+    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y - inset};
     if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
     {
         return true;
@@ -331,5 +334,9 @@ bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) 
 bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end,
                           utils::HitInfo &outHitInfo) const
 {
+    GizmoManager::LineGizmo gizmo{};
+    gizmo.start = start;
+    gizmo.end = end;
+    m_GizmoManager.QueueGizmo(gizmo);
     return RaycastAgainstLevel(start, end, level.GetColliders(), outHitInfo);
 }

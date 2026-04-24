@@ -22,6 +22,8 @@ add_executable(${PROJECT_NAME}
   Enemy.h
   Game.cpp
   Game.h
+  GizmoManager.h
+  GizmoManager.cpp
   Interactable.h
   Interactable.cpp
   DialogManager.cpp

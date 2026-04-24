@@ -1,4 +1,5 @@
 #pragma once
+#include "GizmoManager.h"
 #include "Level.h"
 #include "Vector2f.h"
 #include "utils.h"
@@ -71,7 +72,7 @@ class Player
     AnimState m_CurrentAnimationState{AnimState::idle};
     int m_CurrentAnimationFrame{};
     bool m_LookingLeft{false};
-    utils::HitInfo m_LastHitInfo{};
+    mutable GizmoManager m_GizmoManager{};
 
     bool m_IsHoldingJump{};
     bool m_IsHoldingLeft{};
