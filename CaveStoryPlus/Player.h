@@ -2,11 +2,13 @@
 #include "GizmoManager.h"
 #include "Level.h"
 #include "Vector2f.h"
+#include "Weapon.h"
 #include "utils.h"
 
 #include <SDL_events.h>
 
 class Texture;
+class Weapon;
 class Player
 {
   public:
@@ -20,6 +22,8 @@ class Player
     void SetPosition(float left, float bottom);
 
     Vector2f GetPosition() const;
+
+    Vector2f GetHandPosition() const;
 
     Vector2f GetCameraFocusPosition() const;
 
@@ -72,9 +76,11 @@ class Player
     float m_JumpWindowTimer{0.1f};
     AnimState m_CurrentAnimationState{AnimState::idle};
     int m_CurrentAnimationFrame{};
-    bool m_LookingLeft{false};
+    Weapon* m_pHeldWeapon{};
+    Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
     mutable GizmoManager m_GizmoManager{};
 
+    bool m_LookingLeft{};
     bool m_IsHoldingJump{};
     bool m_IsHoldingLeft{};
     bool m_IsHoldingRight{};

@@ -45,6 +45,9 @@ add_executable(${PROJECT_NAME}
   TextManager.h
   PolygonCollider.cpp
   PolygonCollider.h
+        Weapon.h
+        PolarStar.h
+        PolarStar.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Engine)

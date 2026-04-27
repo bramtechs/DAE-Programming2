@@ -2,7 +2,9 @@
 #include "Game.h"
 #include "GizmoManager.h"
 #include "Level.h"
+#include "PolarStar.h"
 #include "Texture.h"
+#include "Weapon.h"
 #include "pch.h"
 #include "utils.h"
 
@@ -11,6 +13,7 @@
 
 Player::Player() : m_pSpriteSheet(new Texture("player.png"))
 {
+    m_pHeldWeapon = new PolarStar();
 }
 
 Player::~Player()
@@ -127,6 +130,11 @@ void Player::Draw() const
     utils::FillRect(utils::RectWithCenter(m_Position, 0.1f));
 
     m_GizmoManager.FlushAndDraw();
+
+    if (m_pHeldWeapon)
+    {
+        m_pHeldWeapon->Draw(GetHandPosition(), m_WeaponOrientation);
+    }
 }
 
 void Player::SetPosition(const Vector2f &pos)
@@ -143,6 +151,13 @@ void Player::SetPosition(float left, float bottom)
 Vector2f Player::GetPosition() const
 {
     return m_Position;
+}
+
+Vector2f Player::GetHandPosition() const
+{
+    const float xPadding{0.1f};
+    const Vector2f handPosOffset{m_LookingLeft ? xPadding : 1.f-xPadding, 0.5f};
+    return m_Position + handPosOffset;
 }
 
 Vector2f Player::GetCameraFocusPosition() const
@@ -162,10 +177,20 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
     case SDLK_d:
     case SDLK_RIGHT:
         m_IsHoldingRight = true;
+        m_WeaponOrientation = Weapon::Orientation::east;
         break;
     case SDLK_a:
     case SDLK_LEFT:
         m_IsHoldingLeft = true;
+        m_WeaponOrientation = Weapon::Orientation::west;
+        break;
+    case SDLK_UP:
+    case SDLK_w:
+        m_WeaponOrientation = Weapon::Orientation::north;
+        break;
+    case SDLK_DOWN:
+    case SDLK_s:
+        m_WeaponOrientation = Weapon::Orientation::south;
         break;
     case SDLK_z:
     case SDLK_SPACE:
@@ -175,6 +200,12 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
             // apply initial jump impulse
             m_Velocity.y += m_JumpForce;
             m_JumpWindowTimer = m_JumpWindow;
+        }
+        break;
+    case SDLK_x:
+        if (m_pHeldWeapon)
+        {
+            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation);
         }
         break;
     default:
@@ -193,6 +224,20 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
     case SDLK_a:
     case SDLK_LEFT:
         m_IsHoldingLeft = false;
+        break;
+    case SDLK_w:
+    case SDLK_UP:
+        if (m_WeaponOrientation == Weapon::Orientation::north)
+        {
+            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west:Weapon::Orientation::east;
+        }
+        break;
+    case SDLK_s:
+    case SDLK_DOWN:
+        if (m_WeaponOrientation == Weapon::Orientation::south)
+        {
+            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west:Weapon::Orientation::east;
+        }
         break;
     case SDLK_SPACE:
     case SDLK_z:
