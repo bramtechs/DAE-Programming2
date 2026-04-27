@@ -48,6 +48,7 @@ class Player
 
     bool CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, utils::HitInfo &outHitInfo) const;
     bool CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const;
+    bool CheckIfInsideCeiling(const Level &level, utils::HitInfo &outHitInfo) const;
     bool CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
     bool CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
 

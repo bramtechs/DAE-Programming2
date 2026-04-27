@@ -78,6 +78,12 @@ void Player::Update(float delta, const Level &level)
         }
     }
 
+    if (m_Velocity.y > 0.f && CheckIfInsideCeiling(level, hit))
+    {
+        m_Velocity.y = 0.f;
+        m_Position.y = hit.intersectPoint.y - 1.f - inset;
+    }
+
     if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, m_Position.x, hit))
     {
         m_Velocity.x = 0.f;
@@ -171,6 +177,8 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
             m_JumpWindowTimer = m_JumpWindow;
         }
         break;
+    default:
+        break;
     }
 }
 
@@ -189,6 +197,8 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
     case SDLK_SPACE:
     case SDLK_z:
         m_IsHoldingJump = false;
+        break;
+    default:
         break;
     }
 }
@@ -323,6 +333,27 @@ bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) 
 
     const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y + 1.f};
     const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y - inset};
+    if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Player::CheckIfInsideCeiling(const Level &level, utils::HitInfo &outHitInfo) const
+{
+    const float inset{1.f / m_CellSize};
+
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + 1.f + inset};
+    if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y};
+    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y + 1.f + inset};
     if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
     {
         return true;
