@@ -120,7 +120,7 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
     {
         m_pDialogManager->HandleKeyInput(e);
     }
-    else if (m_pPlayer)
+    else if (m_pPlayer && m_pActiveLevel)
     {
         if (e.keysym.sym == SDLK_w || e.keysym.sym == SDLK_RETURN)
         {
@@ -129,7 +129,7 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
                 m_pActiveLevel->TriggerInteractables(*this);
             }
         }
-        m_pPlayer->HandleKeyDownEvent(e);
+        m_pPlayer->HandleKeyDownEvent(e, m_pActiveLevel->GetBulletManager());
     }
 
     if (m_pEditor)

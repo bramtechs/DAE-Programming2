@@ -78,6 +78,8 @@ void Level::Update(float delta, Player &player)
     {
         m_Interactables[i]->Update(delta);
     }
+
+    m_BulletManager.Update(delta);
 }
 
 void Level::Draw() const
@@ -91,6 +93,8 @@ void Level::Draw() const
         m_Enemies[i]->Draw();
         m_Enemies[i]->DrawDebug();
     }
+
+    m_BulletManager.Draw();
 
     for (int i{}; i < m_Interactables.size(); ++i)
     {

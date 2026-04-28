@@ -9,6 +9,7 @@
 
 class Texture;
 class Weapon;
+class BulletManager;
 class Player
 {
   public:
@@ -29,7 +30,7 @@ class Player
 
     Rectf GetRegion() const;
 
-    void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
+    void HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulletManager);
 
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
 
@@ -46,6 +47,8 @@ class Player
 
     void ProcessAnimationFrames(float delta);
     void ProcessAnimationState(AnimState state, int startFrame, int endFrame);
+
+    void HoldWeapon(Weapon *pWeapon);
 
     bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,
                              utils::HitInfo &outHitInfo) const;
@@ -76,7 +79,7 @@ class Player
     float m_JumpWindowTimer{0.1f};
     AnimState m_CurrentAnimationState{AnimState::idle};
     int m_CurrentAnimationFrame{};
-    Weapon* m_pHeldWeapon{};
+    Weapon *m_pHeldWeapon{};
     Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
     mutable GizmoManager m_GizmoManager{};
 

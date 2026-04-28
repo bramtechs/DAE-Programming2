@@ -13,7 +13,7 @@
 
 Player::Player() : m_pSpriteSheet(new Texture("player.png"))
 {
-    m_pHeldWeapon = new PolarStar();
+    HoldWeapon(new PolarStar());
 }
 
 Player::~Player()
@@ -156,7 +156,7 @@ Vector2f Player::GetPosition() const
 Vector2f Player::GetHandPosition() const
 {
     const float xPadding{0.1f};
-    const Vector2f handPosOffset{m_LookingLeft ? xPadding : 1.f-xPadding, 0.5f};
+    const Vector2f handPosOffset{m_LookingLeft ? xPadding : 1.f - xPadding, 0.5f};
     return m_Position + handPosOffset;
 }
 
@@ -170,7 +170,13 @@ Rectf Player::GetRegion() const
     return Rectf{m_Position.x, m_Position.y, 1.f, 1.f};
 }
 
-void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
+void Player::HoldWeapon(Weapon *pWeapon)
+{
+    delete m_pHeldWeapon;
+    m_pHeldWeapon = pWeapon;
+}
+
+void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulletManager)
 {
     switch (e.keysym.sym)
     {
@@ -205,7 +211,7 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
     case SDLK_x:
         if (m_pHeldWeapon)
         {
-            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation);
+            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation, bulletManager);
         }
         break;
     default:
@@ -229,14 +235,14 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
     case SDLK_UP:
         if (m_WeaponOrientation == Weapon::Orientation::north)
         {
-            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west:Weapon::Orientation::east;
+            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
         }
         break;
     case SDLK_s:
     case SDLK_DOWN:
         if (m_WeaponOrientation == Weapon::Orientation::south)
         {
-            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west:Weapon::Orientation::east;
+            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
         }
         break;
     case SDLK_SPACE:
