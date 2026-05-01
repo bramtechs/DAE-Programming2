@@ -3,6 +3,7 @@
 #include "Editor.h"
 #include "Enemy.h"
 #include "Game.h"
+#include "GoldInteractable.h"
 #include "Interactable.h"
 #include "Texture.h"
 #include "pch.h"
@@ -77,6 +78,8 @@ void Level::Update(float delta, Player &player)
         pEnemy->Update(delta);
         if (m_BulletManager.InteractWithEnemy(*pEnemy))
         {
+            SpawnInteractable(new GoldInteractable(pEnemy->GetPosition()));
+
             // when killed the enemy
             delete *it;
             it = m_Enemies.erase(it);

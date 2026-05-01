@@ -33,6 +33,8 @@ add_executable(${PROJECT_NAME}
   LifeCapsuleInteractable.h
   LifeCapsuleInteractable.cpp
   LevelBuilder.cpp
+  GoldInteractable.h
+  GoldInteractable.cpp
   LevelBuilder.h
   Level.cpp
   Level.h

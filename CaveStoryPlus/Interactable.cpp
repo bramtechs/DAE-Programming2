@@ -6,7 +6,7 @@
 Texture *Interactable::m_pSpriteSheetTexture{};
 int Interactable::m_InstanceCount{};
 
-Interactable::Interactable(const Vector2f &cell) : m_Region(Rectf{cell.x, cell.y, 1.f, 1.f})
+Interactable::Interactable(const Vector2f &cell, const Vector2f &size) : m_Region(Rectf{cell.x, cell.y, size.x, size.y})
 {
     if (m_InstanceCount == 0)
     {
@@ -14,6 +14,10 @@ Interactable::Interactable(const Vector2f &cell) : m_Region(Rectf{cell.x, cell.y
     }
 
     ++m_InstanceCount;
+}
+
+Interactable::Interactable(const Vector2f &cell, float size) : Interactable(cell, Vector2f{size, size})
+{
 }
 
 Interactable::~Interactable()

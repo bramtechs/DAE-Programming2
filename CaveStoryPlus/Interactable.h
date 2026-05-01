@@ -8,7 +8,8 @@ class Player;
 class Interactable
 {
   public:
-    Interactable(const Vector2f &cell);
+    explicit Interactable(const Vector2f &cell, const Vector2f &size = Vector2f{1.f, 1.f});
+    explicit Interactable(const Vector2f &cell, const float size);
     virtual ~Interactable();
 
     bool IsInside(const Player &player) const;
