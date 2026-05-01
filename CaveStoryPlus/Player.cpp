@@ -58,7 +58,7 @@ void Player::Update(float delta, const Level &level)
         m_Velocity.x = 0.f;
     }
 
-    if (CheckIfInsideFloor(level, hit) && not m_IsHoldingJump)
+    if (CheckIfInsideFloor(level, hit) && !m_IsHoldingJump)
     {
         m_IsOnGround = true;
         m_Velocity.y = 0.f;
