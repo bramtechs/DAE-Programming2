@@ -68,18 +68,29 @@ void Level::TriggerInteractables(Game &game)
 
 void Level::Update(float delta, Player &player)
 {
-    for (int i{}; i < m_Enemies.size(); ++i)
-    {
-        m_Enemies[i]->InteractWithPlayer(player);
-        m_Enemies[i]->Update(delta);
-    }
-
-    for (int i{}; i < m_Interactables.size(); ++i)
-    {
-        m_Interactables[i]->Update(delta);
-    }
-
     m_BulletManager.Update(delta);
+
+    for (auto it{m_Enemies.begin()}; it != m_Enemies.end();)
+    {
+        Enemy *pEnemy = *it;
+        pEnemy->InteractWithPlayer(player);
+        pEnemy->Update(delta);
+        if (m_BulletManager.InteractWithEnemy(*pEnemy))
+        {
+            // when killed the enemy
+            delete *it;
+            it = m_Enemies.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    for (Interactable *pInteractable : m_Interactables)
+    {
+        pInteractable->Update(delta);
+    }
 }
 
 void Level::Draw() const
@@ -88,17 +99,17 @@ void Level::Draw() const
     const float scaledHeight{m_pFullTexture->GetHeight() / g_TileSize * 2.f};
     m_pFullTexture->Draw(Rectf{0.f, 0.f, scaledWidth, scaledHeight});
 
-    for (int i{}; i < m_Enemies.size(); ++i)
+    for (const Enemy *pEnemy : m_Enemies)
     {
-        m_Enemies[i]->Draw();
-        m_Enemies[i]->DrawDebug();
+        pEnemy->Draw();
+        pEnemy->DrawDebug();
     }
 
     m_BulletManager.Draw();
 
-    for (int i{}; i < m_Interactables.size(); ++i)
+    for (const Interactable *pInteractable : m_Interactables)
     {
-        m_Interactables[i]->Draw();
-        m_Interactables[i]->DrawDebug();
+        pInteractable->Draw();
+        pInteractable->DrawDebug();
     }
 }

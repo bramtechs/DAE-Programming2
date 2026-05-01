@@ -56,4 +56,30 @@ void Bullet::Draw(const Texture &texture) const
                  m_SourceRegion);
 
     glPopMatrix();
+
+#if 0 // debug graphics
+    utils::SetColor(Color4f{1.f, 0.f, 0.f, 1.f});
+    utils::FillRect(GetRegion());
+#endif
+}
+
+Rectf Bullet::GetRegion() const
+{
+    Rectf region{};
+    region.width = m_Scale * m_SourceRegion.width;
+    region.height = m_Scale * m_SourceRegion.height;
+
+    region.left = m_Position.x - region.width * 0.5f;
+    region.bottom = m_Position.y - region.height * 0.5f;
+    return region;
+}
+
+bool Bullet::IsOverlapping(const Rectf &region) const
+{
+    return utils::IsOverlapping(GetRegion(), region);
+}
+
+int Bullet::GetDamage() const
+{
+    return m_Damage;
 }

@@ -2,6 +2,7 @@
 #include "Vector2f.h"
 #include "structs.h"
 
+class Enemy;
 class Texture;
 class Bullet
 {
@@ -20,6 +21,12 @@ class Bullet
 
     void SetScale(float scale);
 
+    Rectf GetRegion() const;
+
+    bool IsOverlapping(const Rectf &region) const;
+
+    int GetDamage() const;
+
   private:
     float GetAngleDegrees() const;
 
@@ -27,5 +34,5 @@ class Bullet
     Vector2f m_Velocity{};
     Rectf m_SourceRegion{};
     float m_Scale{1.f};
-    float m_Damage{1.f};
+    int m_Damage{1};
 };

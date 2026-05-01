@@ -26,6 +26,12 @@ Enemy::~Enemy()
     }
 }
 
+bool Enemy::TakeDamage(int damage)
+{
+    m_Health -= damage;
+    return m_Health <= 0;
+}
+
 void Enemy::SetPosition(Vector2f position)
 {
     m_Position = position;

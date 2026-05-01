@@ -3,6 +3,7 @@
 
 #include <vector>
 
+class Enemy;
 class Bullet;
 class BulletManager final
 {
@@ -18,6 +19,9 @@ class BulletManager final
 
     void Update(float delta);
     void Draw() const;
+
+    // returns true if enemy killed
+    bool InteractWithEnemy(Enemy &enemy);
 
     void SpawnPolarStarBullet(const Vector2f &pos, float shootAngle);
 

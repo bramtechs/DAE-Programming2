@@ -18,6 +18,9 @@ class Enemy
 
     virtual void DrawDebug() const;
 
+    // returns true if died
+    bool TakeDamage(int damage);
+
     void SetPosition(Vector2f position);
     Vector2f GetPosition() const;
 
@@ -31,6 +34,7 @@ class Enemy
 
     Vector2f m_Position{};
     Vector2f m_Size{};
+    int m_Health{};
 
   private:
     static Texture *m_pSpriteSheetTexture;
