@@ -1,5 +1,7 @@
 #pragma once
+#include "BulletManager.h"
 #include "PolygonCollider.h"
+
 #include <string>
 #include <vector>
 
@@ -51,6 +53,11 @@ class Level
         return m_SpawnPos;
     }
 
+    BulletManager &GetBulletManager()
+    {
+        return m_BulletManager;
+    }
+
   private:
     void DrawTileGrid() const;
     void DrawColliders() const;
@@ -61,6 +68,7 @@ class Level
     std::vector<PolygonCollider> m_Colliders{};
     std::vector<Enemy *> m_Enemies{};
     std::vector<Interactable *> m_Interactables{};
+    BulletManager m_BulletManager{};
 
     int m_LevelCols{};
     int m_LevelRows{};

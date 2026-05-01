@@ -1,11 +1,15 @@
 #pragma once
+#include "GizmoManager.h"
 #include "Level.h"
 #include "Vector2f.h"
+#include "Weapon.h"
 #include "utils.h"
 
 #include <SDL_events.h>
 
 class Texture;
+class Weapon;
+class BulletManager;
 class Player
 {
   public:
@@ -20,11 +24,13 @@ class Player
 
     Vector2f GetPosition() const;
 
+    Vector2f GetHandPosition() const;
+
     Vector2f GetCameraFocusPosition() const;
 
     Rectf GetRegion() const;
 
-    void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
+    void HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulletManager);
 
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
 
@@ -42,11 +48,14 @@ class Player
     void ProcessAnimationFrames(float delta);
     void ProcessAnimationState(AnimState state, int startFrame, int endFrame);
 
+    void HoldWeapon(Weapon *pWeapon);
+
     bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,
                              utils::HitInfo &outHitInfo) const;
 
     bool CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, utils::HitInfo &outHitInfo) const;
     bool CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const;
+    bool CheckIfInsideCeiling(const Level &level, utils::HitInfo &outHitInfo) const;
     bool CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
     bool CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
 
@@ -70,8 +79,11 @@ class Player
     float m_JumpWindowTimer{0.1f};
     AnimState m_CurrentAnimationState{AnimState::idle};
     int m_CurrentAnimationFrame{};
-    bool m_LookingLeft{false};
+    Weapon *m_pHeldWeapon{};
+    Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
+    mutable GizmoManager m_GizmoManager{};
 
+    bool m_LookingLeft{};
     bool m_IsHoldingJump{};
     bool m_IsHoldingLeft{};
     bool m_IsHoldingRight{};

@@ -1,7 +1,10 @@
 #include "Player.h"
 #include "Game.h"
+#include "GizmoManager.h"
 #include "Level.h"
+#include "PolarStar.h"
 #include "Texture.h"
+#include "Weapon.h"
 #include "pch.h"
 #include "utils.h"
 
@@ -10,6 +13,7 @@
 
 Player::Player() : m_pSpriteSheet(new Texture("player.png"))
 {
+    HoldWeapon(new PolarStar());
 }
 
 Player::~Player()
@@ -19,6 +23,8 @@ Player::~Player()
 
 void Player::Update(float delta, const Level &level)
 {
+    const float inset{1.f / m_CellSize};
+
     if (m_IsHoldingRight)
     {
         // when going in opposite direction add more velocity for tighter movement
@@ -47,17 +53,9 @@ void Player::Update(float delta, const Level &level)
         m_CurrentAnimationState = AnimState::jumping;
     }
 
-    utils::HitInfo hit{};
-    const float nextPositionX{m_Position.x + m_Velocity.x * delta};
-    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, nextPositionX, hit))
-    {
-        m_Velocity.x = 0.f;
-    }
-    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, nextPositionX, hit))
-    {
-        m_Velocity.x = 0.f;
-    }
+    m_Position += m_Velocity * delta;
 
+    utils::HitInfo hit{};
     if (CheckIfInsideFloor(level, hit) && !m_IsHoldingJump)
     {
         m_IsOnGround = true;
@@ -83,6 +81,23 @@ void Player::Update(float delta, const Level &level)
         }
     }
 
+    if (m_Velocity.y > 0.f && CheckIfInsideCeiling(level, hit))
+    {
+        m_Velocity.y = 0.f;
+        m_Position.y = hit.intersectPoint.y - 1.f - inset;
+    }
+
+    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, m_Position.x, hit))
+    {
+        m_Velocity.x = 0.f;
+        m_Position.x = hit.intersectPoint.x;
+    }
+    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, m_Position.x, hit))
+    {
+        m_Velocity.x = 0.f;
+        m_Position.x = hit.intersectPoint.x - 1.f - inset;
+    }
+
     if (m_JumpWindowTimer > 0.f)
     {
         m_JumpWindowTimer -= delta;
@@ -97,7 +112,6 @@ void Player::Update(float delta, const Level &level)
         }
     }
 
-    m_Position += m_Velocity * delta;
     ProcessAnimationFrames(delta);
 }
 
@@ -111,6 +125,16 @@ void Player::Draw() const
     source.bottom = source.height * row;
 
     m_pSpriteSheet->Draw(dest, source);
+
+    utils::SetColor(Color4f{0.2f, 0.2f, 1.f, 1.f});
+    utils::FillRect(utils::RectWithCenter(m_Position, 0.1f));
+
+    m_GizmoManager.FlushAndDraw();
+
+    if (m_pHeldWeapon)
+    {
+        m_pHeldWeapon->Draw(GetHandPosition(), m_WeaponOrientation);
+    }
 }
 
 void Player::SetPosition(const Vector2f &pos)
@@ -129,6 +153,13 @@ Vector2f Player::GetPosition() const
     return m_Position;
 }
 
+Vector2f Player::GetHandPosition() const
+{
+    const float xPadding{0.1f};
+    const Vector2f handPosOffset{m_LookingLeft ? xPadding : 1.f - xPadding, 0.5f};
+    return m_Position + handPosOffset;
+}
+
 Vector2f Player::GetCameraFocusPosition() const
 {
     return m_Position + Vector2f(0.5f, 0.5f);
@@ -139,17 +170,33 @@ Rectf Player::GetRegion() const
     return Rectf{m_Position.x, m_Position.y, 1.f, 1.f};
 }
 
-void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
+void Player::HoldWeapon(Weapon *pWeapon)
+{
+    delete m_pHeldWeapon;
+    m_pHeldWeapon = pWeapon;
+}
+
+void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulletManager)
 {
     switch (e.keysym.sym)
     {
     case SDLK_d:
     case SDLK_RIGHT:
         m_IsHoldingRight = true;
+        m_WeaponOrientation = Weapon::Orientation::east;
         break;
     case SDLK_a:
     case SDLK_LEFT:
         m_IsHoldingLeft = true;
+        m_WeaponOrientation = Weapon::Orientation::west;
+        break;
+    case SDLK_UP:
+    case SDLK_w:
+        m_WeaponOrientation = Weapon::Orientation::north;
+        break;
+    case SDLK_DOWN:
+    case SDLK_s:
+        m_WeaponOrientation = Weapon::Orientation::south;
         break;
     case SDLK_z:
     case SDLK_SPACE:
@@ -160,6 +207,14 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
             m_Velocity.y += m_JumpForce;
             m_JumpWindowTimer = m_JumpWindow;
         }
+        break;
+    case SDLK_x:
+        if (m_pHeldWeapon)
+        {
+            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation, bulletManager);
+        }
+        break;
+    default:
         break;
     }
 }
@@ -176,9 +231,25 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
     case SDLK_LEFT:
         m_IsHoldingLeft = false;
         break;
+    case SDLK_w:
+    case SDLK_UP:
+        if (m_WeaponOrientation == Weapon::Orientation::north)
+        {
+            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
+        }
+        break;
+    case SDLK_s:
+    case SDLK_DOWN:
+        if (m_WeaponOrientation == Weapon::Orientation::south)
+        {
+            m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
+        }
+        break;
     case SDLK_SPACE:
     case SDLK_z:
         m_IsHoldingJump = false;
+        break;
+    default:
         break;
     }
 }
@@ -261,16 +332,17 @@ bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
 bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
-    const Vector2f topRayStart{positionX, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{positionX + inset, m_Position.y + 1.f - inset};
-    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
+
+    const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
+    const Vector2f botRayEnd{positionX - inset, m_Position.y + inset};
+    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
     {
         return true;
     }
 
-    const Vector2f botRayStart{positionX, m_Position.y + inset};
-    const Vector2f botRayEnd{positionX + inset, m_Position.y + inset};
-    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
+    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f};
+    const Vector2f topRayEnd{positionX - inset, m_Position.y + 1.f};
+    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
     {
         return true;
     }
@@ -281,16 +353,17 @@ bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitIn
 bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
-    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{positionX + 1.f - inset, m_Position.y + 1.f - inset};
-    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
+
+    const Vector2f botRayStart{positionX, m_Position.y + inset};
+    const Vector2f botRayEnd{positionX + 1.f + inset, m_Position.y + inset};
+    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
     {
         return true;
     }
 
-    const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
-    const Vector2f botRayEnd{positionX + 1.f - inset, m_Position.y + inset};
-    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
+    const Vector2f topRayStart{positionX, m_Position.y + 1.f};
+    const Vector2f topRayEnd{positionX + 1.f + inset, m_Position.y + 1.f};
+    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
     {
         return true;
     }
@@ -300,15 +373,38 @@ bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitI
 
 bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const
 {
-    const Vector2f leftRayStart{m_Position.x, m_Position.y + 1.f};
-    const Vector2f leftRayEnd{m_Position.x, m_Position.y - 1.f / m_CellSize};
+    const float inset{1.f / m_CellSize};
+
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + 1.f};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y - inset};
     if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
     {
         return true;
     }
 
-    const Vector2f rightRayStart{leftRayStart.x + 1.f, leftRayStart.y};
-    const Vector2f rightRayEnd{leftRayEnd.x + 1.f, leftRayEnd.y};
+    const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y + 1.f};
+    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y - inset};
+    if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Player::CheckIfInsideCeiling(const Level &level, utils::HitInfo &outHitInfo) const
+{
+    const float inset{1.f / m_CellSize};
+
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + 1.f + inset};
+    if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
+    {
+        return true;
+    }
+
+    const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y};
+    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y + 1.f + inset};
     if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
     {
         return true;
@@ -320,5 +416,9 @@ bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) 
 bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end,
                           utils::HitInfo &outHitInfo) const
 {
+    GizmoManager::LineGizmo gizmo{};
+    gizmo.start = start;
+    gizmo.end = end;
+    m_GizmoManager.QueueGizmo(gizmo);
     return RaycastAgainstLevel(start, end, level.GetColliders(), outHitInfo);
 }

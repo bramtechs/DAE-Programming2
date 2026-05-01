@@ -8,7 +8,7 @@
 
 namespace utils
 {
-const float g_Pi{3.1415926535f};
+constexpr float g_Pi{3.1415926535f};
 
 #pragma region OpenGLDrawFunctionality
 
@@ -94,10 +94,21 @@ bool IntersectRectLine(const Rectf &r, const Vector2f &p1, const Vector2f &p2, f
 
 #pragma region MyOwnUtils
 
+constexpr float DegreesToRadians(float degs)
+{
+    return degs * 0.0174532925f;
+}
+
+constexpr float RadiansToDegrees(float rads)
+{
+    return rads * 180.f / g_Pi;
+}
+
 float EaseTowards(float src, float dest, float delta);
 
 Rectf RectWithCenter(const Vector2f &pos, float width, float height);
 Rectf RectWithCenter(float left, float bottom, float width, float height);
+Rectf RectWithCenter(const Vector2f &pos, float size);
 
 template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> T SnapRounded(T value, T snapInterval)
 {
