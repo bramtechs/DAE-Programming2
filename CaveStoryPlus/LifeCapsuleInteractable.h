@@ -1,10 +1,10 @@
 #pragma once
 #include "Interactable.h"
 
-class LifeCapsule final : public Interactable
+class LifeCapsuleInteractable final : public Interactable
 {
   public:
-    LifeCapsule(const Vector2f &cell);
+    explicit LifeCapsuleInteractable(const Vector2f &cell);
 
     void Update(float delta) override;
     void Draw() const override;

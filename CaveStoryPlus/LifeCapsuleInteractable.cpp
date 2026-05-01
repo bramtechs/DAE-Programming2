@@ -1,13 +1,13 @@
-#include "LifeCapsule.h"
+#include "LifeCapsuleInteractable.h"
 #include "DialogManager.h"
 #include "Game.h"
 #include "Texture.h"
 
-LifeCapsule::LifeCapsule(const Vector2f &cell) : Interactable(cell)
+LifeCapsuleInteractable::LifeCapsuleInteractable(const Vector2f &cell) : Interactable(cell)
 {
 }
 
-void LifeCapsule::Update(float delta)
+void LifeCapsuleInteractable::Update(float delta)
 {
     m_AnimTimer += delta;
 
@@ -19,18 +19,18 @@ void LifeCapsule::Update(float delta)
     }
 }
 
-void LifeCapsule::Draw() const
+void LifeCapsuleInteractable::Draw() const
 {
     const Rectf srcRect{GetAnimationSource(m_FrameIndex)};
     GetSpriteSheetTexture().Draw(GetRegion(), srcRect);
 }
 
-void LifeCapsule::Interact(Game &game)
+void LifeCapsuleInteractable::Interact(Game &game)
 {
     game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."});
 }
 
-Rectf LifeCapsule::GetAnimationSource(int frame) const
+Rectf LifeCapsuleInteractable::GetAnimationSource(int frame) const
 {
     const float tileSize{32};
     const int col{2 + frame};

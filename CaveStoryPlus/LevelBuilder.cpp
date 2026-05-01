@@ -2,7 +2,7 @@
 #include "BatEnemy.h"
 #include "Door.h"
 #include "Level.h"
-#include "LifeCapsule.h"
+#include "LifeCapsuleInteractable.h"
 #include "pch.h"
 
 Level *LevelBuilder::BuildCaveLevel()
@@ -20,7 +20,7 @@ Level *LevelBuilder::BuildCaveLevel()
     // interactables
 
     // 6x20 live capsule
-    pLevel->SpawnInteractable(new LifeCapsule(Vector2f{6.f, 20.f}));
+    pLevel->SpawnInteractable(new LifeCapsuleInteractable(Vector2f{6.f, 20.f}));
 
     // 53x8 door
     pLevel->SpawnInteractable(new Door(Vector2f{40.f, 33.f}, &LevelBuilder::BuildHermitGunsmithLevel));

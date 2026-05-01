@@ -30,8 +30,8 @@ add_executable(${PROJECT_NAME}
   DialogManager.h
   DialogMessage.cpp
   DialogMessage.h
-  LifeCapsule.h
-  LifeCapsule.cpp
+  LifeCapsuleInteractable.h
+  LifeCapsuleInteractable.cpp
   LevelBuilder.cpp
   LevelBuilder.h
   Level.cpp
