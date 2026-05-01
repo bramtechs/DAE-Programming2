@@ -25,9 +25,10 @@ void LifeCapsuleInteractable::Draw() const
     GetSpriteSheetTexture().Draw(GetRegion(), srcRect);
 }
 
-void LifeCapsuleInteractable::Interact(Game &game)
+bool LifeCapsuleInteractable::Interact(Game &game)
 {
     game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."});
+    return true;
 }
 
 Rectf LifeCapsuleInteractable::GetAnimationSource(int frame) const

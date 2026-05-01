@@ -15,7 +15,7 @@ class Interactable
 
     virtual void Update(float delta) = 0;
     virtual void Draw() const = 0;
-    virtual void Interact(Game &game) = 0;
+    virtual bool Interact(Game &game) = 0;
 
     void DrawDebug() const;
 
