@@ -1,4 +1,5 @@
 #pragma once
+#include "NumberLabel.h"
 #include "Texture.h"
 
 class Player;
@@ -17,8 +18,9 @@ class PlayerGUI
   private:
     void DrawHUD(const Rectf &region) const;
 
-    static Rectf m_LvlLabelTextureSource;
+    const static Rectf m_LvlLabelTextureSource;
 
     const Player &m_Player;
     Texture *m_pTexture{};
+    NumberLabel m_LevelLabel{};
 };

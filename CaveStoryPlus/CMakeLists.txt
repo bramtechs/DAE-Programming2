@@ -24,6 +24,8 @@ add_executable(${PROJECT_NAME}
   PlayerGUI.cpp
   PlayerGUI.h
   Game.h
+  NumberLabel.cpp
+  NumberLabel.h
   GizmoManager.h
   GizmoManager.cpp
   Interactable.h

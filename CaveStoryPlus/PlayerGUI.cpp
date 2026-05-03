@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "utils.h"
 
-Rectf PlayerGUI::m_LvlLabelTextureSource{163.f, 163.f, 24.f, 13.f};
+const Rectf PlayerGUI::m_LvlLabelTextureSource{163.f, 163.f, 24.f, 13.f};
 
 PlayerGUI::PlayerGUI(const Player &player) : m_Player(player), m_pTexture(new Texture("TextBox.png"))
 {
@@ -31,4 +31,7 @@ void PlayerGUI::DrawHUD(const Rectf &region) const
     col.width /= 3;
 
     m_pTexture->Draw(utils::CalcCoverRegion(col, m_LvlLabelTextureSource), m_LvlLabelTextureSource);
+
+    col.left += col.width;
+    m_LevelLabel.Draw(col);
 }
