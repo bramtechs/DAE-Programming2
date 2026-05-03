@@ -4,10 +4,13 @@
 
 #include <SDL_ttf.h>
 
+constexpr float g_ScreenWidth{1280.f};
+constexpr float g_ScreenHeight{720.f};
 constexpr float g_TileSize{32.f};
 constexpr float g_TileCols{1280.f / 32.f};
 constexpr float g_TileRows{720.f / 32.f};
 
+class PlayerGUI;
 class TextManager;
 class DialogManager;
 class Player;
@@ -71,6 +74,7 @@ class Game final : public BaseGame
     TextManager *m_pTextManager{};
     Level *m_pActiveLevel{};
     Player *m_pPlayer{};
+    PlayerGUI *m_pPlayerGUI{};
     Editor *m_pEditor{};
 
     // FUNCTIONS

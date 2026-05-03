@@ -1,4 +1,5 @@
 #pragma once
+#include "Texture.h"
 #include "Vector2f.h"
 #include "structs.h"
 
@@ -109,6 +110,10 @@ float EaseTowards(float src, float dest, float delta);
 Rectf RectWithCenter(const Vector2f &pos, float width, float height);
 Rectf RectWithCenter(float left, float bottom, float width, float height);
 Rectf RectWithCenter(const Vector2f &pos, float size);
+
+// Calculate subrect in region to display source rect as big as possible while maintaining aspect ration.
+// CSS: object-fit: cover
+Rectf CalcCoverRegion(Rectf region, const Rectf &source);
 
 template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> T SnapRounded(T value, T snapInterval)
 {

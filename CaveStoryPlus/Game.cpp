@@ -5,6 +5,7 @@
 #include "Level.h"
 #include "LevelBuilder.h"
 #include "Player.h"
+#include "PlayerGUI.h"
 #include "SDL_keycode.h"
 #include "TextManager.h"
 #include "pch.h"
@@ -30,6 +31,7 @@ void Game::Initialize()
     // m_pActiveLevel = levelBuilder.BuildHermitGunsmithLevel();
     m_pPlayer = new Player();
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
+    m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
 
     m_pDialogManager = new DialogManager(*m_pTextManager);
 
@@ -42,6 +44,7 @@ void Game::Cleanup()
     delete m_pActiveLevel;
     delete m_pDialogManager;
     delete m_pTextManager;
+    delete m_pPlayerGUI;
     delete m_pPlayer;
 }
 
@@ -81,6 +84,8 @@ void Game::Draw() const
     }
 
     m_Camera.End();
+
+    m_pPlayerGUI->Draw();
 
     const Vector2f screenSize{GetViewPort().width, GetViewPort().height};
     m_pDialogManager->Draw(screenSize);

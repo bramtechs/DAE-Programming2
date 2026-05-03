@@ -722,6 +722,32 @@ Rectf utils::RectWithCenter(const Vector2f &pos, float size)
     return utils::RectWithCenter(pos, size, size);
 }
 
+Rectf utils::CalcCoverRegion(Rectf texDest, const Rectf &source)
+{
+    const float centerX{texDest.left + (texDest.width * 0.5f)};
+    const float centerY{texDest.bottom + (texDest.height * 0.5f)};
+
+    const float destAspect{texDest.width / texDest.height};
+    const float srcAspect{source.width / source.height};
+
+    float scale = NAN;
+    if (destAspect > srcAspect)
+    {
+        // Destination is wider than source, scale based on height
+        scale = texDest.height / source.height;
+    }
+    else
+    {
+        // Destination is taller than source, scale based on width
+        scale = texDest.width / source.width;
+    }
+
+    const float calcW{source.width * scale};
+    const float calcH{source.height * scale};
+
+    return Rectf{centerX - (calcW * 0.5f), centerY - (calcH * 0.5f), calcW, calcH};
+}
+
 float utils::SineWave(float x, float amplitude, float stretch, float phaseShift, float offsetY)
 {
     return amplitude * std::sin(x * stretch + phaseShift) + offsetY;
