@@ -2,6 +2,8 @@
 #include <iostream>
 #include <algorithm>
 #include <chrono>
+#include <filesystem>
+#include <string_view>
 #include "BaseGame.h"
 
 BaseGame::BaseGame(const Window& window)
@@ -27,6 +29,13 @@ void BaseGame::InitializeGameEngine()
 	HWND hwnd = GetConsoleWindow();
 	HMENU hmenu = GetSystemMenu(hwnd, FALSE);
 	EnableMenuItem(hmenu, SC_CLOSE, MF_GRAYED);
+#else
+	std::error_code err{};
+	std::filesystem::current_path(std::filesystem::canonical("/proc/self/exe").parent_path(), err);
+	if (err)
+	{
+		std::cerr << "Failed to migrate to working directory: " << err.message() << std::endl;
+	}
 #endif
 
 	// Initialize SDL

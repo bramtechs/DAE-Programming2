@@ -59,6 +59,8 @@ add_executable(${PROJECT_NAME}
   PolarStar.h
   PolarStar.cpp
 )
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resources/ DESTINATION bin)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Engine)
 

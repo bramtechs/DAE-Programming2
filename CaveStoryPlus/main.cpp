@@ -5,7 +5,11 @@
 void StartHeapControl();
 void DumpMemoryLeaks();
 
+#if WIN32
 int SDL_main(int argv, char **args)
+#else
+int main(int argv, char **args)
+#endif
 {
     srand(static_cast<unsigned int>(time(nullptr)));
 

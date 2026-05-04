@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "Game.h"
 
+#include <cmath>
+
 Camera::Camera(const Rectf& viewPort)
 	: m_Center{}, m_ViewPort{ viewPort }, m_Zoom{ 2.f }, m_MoveSpeed{ 10.f }
 {
@@ -57,7 +59,7 @@ void Camera::MoveWithKeyboard(float delta)
 void Camera::MoveTowards(const Vector2f& pos, float delta)
 {
 	// https://lisyarus.github.io/blog/posts/exponential-smoothing.html
-	m_Center += (pos - m_Center) * (1.f - expf(-m_MoveSpeed * delta));
+	m_Center += (pos - m_Center) * (1.f - std::expf(-m_MoveSpeed * delta));
 }
 
 Vector2f Camera::ScreenToWorldPos(const Vector2f& screenPos) const

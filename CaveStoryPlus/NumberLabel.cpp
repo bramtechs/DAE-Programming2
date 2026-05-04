@@ -2,6 +2,8 @@
 #include "Texture.h"
 #include "utils.h"
 
+#include <cstring>
+
 const Rectf NumberLabel::m_FirstFrameSource{0.f, 0.f, 16.f, 16.f};
 Texture *NumberLabel::m_pSpriteSheet{};
 int NumberLabel::m_InstanceCount{};
@@ -47,7 +49,7 @@ void NumberLabel::Draw(const Rectf &firstDigitRegion, bool drawPositiveSign) con
     Rectf region{utils::CalcCoverRegion(firstDigitRegion, m_FirstFrameSource)};
 
     char pText[32];
-    std::snprintf(pText, std::size(pText), "%d", m_Value);
+    std::snprintf(pText, sizeof(pText), "%d", m_Value);
     bool isPositive{true};
 
     if (drawPositiveSign && m_Value < 0)

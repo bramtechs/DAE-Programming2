@@ -106,7 +106,7 @@ void PolygonCollider::PickColor(int index)
 		Color4f{0.56f, 0.0f, 1.0f, alpha}
 	};
 
-	m_Color = pRainbow[index % static_cast<int>(std::size(pRainbow))];
+	m_Color = pRainbow[index % static_cast<int>(sizeof(pRainbow) / sizeof(Color4f))];
 }
 
 Rectf PolygonCollider::GetHandleOfPoint(int pointIndex) const

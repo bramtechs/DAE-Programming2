@@ -115,12 +115,12 @@ Rectf RectWithCenter(const Vector2f &pos, float size);
 // CSS: object-fit: cover
 Rectf CalcCoverRegion(Rectf region, const Rectf &source);
 
-template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>> T SnapRounded(T value, T snapInterval)
+template <typename T, typename = std::enable_if_t<std::is_floating_point<T>::value>> T SnapRounded(T value, T snapInterval)
 {
     return std::round(value / snapInterval) * snapInterval;
 }
 
-template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>> T Clamp(T value, T min, T max)
+template <typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>> T Clamp(T value, T min, T max)
 {
     if (value < min)
     {
