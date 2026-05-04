@@ -53,10 +53,26 @@ void Player::Update(float delta, const Level &level)
         m_CurrentAnimationState = AnimState::jumping;
     }
 
-    m_Position += m_Velocity * delta;
-
     utils::HitInfo hit{};
-    if (CheckIfInsideFloor(level, hit) && !m_IsHoldingJump)
+
+    const float movementX{m_Velocity.x * delta};
+    if (movementX < 0.f && CheckIfHitsLeftWall(level, movementX, hit))
+    {
+        m_Velocity.x = 0.f;
+        m_Position.x = hit.intersectPoint.x + inset;
+    }
+    else if (movementX > 0.f && CheckIfHitsRightWall(level, movementX, hit))
+    {
+        m_Velocity.x = 0.f;
+        m_Position.x = hit.intersectPoint.x - 1.f - inset;
+    }
+    else
+    {
+        m_Position.x += movementX;
+    }
+
+    const float movementY{m_Velocity.y * delta};
+    if (movementY < 0.f && CheckIfHitsFloor(level, movementY, hit))
     {
         m_IsOnGround = true;
         m_Velocity.y = 0.f;
@@ -66,36 +82,34 @@ void Player::Update(float delta, const Level &level)
             m_CurrentAnimationState = AnimState::sliding;
         }
     }
-    else
+    else if (movementY > 0.f && CheckIfHitsCeiling(level, movementY, hit))
     {
         m_IsOnGround = false;
-        m_Velocity.y += -m_Gravity * delta;
-
-        if (m_Velocity.y > 0.f)
-        {
-            m_CurrentAnimationState = AnimState::jumping;
-        }
-        else
-        {
-            m_CurrentAnimationState = AnimState::falling;
-        }
-    }
-
-    if (m_Velocity.y > 0.f && CheckIfInsideCeiling(level, hit))
-    {
         m_Velocity.y = 0.f;
         m_Position.y = hit.intersectPoint.y - 1.f - inset;
     }
+    else
+    {
+        m_Position.y += movementY;
+        m_IsOnGround = CheckIfOnGround(level, hit);
 
-    if (m_Velocity.x < 0.f && CheckIfLeftInWall(level, m_Position.x, hit))
-    {
-        m_Velocity.x = 0.f;
-        m_Position.x = hit.intersectPoint.x;
-    }
-    else if (m_Velocity.x > 0.f && CheckIfRightInWall(level, m_Position.x, hit))
-    {
-        m_Velocity.x = 0.f;
-        m_Position.x = hit.intersectPoint.x - 1.f - inset;
+        if (!m_IsOnGround)
+        {
+            m_Velocity.y += -m_Gravity * delta;
+
+            if (m_Velocity.y > 0.f)
+            {
+                m_CurrentAnimationState = AnimState::jumping;
+            }
+            else
+            {
+                m_CurrentAnimationState = AnimState::falling;
+            }
+        }
+        else
+        {
+            m_Velocity.y = 0.f;
+        }
     }
 
     if (m_JumpWindowTimer > 0.f)
@@ -315,110 +329,123 @@ void Player::ProcessAnimationState(AnimState state, int startFrame, int endFrame
 }
 
 bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
-                                 const std::vector<PolygonCollider> &colliders, utils::HitInfo &outHitInfo) const
+                                 const std::vector<PolygonCollider> &colliders, const Vector2f &collisionAxis,
+                                 utils::HitInfo &outHitInfo) const
 {
+    bool hasHit{};
+
     for (int i{}; i < colliders.size(); ++i)
     {
         const std::vector<Vector2f> &vertices{colliders[i].GetPolygon()};
-        if (utils::Raycast(vertices, start, end, outHitInfo))
+        for (int idx{}; idx < vertices.size(); ++idx)
         {
-            return true;
+            const Vector2f q1{vertices[idx]};
+            const Vector2f q2{vertices[(idx + 1) % vertices.size()]};
+
+            float lambda1{};
+            float lambda2{};
+            if (utils::IntersectLineSegments(start, end, q1, q2, lambda1, lambda2) && lambda1 > 0.f && lambda1 <= 1.f &&
+                lambda2 > 0.f && lambda2 <= 1.f)
+            {
+                utils::HitInfo hit{};
+                hit.lambda = lambda1;
+                hit.intersectPoint =
+                    Vector2f{start.x + ((end.x - start.x) * lambda1), start.y + ((end.y - start.y) * lambda1)};
+                hit.normal = Vector2f{q2 - q1}.Orthogonal().Normalized();
+
+                if (std::abs(hit.normal.DotProduct(collisionAxis)) > 0.5f &&
+                    (!hasHit || hit.lambda < outHitInfo.lambda))
+                {
+                    hasHit = true;
+                    outHitInfo = hit;
+                }
+            }
         }
     }
 
-    return false;
+    return hasHit;
 }
 
-bool Player::CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
+bool Player::CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
+    const Vector2f collisionAxis{1.f, 0.f};
 
-    const Vector2f botRayStart{positionX + 1.f, m_Position.y + inset};
-    const Vector2f botRayEnd{positionX - inset, m_Position.y + inset};
-    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
-    {
-        return true;
-    }
+    const Vector2f botRayStart{m_Position.x + inset, m_Position.y + inset};
+    const Vector2f botRayEnd{m_Position.x + movementX - inset, m_Position.y + inset};
+    const Vector2f topRayStart{m_Position.x + inset, m_Position.y + 1.f - inset};
+    const Vector2f topRayEnd{m_Position.x + movementX - inset, m_Position.y + 1.f - inset};
 
-    const Vector2f topRayStart{positionX + 1.f, m_Position.y + 1.f};
-    const Vector2f topRayEnd{positionX - inset, m_Position.y + 1.f};
-    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
-    {
-        return true;
-    }
-
-    return false;
+    return CheckRaycastPair(level, botRayStart, botRayEnd, topRayStart, topRayEnd, collisionAxis, outHitInfo);
 }
 
-bool Player::CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const
+bool Player::CheckIfHitsRightWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
+    const Vector2f collisionAxis{1.f, 0.f};
 
-    const Vector2f botRayStart{positionX, m_Position.y + inset};
-    const Vector2f botRayEnd{positionX + 1.f + inset, m_Position.y + inset};
-    if (CheckRaycast(level, botRayStart, botRayEnd, outHitInfo))
-    {
-        return true;
-    }
+    const Vector2f botRayStart{m_Position.x + 1.f - inset, m_Position.y + inset};
+    const Vector2f botRayEnd{m_Position.x + 1.f + movementX + inset, m_Position.y + inset};
+    const Vector2f topRayStart{m_Position.x + 1.f - inset, m_Position.y + 1.f - inset};
+    const Vector2f topRayEnd{m_Position.x + 1.f + movementX + inset, m_Position.y + 1.f - inset};
 
-    const Vector2f topRayStart{positionX, m_Position.y + 1.f};
-    const Vector2f topRayEnd{positionX + 1.f + inset, m_Position.y + 1.f};
-    if (CheckRaycast(level, topRayStart, topRayEnd, outHitInfo))
-    {
-        return true;
-    }
-
-    return false;
+    return CheckRaycastPair(level, botRayStart, botRayEnd, topRayStart, topRayEnd, collisionAxis, outHitInfo);
 }
 
-bool Player::CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const
+bool Player::CheckIfOnGround(const Level &level, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
-
-    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + 1.f};
-    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y - inset};
-    if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
-    {
-        return true;
-    }
-
-    const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y + 1.f};
-    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y - inset};
-    if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
-    {
-        return true;
-    }
-
-    return false;
+    return CheckIfHitsFloor(level, -inset, outHitInfo);
 }
 
-bool Player::CheckIfInsideCeiling(const Level &level, utils::HitInfo &outHitInfo) const
+bool Player::CheckIfHitsFloor(const Level &level, float movementY, utils::HitInfo &outHitInfo) const
 {
     const float inset{1.f / m_CellSize};
+    const Vector2f collisionAxis{0.f, 1.f};
 
-    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y};
-    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + 1.f + inset};
-    if (CheckRaycast(level, leftRayStart, leftRayEnd, outHitInfo))
-    {
-        return true;
-    }
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + inset};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + movementY - inset};
+    const Vector2f rightRayStart{m_Position.x + 1.f - inset, m_Position.y + inset};
+    const Vector2f rightRayEnd{m_Position.x + 1.f - inset, m_Position.y + movementY - inset};
 
-    const Vector2f rightRayStart{leftRayStart.x + 1.f - inset, m_Position.y};
-    const Vector2f rightRayEnd{leftRayEnd.x + 1.f - inset, m_Position.y + 1.f + inset};
-    if (CheckRaycast(level, rightRayStart, rightRayEnd, outHitInfo))
-    {
-        return true;
-    }
-
-    return false;
+    return CheckRaycastPair(level, leftRayStart, leftRayEnd, rightRayStart, rightRayEnd, collisionAxis, outHitInfo);
 }
 
-bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end,
+bool Player::CheckIfHitsCeiling(const Level &level, float movementY, utils::HitInfo &outHitInfo) const
+{
+    const float inset{1.f / m_CellSize};
+    const Vector2f collisionAxis{0.f, 1.f};
+
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + 1.f - inset};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + 1.f + movementY + inset};
+    const Vector2f rightRayStart{m_Position.x + 1.f - inset, m_Position.y + 1.f - inset};
+    const Vector2f rightRayEnd{m_Position.x + 1.f - inset, m_Position.y + 1.f + movementY + inset};
+
+    return CheckRaycastPair(level, leftRayStart, leftRayEnd, rightRayStart, rightRayEnd, collisionAxis, outHitInfo);
+}
+
+bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, const Vector2f &collisionAxis,
                           utils::HitInfo &outHitInfo) const
 {
     GizmoManager::LineGizmo gizmo{};
     gizmo.start = start;
     gizmo.end = end;
     m_GizmoManager.QueueGizmo(gizmo);
-    return RaycastAgainstLevel(start, end, level.GetColliders(), outHitInfo);
+    return RaycastAgainstLevel(start, end, level.GetColliders(), collisionAxis, outHitInfo);
+}
+
+bool Player::CheckRaycastPair(const Level &level, const Vector2f &firstStart, const Vector2f &firstEnd,
+                              const Vector2f &secondStart, const Vector2f &secondEnd, const Vector2f &collisionAxis,
+                              utils::HitInfo &outHitInfo) const
+{
+    const bool firstHit{CheckRaycast(level, firstStart, firstEnd, collisionAxis, outHitInfo)};
+
+    utils::HitInfo secondHit{};
+    const bool secondHasHit{CheckRaycast(level, secondStart, secondEnd, collisionAxis, secondHit)};
+    if (secondHasHit && (!firstHit || secondHit.lambda < outHitInfo.lambda))
+    {
+        outHitInfo = secondHit;
+    }
+
+    return firstHit || secondHasHit;
 }

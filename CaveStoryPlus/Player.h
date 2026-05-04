@@ -51,13 +51,18 @@ class Player
     void HoldWeapon(Weapon *pWeapon);
 
     bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,
-                             utils::HitInfo &outHitInfo) const;
+                             const Vector2f &collisionAxis, utils::HitInfo &outHitInfo) const;
 
-    bool CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, utils::HitInfo &outHitInfo) const;
-    bool CheckIfInsideFloor(const Level &level, utils::HitInfo &outHitInfo) const;
-    bool CheckIfInsideCeiling(const Level &level, utils::HitInfo &outHitInfo) const;
-    bool CheckIfLeftInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
-    bool CheckIfRightInWall(const Level &level, float positionX, utils::HitInfo &outHitInfo) const;
+    bool CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, const Vector2f &collisionAxis,
+                      utils::HitInfo &outHitInfo) const;
+    bool CheckRaycastPair(const Level &level, const Vector2f &firstStart, const Vector2f &firstEnd,
+                          const Vector2f &secondStart, const Vector2f &secondEnd, const Vector2f &collisionAxis,
+                          utils::HitInfo &outHitInfo) const;
+    bool CheckIfOnGround(const Level &level, utils::HitInfo &outHitInfo) const;
+    bool CheckIfHitsFloor(const Level &level, float movementY, utils::HitInfo &outHitInfo) const;
+    bool CheckIfHitsCeiling(const Level &level, float movementY, utils::HitInfo &outHitInfo) const;
+    bool CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
+    bool CheckIfHitsRightWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
 
     constexpr static float m_CellSize{32.f};
     constexpr static float m_TimePerFrame{0.15f};
