@@ -2,7 +2,7 @@
 #include "BaseGame.h"
 #include "Camera.h"
 
-#include <SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 
 constexpr float g_ScreenWidth{1280.f};
 constexpr float g_ScreenHeight{720.f};

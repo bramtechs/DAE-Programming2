@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "Game.h"
 #include "Camera.h"
 #include "DialogManager.h"
@@ -8,7 +10,6 @@
 #include "PlayerGUI.h"
 #include "SDL_keycode.h"
 #include "TextManager.h"
-#include "pch.h"
 
 Vector2f Game::m_LastMousePos{};
 

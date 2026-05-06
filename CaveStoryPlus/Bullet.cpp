@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Bullet.h"
 #include "SDL_opengl.h"
 #include "Texture.h"
@@ -20,7 +21,7 @@ void Bullet::SetVelocityFromAngle(float angleRadians, float speed)
     m_Velocity.y = std::sin(angleRadians) * speed;
 }
 
-void Bullet::SetDamage(float damage)
+void Bullet::SetDamage(int damage)
 {
     m_Damage = damage;
 }

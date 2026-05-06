@@ -1,6 +1,7 @@
 #pragma once
-#include "SDL_ttf.h"
 #include "pch.h"
+
+#include <SDL2/SDL_ttf.h>
 #include <vector>
 
 class Texture;

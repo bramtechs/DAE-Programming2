@@ -1,7 +1,8 @@
+#include "pch.h"
 #include "TextManager.h"
 #include "Texture.h"
 
-#include <SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
 TextManager::TextManager()

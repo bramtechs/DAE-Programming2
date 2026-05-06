@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DoorInteractable.h"
 #include "Game.h"
 #include "LevelBuilder.h"

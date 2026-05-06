@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DialogMessage.h"
 #include "Texture.h"
 #include "structs.h"

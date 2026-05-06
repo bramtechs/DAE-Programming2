@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LifeCapsuleInteractable.h"
 #include "DialogManager.h"
 #include "Game.h"

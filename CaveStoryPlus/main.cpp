@@ -5,7 +5,7 @@
 void StartHeapControl();
 void DumpMemoryLeaks();
 
-#if WIN32
+#ifdef WIN32
 int SDL_main(int argv, char **args)
 #else
 int main(int argv, char **args)

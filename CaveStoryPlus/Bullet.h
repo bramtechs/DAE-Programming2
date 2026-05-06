@@ -16,7 +16,7 @@ class Bullet
     void SetVelocity(const Vector2f &velocity);
     void SetVelocityFromAngle(float angleRadians, float speed);
 
-    void SetDamage(float damage);
+    void SetDamage(int damage);
     void SetSourceRegion(const Rectf &region);
 
     void SetScale(float scale);

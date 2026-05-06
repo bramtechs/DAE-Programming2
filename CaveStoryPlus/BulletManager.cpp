@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "BulletManager.h"
 #include "Bullet.h"
 #include "Enemy.h"
@@ -51,7 +52,7 @@ void BulletManager::SpawnPolarStarBullet(const Vector2f &pos, float shootAngle)
 {
     Bullet bullet{pos};
     bullet.SetVelocityFromAngle(shootAngle, 16.f);
-    bullet.SetDamage(1.f);
+    bullet.SetDamage(1);
     bullet.SetScale(0.025f);
     bullet.SetSourceRegion(Rectf{256.f, 78.f, 32.f, 4.f});
 

@@ -1,10 +1,10 @@
 #pragma once
 #include "TextManager.h"
+#include "Vector2f.h"
 #include <initializer_list>
 #include <string>
 #include <vector>
 
-class Vector2f;
 class DialogMessage
 {
   public:

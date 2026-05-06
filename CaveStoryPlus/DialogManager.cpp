@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DialogManager.h"
 #include "DialogMessage.h"
 

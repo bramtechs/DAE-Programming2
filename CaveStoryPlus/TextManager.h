@@ -1,6 +1,6 @@
 #pragma once
 #include "structs.h"
-#include <SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 
 class Texture;

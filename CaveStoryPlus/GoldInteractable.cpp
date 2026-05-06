@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "GoldInteractable.h"
 #include "Texture.h"
 #include "Vector2f.h"
