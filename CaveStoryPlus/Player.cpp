@@ -21,6 +21,7 @@ Player::Player()
 Player::~Player()
 {
     delete m_pSpriteSheet;
+    delete m_pHeldWeapon;
 }
 
 void Player::Update(float delta, const Level &level)

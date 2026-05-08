@@ -74,6 +74,7 @@ void Level::InteractWithInteractables(const Player &player, Game &game, bool hol
 
             if (shouldDestroy)
             {
+                delete *it;
                 it = m_Interactables.erase(it);
                 continue;
             }

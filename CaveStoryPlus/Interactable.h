@@ -12,6 +12,12 @@ class Interactable
     explicit Interactable(const Vector2f &cell, const float size);
     virtual ~Interactable();
 
+    Interactable(const Interactable &) = delete;
+    Interactable& operator=(const Interactable &) = delete;
+
+    Interactable(Interactable &&) = delete;
+    Interactable &operator=(Interactable &&) = delete;
+
     bool IsInside(const Player &player) const;
 
     virtual void Update(float delta) = 0;
