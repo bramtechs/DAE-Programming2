@@ -760,4 +760,10 @@ float utils::SineBetween(float x, float cycleDuration, float min, float max)
     return utils::SineWave(x, halfLength, stretch, 0.f, min + halfLength);
 }
 
+float utils::RandomFloat(float min, float max)
+{
+    const float value{rand() / static_cast<float>(RAND_MAX)};
+    return value * (max - min) + min;
+}
+
 #pragma endregion

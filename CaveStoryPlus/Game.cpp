@@ -1,9 +1,9 @@
 #include "pch.h"
 
-#include "Game.h"
 #include "Camera.h"
 #include "DialogManager.h"
 #include "Editor.h"
+#include "Game.h"
 #include "Level.h"
 #include "LevelBuilder.h"
 #include "Player.h"
@@ -65,6 +65,10 @@ void Game::Update(float elapsedSec)
             if (m_pActiveLevel)
             {
                 m_pPlayer->Update(elapsedSec, *m_pActiveLevel);
+                if (m_pActiveLevel)
+                {
+                    m_pActiveLevel->InteractWithInteractables(*m_pPlayer, *this, false);
+                }
             }
         }
         m_pDialogManager->Update(elapsedSec);
@@ -132,7 +136,7 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
         {
             if (m_pActiveLevel)
             {
-                m_pActiveLevel->TriggerInteractables(*this);
+                m_pActiveLevel->InteractWithInteractables(*m_pPlayer, *this, true);
             }
         }
         m_pPlayer->HandleKeyDownEvent(e, m_pActiveLevel->GetBulletManager());

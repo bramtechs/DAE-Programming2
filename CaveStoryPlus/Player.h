@@ -34,6 +34,8 @@ class Player
 
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
 
+    void AddGold(int amount = 1);
+
   private:
     enum class AnimState
     {
@@ -63,7 +65,7 @@ class Player
     bool CheckIfHitsCeiling(const Level &level, float movementY, utils::HitInfo &outHitInfo) const;
     bool CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
     bool CheckIfHitsRightWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
-    
+
     constexpr static float m_HitboxHeight{0.8f};
     constexpr static float m_HitboxWidth{0.75f};
     constexpr static float m_CellSize{32.f};
@@ -74,9 +76,14 @@ class Player
     // time to hold space for maximum jump power
     constexpr static float m_JumpWindow{0.5f};
 
-    Texture *m_pSpriteSheet{};
     Vector2f m_Position{0.f, 0.f};
     Vector2f m_Velocity{};
+    
+    Texture *m_pSpriteSheet{};
+    AnimState m_CurrentAnimationState{AnimState::idle};
+    Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
+    Weapon *m_pHeldWeapon{};
+    
     float m_HorizontalMoveForce{24.f};
     float m_MaxHorizontalVelocity{4.f};
     float m_DragForce{20.f};
@@ -84,15 +91,15 @@ class Player
     float m_Gravity{9.81f};
     float m_AnimTimer{0.f};
     float m_JumpWindowTimer{0.1f};
-    AnimState m_CurrentAnimationState{AnimState::idle};
-    int m_CurrentAnimationFrame{};
-    Weapon *m_pHeldWeapon{};
-    Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
-    mutable GizmoManager m_GizmoManager{};
 
-    bool m_LookingLeft{};
-    bool m_IsHoldingJump{};
-    bool m_IsHoldingLeft{};
-    bool m_IsHoldingRight{};
-    bool m_IsOnGround{};
+    int m_CurrentAnimationFrame{};
+    int m_Gold{};
+    int m_MaxHealth{3};
+    int m_Health{m_MaxHealth};
+
+    bool m_LookingLeft : 1;
+    bool m_IsHoldingJump : 1;
+    bool m_IsHoldingLeft : 1;
+    bool m_IsHoldingRight : 1;
+    bool m_IsOnGround : 1;
 };

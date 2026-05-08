@@ -34,6 +34,8 @@ class PolygonCollider
 
     Signal ProcessKeyDownEvent(const SDL_KeyboardEvent &e);
 
+    bool Overlaps(const Circlef &circle) const;
+
     const std::vector<Vector2f> &GetPolygon() const
     {
         return m_Vertices;

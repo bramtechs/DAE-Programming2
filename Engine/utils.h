@@ -138,6 +138,8 @@ template <typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>>
 float SineWave(float x, float amplitude, float stretch, float phaseShift, float offsetY);
 float SineBetween(float x, float cycleDuration, float min, float max);
 
+float RandomFloat(float min, float max);
+
 constexpr Color4f ColorRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     Color4f col{};

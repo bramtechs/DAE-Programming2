@@ -18,7 +18,7 @@ void DoorInteractable::Draw() const
 {
 }
 
-bool DoorInteractable::Interact(Game &game)
+bool DoorInteractable::OnInteract(Game &game)
 {
     LevelBuilder builder{};
     game.SwitchLevel(m_LevelBuilderFunc());

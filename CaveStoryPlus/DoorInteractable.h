@@ -13,7 +13,7 @@ class DoorInteractable final : public Interactable
 
     void Draw() const override;
 
-    bool Interact(Game &game) override;
+    bool OnInteract(Game &game) override;
 
   private:
     const std::function<Level *()> m_LevelBuilderFunc;

@@ -41,3 +41,19 @@ void Interactable::DrawDebug() const
     utils::SetColor(Color4f(0.f, 1.f, 1.f, 1.f));
     utils::DrawRect(m_Region, 2.f);
 }
+
+void Interactable::Translate(const Vector2f &offset)
+{
+    m_Region.left += offset.x;
+    m_Region.bottom += offset.y;
+}
+
+Rectf Interactable::GetRegion() const
+{
+    return m_Region;
+}
+
+Vector2f Interactable::GetCenter() const
+{
+    return Vector2f{m_Region.left + m_Region.width * 0.5f, m_Region.bottom + m_Region.height * 0.5f};
+}

@@ -31,7 +31,7 @@ class Level
     void SpawnEnemy(Enemy *pEnemy);
     void SpawnInteractable(Interactable *pInteractable);
 
-    void TriggerInteractables(Game &game);
+    void InteractWithInteractables(const Player &player, Game &game, bool holdingInteractKey);
 
     const std::vector<PolygonCollider> &GetColliders() const
     {

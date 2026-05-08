@@ -140,3 +140,8 @@ PolygonCollider::Signal PolygonCollider::ProcessKeyDownEvent(const SDL_KeyboardE
 	}
 	return Signal::none;
 }
+
+bool PolygonCollider::Overlaps(const Circlef &circle) const
+{
+    return utils::IsOverlapping(m_Vertices, circle);
+}

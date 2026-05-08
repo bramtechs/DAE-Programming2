@@ -55,15 +55,31 @@ void Level::SpawnInteractable(Interactable *pInteractable)
     m_Interactables.emplace_back(pInteractable);
 }
 
-void Level::TriggerInteractables(Game &game)
+void Level::InteractWithInteractables(const Player &player, Game &game, bool holdingInteractKey)
 {
-    for (int i{}; i < m_Interactables.size(); ++i)
+    auto it{m_Interactables.begin()};
+    while (it != m_Interactables.end())
     {
-        if (m_Interactables[i]->IsInside(*game.GetPlayer()))
+        if ((*it)->IsInside(player))
         {
-            m_Interactables[i]->Interact(game);
-            break;
+            bool shouldDestroy{};
+            if (holdingInteractKey)
+            {
+                shouldDestroy = (*it)->OnInteract(game);
+            }
+            else
+            {
+                shouldDestroy = (*it)->OnTouch(game);
+            }
+
+            if (shouldDestroy)
+            {
+                it = m_Interactables.erase(it);
+                continue;
+            }
         }
+
+        ++it;
     }
 }
 
@@ -78,7 +94,7 @@ void Level::Update(float delta, Player &player)
         pEnemy->Update(delta);
         if (m_BulletManager.InteractWithEnemy(*pEnemy))
         {
-            SpawnInteractable(new GoldInteractable(pEnemy->GetPosition()));
+            SpawnInteractable(new GoldInteractable(pEnemy->GetPosition(), *this));
 
             // when killed the enemy
             delete *it;

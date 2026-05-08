@@ -16,19 +16,33 @@ class Interactable
 
     virtual void Update(float delta) = 0;
     virtual void Draw() const = 0;
-    virtual bool Interact(Game &game) = 0;
+
+    // returns bool if consumed, should be destroyed
+    virtual bool OnInteract(Game &game) = 0;
+
+    // returns bool if consumed, should be destroyed
+    virtual bool OnTouch(Game & /*game*/)
+    {
+        return false;
+    }
 
     void DrawDebug() const;
 
-    Rectf GetRegion() const
-    {
-        return m_Region;
-    }
+    void Translate(const Vector2f &offset);
+
+    Rectf GetRegion() const;
+
+    Vector2f GetCenter() const;
 
   protected:
     const Texture &GetSpriteSheetTexture() const
     {
         return *m_pSpriteSheetTexture;
+    }
+
+    void SetRegion(const Rectf &region)
+    {
+        m_Region = region;
     }
 
   private:

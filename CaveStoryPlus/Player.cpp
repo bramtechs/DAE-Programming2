@@ -11,7 +11,9 @@
 #include <cassert>
 #include <iostream>
 
-Player::Player() : m_pSpriteSheet(new Texture("player.png"))
+Player::Player()
+    : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsHoldingJump(), m_IsHoldingLeft(),
+      m_IsHoldingRight(), m_IsOnGround()
 {
     HoldWeapon(new PolarStar());
 }
@@ -142,8 +144,6 @@ void Player::Draw() const
     utils::SetColor(Color4f{0.2f, 0.2f, 1.f, 1.f});
     utils::FillRect(utils::RectWithCenter(m_Position, 0.1f));
 
-    m_GizmoManager.FlushAndDraw();
-
     if (m_pHeldWeapon)
     {
         m_pHeldWeapon->Draw(GetHandPosition(), m_WeaponOrientation);
@@ -265,6 +265,11 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
     default:
         break;
     }
+}
+
+void Player::AddGold(int amount)
+{
+    m_Gold += amount;
 }
 
 void Player::ProcessAnimationFrames(float delta)
@@ -426,10 +431,12 @@ bool Player::CheckIfHitsCeiling(const Level &level, float movementY, utils::HitI
 bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, const Vector2f &collisionAxis,
                           utils::HitInfo &outHitInfo) const
 {
+    /*
     GizmoManager::LineGizmo gizmo{};
     gizmo.start = start;
     gizmo.end = end;
     m_GizmoManager.QueueGizmo(gizmo);
+    */
     return RaycastAgainstLevel(start, end, level.GetColliders(), collisionAxis, outHitInfo);
 }
 

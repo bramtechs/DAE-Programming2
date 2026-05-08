@@ -9,7 +9,7 @@ class LifeCapsuleInteractable final : public Interactable
     void Update(float delta) override;
     void Draw() const override;
 
-    bool Interact(Game &game) override;
+    bool OnInteract(Game &game) override;
 
   private:
     Rectf GetAnimationSource(int frame) const;
