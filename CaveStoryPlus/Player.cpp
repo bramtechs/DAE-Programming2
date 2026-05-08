@@ -23,8 +23,6 @@ Player::~Player()
 
 void Player::Update(float delta, const Level &level)
 {
-    const float inset{1.f / m_CellSize};
-
     if (m_IsHoldingRight)
     {
         // when going in opposite direction add more velocity for tighter movement
@@ -56,6 +54,7 @@ void Player::Update(float delta, const Level &level)
     utils::HitInfo hit{};
 
     const float movementX{m_Velocity.x * delta};
+    const float inset{m_HitboxWidth / m_CellSize};
     if (movementX < 0.f && CheckIfHitsLeftWall(level, movementX, hit))
     {
         m_Velocity.x = 0.f;
@@ -64,7 +63,7 @@ void Player::Update(float delta, const Level &level)
     else if (movementX > 0.f && CheckIfHitsRightWall(level, movementX, hit))
     {
         m_Velocity.x = 0.f;
-        m_Position.x = hit.intersectPoint.x - 1.f - inset;
+        m_Position.x = hit.intersectPoint.x - m_HitboxWidth - inset;
     }
     else
     {
@@ -86,7 +85,7 @@ void Player::Update(float delta, const Level &level)
     {
         m_IsOnGround = false;
         m_Velocity.y = 0.f;
-        m_Position.y = hit.intersectPoint.y - 1.f - inset;
+        m_Position.y = hit.intersectPoint.y - m_HitboxHeight - inset;
     }
     else
     {
@@ -121,7 +120,7 @@ void Player::Update(float delta, const Level &level)
             m_Velocity.y += m_JumpForce * delta * 2.3f;
             if (m_IsOnGround)
             {
-                m_Position.y += 1.f / g_TileSize * 2.f; // ensure not in ground
+                m_Position.y += m_HitboxHeight / g_TileSize * 2.f; // ensure not in ground
             }
         }
     }
@@ -368,26 +367,26 @@ bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
 
 bool Player::CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const
 {
-    const float inset{1.f / m_CellSize};
+    const float inset{m_HitboxWidth / m_CellSize};
     const Vector2f collisionAxis{1.f, 0.f};
 
     const Vector2f botRayStart{m_Position.x + inset, m_Position.y + inset};
     const Vector2f botRayEnd{m_Position.x + movementX - inset, m_Position.y + inset};
-    const Vector2f topRayStart{m_Position.x + inset, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{m_Position.x + movementX - inset, m_Position.y + 1.f - inset};
+    const Vector2f topRayStart{m_Position.x + inset, m_Position.y + m_HitboxHeight - inset};
+    const Vector2f topRayEnd{m_Position.x + movementX - inset, m_Position.y + m_HitboxHeight - inset};
 
     return CheckRaycastPair(level, botRayStart, botRayEnd, topRayStart, topRayEnd, collisionAxis, outHitInfo);
 }
 
 bool Player::CheckIfHitsRightWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const
 {
-    const float inset{1.f / m_CellSize};
+    const float inset{m_HitboxWidth / m_CellSize};
     const Vector2f collisionAxis{1.f, 0.f};
 
-    const Vector2f botRayStart{m_Position.x + 1.f - inset, m_Position.y + inset};
-    const Vector2f botRayEnd{m_Position.x + 1.f + movementX + inset, m_Position.y + inset};
-    const Vector2f topRayStart{m_Position.x + 1.f - inset, m_Position.y + 1.f - inset};
-    const Vector2f topRayEnd{m_Position.x + 1.f + movementX + inset, m_Position.y + 1.f - inset};
+    const Vector2f botRayStart{m_Position.x + m_HitboxWidth - inset, m_Position.y + inset};
+    const Vector2f botRayEnd{m_Position.x + m_HitboxWidth + movementX + inset, m_Position.y + inset};
+    const Vector2f topRayStart{m_Position.x + m_HitboxWidth - inset, m_Position.y + m_HitboxHeight - inset};
+    const Vector2f topRayEnd{m_Position.x + m_HitboxWidth + movementX + inset, m_Position.y + m_HitboxHeight - inset};
 
     return CheckRaycastPair(level, botRayStart, botRayEnd, topRayStart, topRayEnd, collisionAxis, outHitInfo);
 }
@@ -400,13 +399,13 @@ bool Player::CheckIfOnGround(const Level &level, utils::HitInfo &outHitInfo) con
 
 bool Player::CheckIfHitsFloor(const Level &level, float movementY, utils::HitInfo &outHitInfo) const
 {
-    const float inset{1.f / m_CellSize};
+    const float inset{m_HitboxWidth / m_CellSize};
     const Vector2f collisionAxis{0.f, 1.f};
 
     const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + inset};
     const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + movementY - inset};
-    const Vector2f rightRayStart{m_Position.x + 1.f - inset, m_Position.y + inset};
-    const Vector2f rightRayEnd{m_Position.x + 1.f - inset, m_Position.y + movementY - inset};
+    const Vector2f rightRayStart{m_Position.x + m_HitboxWidth - inset, m_Position.y + inset};
+    const Vector2f rightRayEnd{m_Position.x + m_HitboxWidth - inset, m_Position.y + movementY - inset};
 
     return CheckRaycastPair(level, leftRayStart, leftRayEnd, rightRayStart, rightRayEnd, collisionAxis, outHitInfo);
 }
@@ -416,10 +415,10 @@ bool Player::CheckIfHitsCeiling(const Level &level, float movementY, utils::HitI
     const float inset{1.f / m_CellSize};
     const Vector2f collisionAxis{0.f, 1.f};
 
-    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + 1.f - inset};
-    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + 1.f + movementY + inset};
-    const Vector2f rightRayStart{m_Position.x + 1.f - inset, m_Position.y + 1.f - inset};
-    const Vector2f rightRayEnd{m_Position.x + 1.f - inset, m_Position.y + 1.f + movementY + inset};
+    const Vector2f leftRayStart{m_Position.x + inset, m_Position.y + m_HitboxHeight - inset};
+    const Vector2f leftRayEnd{m_Position.x + inset, m_Position.y + m_HitboxHeight + movementY + inset};
+    const Vector2f rightRayStart{m_Position.x + m_HitboxWidth - inset, m_Position.y + m_HitboxHeight - inset};
+    const Vector2f rightRayEnd{m_Position.x + m_HitboxWidth - inset, m_Position.y + m_HitboxHeight + movementY + inset};
 
     return CheckRaycastPair(level, leftRayStart, leftRayEnd, rightRayStart, rightRayEnd, collisionAxis, outHitInfo);
 }

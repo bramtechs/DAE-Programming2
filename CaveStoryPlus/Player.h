@@ -63,7 +63,9 @@ class Player
     bool CheckIfHitsCeiling(const Level &level, float movementY, utils::HitInfo &outHitInfo) const;
     bool CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
     bool CheckIfHitsRightWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
-
+    
+    constexpr static float m_HitboxHeight{0.8f};
+    constexpr static float m_HitboxWidth{0.75f};
     constexpr static float m_CellSize{32.f};
     constexpr static float m_TimePerFrame{0.15f};
     constexpr static int m_SpriteSheetCols{11};
@@ -78,7 +80,7 @@ class Player
     float m_HorizontalMoveForce{24.f};
     float m_MaxHorizontalVelocity{4.f};
     float m_DragForce{20.f};
-    float m_JumpForce{4.0f};
+    float m_JumpForce{4.5f};
     float m_Gravity{9.81f};
     float m_AnimTimer{0.f};
     float m_JumpWindowTimer{0.1f};
