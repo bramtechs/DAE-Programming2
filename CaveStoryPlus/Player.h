@@ -16,7 +16,7 @@ class Player
     Player();
     ~Player();
 
-    void Update(float delta, const Level &level);
+    void Update(float delta, Level &level);
     void Draw() const;
 
     void SetPosition(const Vector2f &pos);
@@ -30,7 +30,7 @@ class Player
 
     Rectf GetRegion() const;
 
-    void HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulletManager);
+    void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
 
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
 
@@ -78,12 +78,12 @@ class Player
 
     Vector2f m_Position{0.f, 0.f};
     Vector2f m_Velocity{};
-    
+
     Texture *m_pSpriteSheet{};
     AnimState m_CurrentAnimationState{AnimState::idle};
     Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
     Weapon *m_pHeldWeapon{};
-    
+
     float m_HorizontalMoveForce{24.f};
     float m_MaxHorizontalVelocity{4.f};
     float m_DragForce{20.f};
@@ -91,15 +91,13 @@ class Player
     float m_Gravity{9.81f};
     float m_AnimTimer{0.f};
     float m_JumpWindowTimer{0.1f};
+    float m_LastShootTimer{};
 
     int m_CurrentAnimationFrame{};
     int m_Gold{};
     int m_MaxHealth{3};
     int m_Health{m_MaxHealth};
 
-    bool m_LookingLeft : 1;
-    bool m_IsHoldingJump : 1;
-    bool m_IsHoldingLeft : 1;
-    bool m_IsHoldingRight : 1;
-    bool m_IsOnGround : 1;
+    bool m_LookingLeft{};
+    bool m_IsOnGround{};
 };

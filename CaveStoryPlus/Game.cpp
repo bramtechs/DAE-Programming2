@@ -139,7 +139,7 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
                 m_pActiveLevel->InteractWithInteractables(*m_pPlayer, *this, true);
             }
         }
-        m_pPlayer->HandleKeyDownEvent(e, m_pActiveLevel->GetBulletManager());
+        m_pPlayer->HandleKeyDownEvent(e);
     }
 
     if (m_pEditor)

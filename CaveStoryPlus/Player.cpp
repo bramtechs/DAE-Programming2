@@ -1,8 +1,9 @@
 #include "Player.h"
+#include "BulletManager.h"
 #include "Game.h"
-#include "GizmoManager.h"
 #include "Level.h"
 #include "PolarStar.h"
+#include "SDL_keyboard.h"
 #include "Texture.h"
 #include "Weapon.h"
 #include "pch.h"
@@ -11,9 +12,7 @@
 #include <cassert>
 #include <iostream>
 
-Player::Player()
-    : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsHoldingJump(), m_IsHoldingLeft(),
-      m_IsHoldingRight(), m_IsOnGround()
+Player::Player() : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsOnGround()
 {
     HoldWeapon(new PolarStar());
 }
@@ -24,26 +23,33 @@ Player::~Player()
     delete m_pHeldWeapon;
 }
 
-void Player::Update(float delta, const Level &level)
+void Player::Update(float delta, Level &level)
 {
-    if (m_IsHoldingRight)
+    const Uint8 *const pStates{SDL_GetKeyboardState(nullptr)};
+    bool holdingLeft{};
+    bool holdingRight{};
+    if (pStates[SDL_SCANCODE_RIGHT] || pStates[SDL_SCANCODE_D])
     {
         // when going in opposite direction add more velocity for tighter movement
         const float boost{m_Velocity.x < 0.f ? 2.f : 1.f};
         m_Velocity.x = std::min(m_MaxHorizontalVelocity, m_Velocity.x + m_HorizontalMoveForce * delta * boost);
         m_LookingLeft = false;
         m_CurrentAnimationState = AnimState::walking;
+        m_WeaponOrientation = Weapon::Orientation::east;
+        holdingRight = true;
     }
 
-    if (m_IsHoldingLeft)
+    if (pStates[SDL_SCANCODE_LEFT] || pStates[SDL_SCANCODE_A])
     {
         const float boost{m_Velocity.x > 0.f ? 2.f : 1.f};
         m_Velocity.x = std::max(-m_MaxHorizontalVelocity, m_Velocity.x - m_HorizontalMoveForce * delta * boost);
         m_LookingLeft = true;
         m_CurrentAnimationState = AnimState::walking;
+        m_WeaponOrientation = Weapon::Orientation::west;
+        holdingLeft = true;
     }
 
-    const bool movingHorizontal{m_IsHoldingLeft || m_IsHoldingRight};
+    const bool movingHorizontal{holdingLeft || holdingRight};
     if (!movingHorizontal)
     {
         m_Velocity.x = utils::EaseTowards(m_Velocity.x, 0.f, delta * m_DragForce);
@@ -118,7 +124,7 @@ void Player::Update(float delta, const Level &level)
     {
         m_JumpWindowTimer -= delta;
 
-        if (m_IsHoldingJump)
+        if (pStates[SDL_SCANCODE_SPACE] || pStates[SDL_SCANCODE_Z])
         {
             m_Velocity.y += m_JumpForce * delta * 2.3f;
             if (m_IsOnGround)
@@ -129,6 +135,17 @@ void Player::Update(float delta, const Level &level)
     }
 
     ProcessAnimationFrames(delta);
+
+    if (pStates[SDL_SCANCODE_X])
+    {
+        if (m_pHeldWeapon && m_LastShootTimer > m_pHeldWeapon->GetShootIntervalSeconds())
+        {
+            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation, level.GetBulletManager());
+            m_LastShootTimer = 0.f;
+        }
+    }
+
+    m_LastShootTimer += delta;
 }
 
 void Player::Draw() const
@@ -190,20 +207,10 @@ void Player::HoldWeapon(Weapon *pWeapon)
     m_pHeldWeapon = pWeapon;
 }
 
-void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulletManager)
+void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
-    case SDLK_d:
-    case SDLK_RIGHT:
-        m_IsHoldingRight = true;
-        m_WeaponOrientation = Weapon::Orientation::east;
-        break;
-    case SDLK_a:
-    case SDLK_LEFT:
-        m_IsHoldingLeft = true;
-        m_WeaponOrientation = Weapon::Orientation::west;
-        break;
     case SDLK_UP:
     case SDLK_w:
         m_WeaponOrientation = Weapon::Orientation::north;
@@ -214,18 +221,11 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e, BulletManager &bulle
         break;
     case SDLK_z:
     case SDLK_SPACE:
-        m_IsHoldingJump = true;
         if (m_IsOnGround)
         {
             // apply initial jump impulse
             m_Velocity.y += m_JumpForce;
             m_JumpWindowTimer = m_JumpWindow;
-        }
-        break;
-    case SDLK_x:
-        if (m_pHeldWeapon)
-        {
-            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation, bulletManager);
         }
         break;
     default:
@@ -237,14 +237,6 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
-    case SDLK_d:
-    case SDLK_RIGHT:
-        m_IsHoldingRight = false;
-        break;
-    case SDLK_a:
-    case SDLK_LEFT:
-        m_IsHoldingLeft = false;
-        break;
     case SDLK_w:
     case SDLK_UP:
         if (m_WeaponOrientation == Weapon::Orientation::north)
@@ -258,10 +250,6 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
         {
             m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
         }
-        break;
-    case SDLK_SPACE:
-    case SDLK_z:
-        m_IsHoldingJump = false;
         break;
     default:
         break;

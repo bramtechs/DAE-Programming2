@@ -17,4 +17,6 @@ class Weapon
 
     virtual void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager) = 0;
     virtual void Draw(const Vector2f &handPos, Orientation orientation) const = 0;
+
+    virtual float GetShootIntervalSeconds() const = 0;
 };

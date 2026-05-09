@@ -17,6 +17,11 @@ class PolarStar final : public Weapon
     void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager) override;
     void Draw(const Vector2f &handPos, Orientation orientation) const override;
 
+    float GetShootIntervalSeconds() const override
+    {
+        return 0.2f;
+    }
+
   private:
     Texture *m_pTexture;
 };
