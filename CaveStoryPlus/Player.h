@@ -34,6 +34,8 @@ class Player
 
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
 
+    void DealDamage(int amount);
+
     void AddGold(int amount = 1);
 
   private:

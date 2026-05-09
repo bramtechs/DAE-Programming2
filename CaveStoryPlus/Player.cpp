@@ -256,6 +256,11 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
     }
 }
 
+void Player::DealDamage(int damage)
+{
+    m_Health -= damage;
+}
+
 void Player::AddGold(int amount)
 {
     m_Gold += amount;

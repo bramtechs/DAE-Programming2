@@ -32,14 +32,14 @@ Level::~Level()
 {
     delete m_pFullTexture;
 
-    for (int i{}; i < m_Enemies.size(); ++i)
+    for (Enemy *pEnemy : m_Enemies)
     {
-        delete m_Enemies[i];
+        delete pEnemy;
     }
 
-    for (int i{}; i < m_Interactables.size(); ++i)
+    for (Interactable *pInteractable : m_Interactables)
     {
-        delete m_Interactables[i];
+        delete pInteractable;
     }
 }
 

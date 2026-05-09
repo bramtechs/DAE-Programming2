@@ -13,7 +13,7 @@ class Interactable
     virtual ~Interactable();
 
     Interactable(const Interactable &) = delete;
-    Interactable& operator=(const Interactable &) = delete;
+    Interactable &operator=(const Interactable &) = delete;
 
     Interactable(Interactable &&) = delete;
     Interactable &operator=(Interactable &&) = delete;
@@ -24,7 +24,10 @@ class Interactable
     virtual void Draw() const = 0;
 
     // returns bool if consumed, should be destroyed
-    virtual bool OnInteract(Game &game) = 0;
+    virtual bool OnInteract(Game &game)
+    {
+        return false;
+    }
 
     // returns bool if consumed, should be destroyed
     virtual bool OnTouch(Game & /*game*/)

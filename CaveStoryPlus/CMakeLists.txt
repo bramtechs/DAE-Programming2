@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(CaveStoryPlus CXX)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME}
@@ -30,6 +30,8 @@ add_executable(${PROJECT_NAME}
   GizmoManager.cpp
   Interactable.h
   Interactable.cpp
+  SpikeInteractable.cpp
+  SpikeInteractable.h
   DialogManager.cpp
   DialogManager.h
   DialogMessage.cpp

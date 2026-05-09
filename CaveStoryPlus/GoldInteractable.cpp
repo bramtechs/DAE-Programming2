@@ -47,11 +47,6 @@ void GoldInteractable::Draw() const
     GetSpriteSheetTexture().Draw(GetRegion(), srcRect);
 }
 
-bool GoldInteractable::OnInteract(Game &game)
-{
-    return true;
-}
-
 bool GoldInteractable::OnTouch(Game &game)
 {
     game.GetPlayer()->AddGold();

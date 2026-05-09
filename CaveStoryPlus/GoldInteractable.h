@@ -12,8 +12,7 @@ class GoldInteractable final : public Interactable
 
     void Draw() const override;
 
-    bool OnInteract(Game &game) override;
-    bool OnTouch(Game& game) override;
+    bool OnTouch(Game &game) override;
 
   private:
     Rectf GetAnimationFrameSource() const;
