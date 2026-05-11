@@ -8,4 +8,7 @@ class LevelBuilder
     static Level *BuildCaveLevel();
 
     static Level *BuildHermitGunsmithLevel();
+
+  private:
+    LevelBuilder() = delete;
 };

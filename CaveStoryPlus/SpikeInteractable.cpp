@@ -4,7 +4,7 @@
 #include "pch.h"
 
 SpikeInteractable::SpikeInteractable(const Vector2f &cell, Orientation orientation)
-    : Interactable(cell), m_Orientation(orientation)
+    : Interactable(cell, 0.6f), m_Orientation(orientation)
 {
 }
 
@@ -14,7 +14,7 @@ void SpikeInteractable::Update(float delta)
 
 void SpikeInteractable::Draw() const
 {
-    GetSpriteSheetTexture().Draw(GetRegion(), GetSourceRegion());
+    GetSpriteSheetTexture().Draw(GetTileRegion(), GetSourceRegion());
 }
 
 bool SpikeInteractable::OnTouch(Game &game)

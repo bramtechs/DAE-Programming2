@@ -1,7 +1,6 @@
-#include "pch.h"
 #include "DoorInteractable.h"
 #include "Game.h"
-#include "LevelBuilder.h"
+#include "pch.h"
 #include <cassert>
 
 DoorInteractable::DoorInteractable(const Vector2f &cell, const std::function<Level *()> &levelBuilder)
@@ -20,7 +19,6 @@ void DoorInteractable::Draw() const
 
 bool DoorInteractable::OnInteract(Game &game)
 {
-    LevelBuilder builder{};
     game.SwitchLevel(m_LevelBuilderFunc());
     return false;
 }

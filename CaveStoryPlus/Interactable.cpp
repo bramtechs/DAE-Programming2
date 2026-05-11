@@ -1,13 +1,14 @@
-#include "pch.h"
 #include "Interactable.h"
 #include "Player.h"
 #include "Texture.h"
+#include "pch.h"
 #include "utils.h"
 
 Texture *Interactable::m_pSpriteSheetTexture{};
 int Interactable::m_InstanceCount{};
 
-Interactable::Interactable(const Vector2f &cell, const Vector2f &size) : m_Region(Rectf{cell.x, cell.y, size.x, size.y})
+Interactable::Interactable(const Vector2f &cell, const Vector2f &size)
+    : m_Region(utils::RectWithCenter(cell + Vector2f{0.5f, 0.5f}, size.x, size.y))
 {
     if (m_InstanceCount == 0)
     {
@@ -51,6 +52,13 @@ void Interactable::Translate(const Vector2f &offset)
 Rectf Interactable::GetRegion() const
 {
     return m_Region;
+}
+
+Rectf Interactable::GetTileRegion() const
+{
+    const int cellX{static_cast<int>(m_Region.left)};
+    const int cellY{static_cast<int>(m_Region.bottom)};
+    return Rectf{static_cast<float>(cellX), static_cast<float>(cellY), 1.f, 1.f};
 }
 
 Vector2f Interactable::GetCenter() const

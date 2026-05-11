@@ -76,6 +76,7 @@ class Player
     constexpr static float m_TimePerFrame{0.15f};
     constexpr static int m_SpriteSheetCols{11};
     constexpr static int m_SpriteSheetRows{2};
+    constexpr static float m_FlashInterval{0.2f};
     constexpr static float m_InvincibilityOnHitSeconds{2.f};
 
     // time to hold space for maximum jump power

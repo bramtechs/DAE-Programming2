@@ -40,6 +40,7 @@ class Interactable
     void Translate(const Vector2f &offset);
 
     Rectf GetRegion() const;
+    Rectf GetTileRegion() const;
 
     Vector2f GetCenter() const;
 

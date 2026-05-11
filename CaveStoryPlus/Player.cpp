@@ -28,6 +28,8 @@ void Player::Update(float delta, Level &level)
     UpdateMovement(delta, level);
     UpdateAnimationFrames(delta);
     UpdateShooting(delta, level);
+
+    m_InvincibilityTimer -= delta;
 }
 
 void Player::UpdateMovement(float delta, Level &level)
@@ -159,17 +161,26 @@ void Player::UpdateShooting(float delta, Level &level)
 
 void Player::Draw() const
 {
-    const Rectf dest{GetRegion()};
-    Rectf source{0.f, 0.f, m_CellSize, m_CellSize};
-
-    const int row{m_LookingLeft ? 0 : 1};
-    source.left = source.width * m_CurrentAnimationFrame;
-    source.bottom = source.height * row;
-    m_pSpriteSheet->Draw(dest, source);
-
-    if (m_pHeldWeapon)
+    float flashTime{m_FlashInterval};
+    if (m_InvincibilityTimer > 0.f)
     {
-        m_pHeldWeapon->Draw(GetHandPosition(), m_WeaponOrientation);
+        flashTime = std::fmod(m_InvincibilityTimer, m_FlashInterval);
+    }
+
+    if (flashTime > m_FlashInterval * 0.5f)
+    {
+        const Rectf dest{GetRegion()};
+        Rectf source{0.f, 0.f, m_CellSize, m_CellSize};
+
+        const int row{m_LookingLeft ? 0 : 1};
+        source.left = source.width * m_CurrentAnimationFrame;
+        source.bottom = source.height * row;
+        m_pSpriteSheet->Draw(dest, source);
+
+        if (m_pHeldWeapon)
+        {
+            m_pHeldWeapon->Draw(GetHandPosition(), m_WeaponOrientation);
+        }
     }
 }
 
@@ -263,8 +274,12 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
 
 void Player::DealDamage(int damage)
 {
-    m_Health -= damage;
-    m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
+    if (m_InvincibilityTimer <= 0.f)
+    {
+        m_Health -= damage;
+        m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
+        std::cout << "Dealth " << damage << " damage to player!" << std::endl;
+    }
 }
 
 void Player::AddGold(int amount)
