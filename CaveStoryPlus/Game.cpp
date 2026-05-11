@@ -73,6 +73,8 @@ void Game::Update(float elapsedSec)
         }
         m_pDialogManager->Update(elapsedSec);
     }
+
+    m_pPlayerGUI->Update();
 }
 
 void Game::Draw() const

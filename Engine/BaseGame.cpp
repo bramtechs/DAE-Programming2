@@ -230,7 +230,6 @@ void BaseGame::Run()
                 }
                 else if (axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT || axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
                 {
-                    SDL_Scancode key = m_ControllerMap[axis];
                     if (value > AXIS_DEADZONE)
                     {
                         SendKeyEvent(SDL_SCANCODE_0, SDL_KEYDOWN);

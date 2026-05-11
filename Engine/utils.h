@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace utils
@@ -115,7 +116,10 @@ Rectf RectWithCenter(const Vector2f &pos, float size);
 // CSS: object-fit: cover
 Rectf CalcCoverRegion(Rectf region, const Rectf &source);
 
-template <typename T, typename = std::enable_if_t<std::is_floating_point<T>::value>> T SnapRounded(T value, T snapInterval)
+std::pair<Rectf, Rectf> SplitRectHorizontally(const Rectf &rect);
+
+template <typename T, typename = std::enable_if_t<std::is_floating_point<T>::value>>
+T SnapRounded(T value, T snapInterval)
 {
     return std::round(value / snapInterval) * snapInterval;
 }

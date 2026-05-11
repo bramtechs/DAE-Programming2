@@ -1,9 +1,11 @@
-#include "pch.h"
 #include "PlayerGUI.h"
 #include "Game.h"
+#include "Player.h"
+#include "pch.h"
 #include "utils.h"
 
 const Rectf PlayerGUI::m_LvlLabelTextureSource{163.f, 163.f, 24.f, 13.f};
+const Rectf PlayerGUI::m_HeartTextureSource{0.f, 80.f, 16.f, 16.f};
 
 PlayerGUI::PlayerGUI(const Player &player) : m_Player(player), m_pTexture(new Texture("TextBox.png"))
 {
@@ -14,25 +16,39 @@ PlayerGUI::~PlayerGUI()
     delete m_pTexture;
 }
 
+void PlayerGUI::Update()
+{
+    m_HealthLabel.SetValue(m_Player.GetHealth());
+    m_HealthBar.SetProgress(m_Player.GetHealth() / static_cast<float>(m_Player.GetMaxHealth()));
+}
+
 void PlayerGUI::Draw() const
 {
     const float padding{40.f};
-    DrawHUD(Rectf{padding, g_ScreenHeight - padding - 300, 300, 100});
+    DrawHUD(Rectf{padding, g_ScreenHeight - padding - 100.f, 250, 60});
 }
 
 void PlayerGUI::DrawHUD(const Rectf &region) const
 {
-    utils::SetColor(Color4f{1.f, 0.f, 0.f, 1.f});
-    utils::DrawRect(region);
+    const std::array<Rectf, 3> bottomRow{GetRowColumns(region, 0, 2)};
+    m_pTexture->Draw(utils::CalcCoverRegion(bottomRow[0], m_HeartTextureSource), m_HeartTextureSource);
+    m_HealthLabel.Draw(bottomRow[1]);
+    m_HealthBar.Draw(bottomRow[2]);
 
-    Rectf row{region};
-    row.height = row.height * 0.5f * 0.5f;
+    const std::array<Rectf, 3> topRow{GetRowColumns(region, 1, 2)};
+    m_pTexture->Draw(utils::CalcCoverRegion(topRow[0], m_LvlLabelTextureSource), m_LvlLabelTextureSource);
+    m_LevelLabel.Draw(topRow[1]);
+    m_LevelBar.Draw(topRow[2]);
+}
 
-    Rectf col{row};
-    col.width /= 3;
+std::array<Rectf, 3> PlayerGUI::GetRowColumns(const Rectf &region, int row, int totalRows) const
+{
+    Rectf rowRegion{region};
+    rowRegion.height /= totalRows;
+    rowRegion.bottom += rowRegion.height * row;
 
-    m_pTexture->Draw(utils::CalcCoverRegion(col, m_LvlLabelTextureSource), m_LvlLabelTextureSource);
+    const std::pair<Rectf, Rectf> halves{utils::SplitRectHorizontally(rowRegion)};
+    const std::pair<Rectf, Rectf> leftHalves{utils::SplitRectHorizontally(halves.first)};
 
-    col.left += col.width;
-    m_LevelLabel.Draw(col);
+    return {leftHalves.first, leftHalves.second, halves.second};
 }

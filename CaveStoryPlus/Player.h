@@ -30,6 +30,9 @@ class Player
 
     Rectf GetRegion() const;
 
+    int GetHealth() const;
+    int GetMaxHealth() const;
+
     void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
 
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);

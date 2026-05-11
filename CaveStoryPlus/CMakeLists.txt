@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME}
   Enemy.cpp
   Enemy.h
   Game.cpp
+  BarWidget.h
+  BarWidget.cpp
   PlayerGUI.cpp
   PlayerGUI.h
   Game.h

@@ -25,6 +25,11 @@ Player::~Player()
 
 void Player::Update(float delta, Level &level)
 {
+    if (m_Health <= 0)
+    {
+        return;
+    }
+
     UpdateMovement(delta, level);
     UpdateAnimationFrames(delta);
     UpdateShooting(delta, level);
@@ -161,6 +166,11 @@ void Player::UpdateShooting(float delta, Level &level)
 
 void Player::Draw() const
 {
+    if (m_Health <= 0)
+    {
+        return;
+    }
+
     float flashTime{m_FlashInterval};
     if (m_InvincibilityTimer > 0.f)
     {
@@ -215,6 +225,16 @@ Vector2f Player::GetCameraFocusPosition() const
 Rectf Player::GetRegion() const
 {
     return Rectf{m_Position.x, m_Position.y, 1.f, 1.f};
+}
+
+int Player::GetHealth() const
+{
+    return m_Health;
+}
+
+int Player::GetMaxHealth() const
+{
+    return m_MaxHealth;
 }
 
 void Player::HoldWeapon(Weapon *pWeapon)

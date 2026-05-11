@@ -748,6 +748,15 @@ Rectf utils::CalcCoverRegion(Rectf texDest, const Rectf &source)
     return Rectf{centerX - (calcW * 0.5f), centerY - (calcH * 0.5f), calcW, calcH};
 }
 
+std::pair<Rectf, Rectf> utils::SplitRectHorizontally(const Rectf &rect)
+{
+    Rectf left{rect};
+    left.width *= 0.5f;
+    Rectf right{left};
+    right.left += right.width;
+    return {left, right};
+}
+
 float utils::SineWave(float x, float amplitude, float stretch, float phaseShift, float offsetY)
 {
     return amplitude * std::sin(x * stretch + phaseShift) + offsetY;
