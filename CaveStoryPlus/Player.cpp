@@ -25,6 +25,13 @@ Player::~Player()
 
 void Player::Update(float delta, Level &level)
 {
+    UpdateMovement(delta, level);
+    UpdateAnimationFrames(delta);
+    UpdateShooting(delta, level);
+}
+
+void Player::UpdateMovement(float delta, Level &level)
+{
     const Uint8 *const pStates{SDL_GetKeyboardState(nullptr)};
     bool holdingLeft{};
     bool holdingRight{};
@@ -133,9 +140,11 @@ void Player::Update(float delta, Level &level)
             }
         }
     }
+}
 
-    ProcessAnimationFrames(delta);
-
+void Player::UpdateShooting(float delta, Level &level)
+{
+    const Uint8 *const pStates{SDL_GetKeyboardState(nullptr)};
     if (pStates[SDL_SCANCODE_X])
     {
         if (m_pHeldWeapon && m_LastShootTimer > m_pHeldWeapon->GetShootIntervalSeconds())
@@ -156,11 +165,7 @@ void Player::Draw() const
     const int row{m_LookingLeft ? 0 : 1};
     source.left = source.width * m_CurrentAnimationFrame;
     source.bottom = source.height * row;
-
     m_pSpriteSheet->Draw(dest, source);
-
-    utils::SetColor(Color4f{0.2f, 0.2f, 1.f, 1.f});
-    utils::FillRect(utils::RectWithCenter(m_Position, 0.1f));
 
     if (m_pHeldWeapon)
     {
@@ -259,6 +264,7 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
 void Player::DealDamage(int damage)
 {
     m_Health -= damage;
+    m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
 }
 
 void Player::AddGold(int amount)
@@ -266,7 +272,7 @@ void Player::AddGold(int amount)
     m_Gold += amount;
 }
 
-void Player::ProcessAnimationFrames(float delta)
+void Player::UpdateAnimationFrames(float delta)
 {
     // player.png
     const int idleFrame{0};
@@ -285,7 +291,7 @@ void Player::ProcessAnimationFrames(float delta)
         break;
 
     case AnimState::walking:
-        ProcessAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
+        UpdateAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
         break;
 
     case AnimState::jumping:
@@ -311,7 +317,7 @@ void Player::ProcessAnimationFrames(float delta)
     m_AnimTimer += delta;
 }
 
-void Player::ProcessAnimationState(AnimState state, int startFrame, int endFrame)
+void Player::UpdateAnimationState(AnimState state, int startFrame, int endFrame)
 {
     m_CurrentAnimationFrame = utils::Clamp(m_CurrentAnimationFrame, startFrame, endFrame);
     if (m_AnimTimer > m_TimePerFrame)

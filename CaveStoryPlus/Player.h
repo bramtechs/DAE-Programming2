@@ -49,8 +49,10 @@ class Player
         usingdoor,
     };
 
-    void ProcessAnimationFrames(float delta);
-    void ProcessAnimationState(AnimState state, int startFrame, int endFrame);
+    void UpdateAnimationFrames(float delta);
+    void UpdateAnimationState(AnimState state, int startFrame, int endFrame);
+    void UpdateMovement(float delta, Level &level);
+    void UpdateShooting(float delta, Level &level);
 
     void HoldWeapon(Weapon *pWeapon);
 
@@ -74,6 +76,7 @@ class Player
     constexpr static float m_TimePerFrame{0.15f};
     constexpr static int m_SpriteSheetCols{11};
     constexpr static int m_SpriteSheetRows{2};
+    constexpr static float m_InvincibilityOnHitSeconds{2.f};
 
     // time to hold space for maximum jump power
     constexpr static float m_JumpWindow{0.5f};
@@ -94,6 +97,7 @@ class Player
     float m_AnimTimer{0.f};
     float m_JumpWindowTimer{0.1f};
     float m_LastShootTimer{};
+    float m_InvincibilityTimer{};
 
     int m_CurrentAnimationFrame{};
     int m_Gold{};
