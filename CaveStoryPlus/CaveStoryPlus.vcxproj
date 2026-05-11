@@ -168,6 +168,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BarWidget.h" />
     <ClInclude Include="BatEnemy.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletManager.h" />
@@ -193,6 +194,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="PlayerGUI.h" />
     <ClInclude Include="PolarStar.h" />
     <ClInclude Include="PolygonCollider.h" />
+    <ClInclude Include="SpikeInteractable.h" />
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
@@ -213,6 +215,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <None Include="Prog2Game.targets" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BarWidget.cpp" />
     <ClCompile Include="BatEnemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletManager.cpp" />
@@ -239,6 +242,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="PlayerGUI.cpp" />
     <ClCompile Include="PolarStar.cpp" />
     <ClCompile Include="PolygonCollider.cpp" />
+    <ClCompile Include="SpikeInteractable.cpp" />
     <ClCompile Include="TextManager.cpp" />
   </ItemGroup>
 </Project>

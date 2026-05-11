@@ -1,4 +1,5 @@
 #include "BarWidget.h"
+#include "pch.h"
 #include "utils.h"
 
 BarWidget::BarWidget(Color4f bgColor, Color4f fgColor) : m_BgColor(std::move(bgColor)), m_FgColor(std::move(fgColor))
