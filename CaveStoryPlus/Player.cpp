@@ -316,6 +316,12 @@ void Player::AddGold(int amount)
     m_Gold += amount;
 }
 
+void Player::AddMaxHealth(int amount)
+{
+    m_MaxHealth += amount;
+    m_Health += amount;
+}
+
 void Player::UpdateAnimationFrames(float delta)
 {
     // player.png

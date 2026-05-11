@@ -14,6 +14,8 @@ class LifeCapsuleInteractable final : public Interactable
   private:
     Rectf GetAnimationSource(int frame) const;
 
+    static void GiveExtraMaxHealth(Game &game);
+
     float m_AnimTimer{};
     int m_FrameIndex{};
 };

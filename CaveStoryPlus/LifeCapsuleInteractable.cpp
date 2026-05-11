@@ -1,8 +1,9 @@
-#include "pch.h"
 #include "LifeCapsuleInteractable.h"
 #include "DialogManager.h"
 #include "Game.h"
+#include "Player.h"
 #include "Texture.h"
+#include "pch.h"
 
 LifeCapsuleInteractable::LifeCapsuleInteractable(const Vector2f &cell) : Interactable(cell)
 {
@@ -28,8 +29,17 @@ void LifeCapsuleInteractable::Draw() const
 
 bool LifeCapsuleInteractable::OnInteract(Game &game)
 {
-    game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."});
+    DialogMessage &msg{game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."})};
+    msg.AttachCallback(GiveExtraMaxHealth);
     return true;
+}
+
+void LifeCapsuleInteractable::GiveExtraMaxHealth(Game &game)
+{
+    if (Player * pPlayer{game.GetPlayer()})
+    {
+        pPlayer->AddMaxHealth(3);
+    }
 }
 
 Rectf LifeCapsuleInteractable::GetAnimationSource(int frame) const

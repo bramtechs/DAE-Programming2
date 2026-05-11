@@ -30,6 +30,11 @@ DialogMessage::~DialogMessage()
     delete[] m_pTextLines;
 }
 
+void DialogMessage::AttachCallback(std::function<void(Game&)> &&cb)
+{
+    m_Callback = std::move(cb);
+}
+
 void DialogMessage::Update(float delta)
 {
     if (IsDone())
@@ -72,6 +77,14 @@ void DialogMessage::Draw(const Vector2f &screenSize) const
             textLine.pTexture->Draw(origin);
             y -= textLine.pTexture->GetHeight();
         }
+    }
+}
+
+void DialogMessage::ExecuteCallback(Game &game)
+{
+    if (m_Callback)
+    {
+        m_Callback(game);
     }
 }
 

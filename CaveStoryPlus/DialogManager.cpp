@@ -1,21 +1,22 @@
-#include "pch.h"
 #include "DialogManager.h"
 #include "DialogMessage.h"
+#include "Game.h"
+#include "pch.h"
 
 #include <iostream>
 
-DialogManager::DialogManager(TextManager &textManager) : m_TextManager(textManager)
+DialogManager::DialogManager(TextManager &textManager, Game &game) : m_TextManager(textManager), m_Game(game)
 {
 }
 
-void DialogManager::QueueMessage(const std::string &text)
+DialogMessage &DialogManager::QueueMessage(const std::string &text)
 {
-    m_Messages.emplace(text, m_TextManager);
+    return m_Messages.emplace(text, m_TextManager);
 }
 
-void DialogManager::QueueMessage(std::initializer_list<std::string> lines)
+DialogMessage &DialogManager::QueueMessage(std::initializer_list<std::string> &&lines)
 {
-    m_Messages.emplace(lines, m_TextManager);
+    return m_Messages.emplace(lines, m_TextManager);
 }
 
 void DialogManager::Update(float delta)
@@ -45,6 +46,7 @@ void DialogManager::HandleKeyInput(const SDL_KeyboardEvent &e)
             DialogMessage &message{m_Messages.front()};
             if (message.IsDone())
             {
+                message.ExecuteCallback(m_Game);
                 m_Messages.pop();
             }
             else

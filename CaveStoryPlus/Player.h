@@ -41,6 +41,7 @@ class Player
     void DealDamage(int amount);
 
     void AddGold(int amount = 1);
+    void AddMaxHealth(int amount);
 
   private:
     enum class AnimState
