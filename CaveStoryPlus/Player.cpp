@@ -108,7 +108,7 @@ void Player::UpdateMovement(float delta, Level &level)
     else
     {
         m_Position.y += movementY;
-        m_IsOnGround = CheckIfOnGround(level, hit);
+        m_IsOnGround = movementY <= 0.f && CheckIfOnGround(level, hit);
 
         if (!m_IsOnGround)
         {
@@ -241,6 +241,7 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
         {
             // apply initial jump impulse
             m_Velocity.y += m_JumpForce;
+            m_IsOnGround = false;
             m_JumpWindowTimer = m_JumpWindow;
         }
         break;
