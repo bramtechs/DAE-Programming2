@@ -4,6 +4,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+if (MSVC)
+  add_compile_options(/MP /W3)
+endif()
+
 if (WIN32)
   include_directories(Libraries/SDLImage/SDL2_image-2.8.4/include)
   include_directories(Libraries/SDLMain/SDL2-2.30.11/include)
