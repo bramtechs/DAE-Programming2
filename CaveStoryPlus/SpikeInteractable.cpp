@@ -21,7 +21,7 @@ bool SpikeInteractable::OnTouch(Game &game)
 {
     if (Player *pPlayer = game.GetPlayer())
     {
-        pPlayer->DealDamage(3);
+        pPlayer->DealDamage(2);
     }
 
     return false;

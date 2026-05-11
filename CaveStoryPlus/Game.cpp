@@ -132,7 +132,7 @@ void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)
     }
     else if (m_pPlayer && m_pActiveLevel)
     {
-        if (e.keysym.sym == SDLK_w || e.keysym.sym == SDLK_RETURN)
+        if (e.keysym.sym == SDLK_s || e.keysym.sym == SDLK_DOWN || e.keysym.sym == SDLK_RETURN)
         {
             if (m_pActiveLevel)
             {
