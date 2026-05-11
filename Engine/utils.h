@@ -116,7 +116,7 @@ Rectf RectWithCenter(const Vector2f &pos, float size);
 // CSS: object-fit: cover
 Rectf CalcCoverRegion(Rectf region, const Rectf &source);
 
-std::pair<Rectf, Rectf> SplitRectHorizontally(const Rectf &rect);
+std::pair<Rectf, Rectf> SplitRectHorizontally(const Rectf &rect, float divisor = 0.5f);
 
 template <typename T, typename = std::enable_if_t<std::is_floating_point<T>::value>>
 T SnapRounded(T value, T snapInterval)

@@ -748,12 +748,13 @@ Rectf utils::CalcCoverRegion(Rectf texDest, const Rectf &source)
     return Rectf{centerX - (calcW * 0.5f), centerY - (calcH * 0.5f), calcW, calcH};
 }
 
-std::pair<Rectf, Rectf> utils::SplitRectHorizontally(const Rectf &rect)
+std::pair<Rectf, Rectf> utils::SplitRectHorizontally(const Rectf &rect, float divisor)
 {
     Rectf left{rect};
-    left.width *= 0.5f;
+    left.width *= divisor;
     Rectf right{left};
-    right.left += right.width;
+    right.left += left.width;
+    right.width = rect.width * (1.f - divisor);
     return {left, right};
 }
 
@@ -771,7 +772,7 @@ float utils::SineBetween(float x, float cycleDuration, float min, float max)
 
 float utils::RandomFloat(float min, float max)
 {
-    const float value{rand() / static_cast<float>(RAND_MAX)};
+    const float value{static_cast<float>(rand()) / static_cast<float>(RAND_MAX)};
     return value * (max - min) + min;
 }
 

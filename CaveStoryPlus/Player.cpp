@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "BulletManager.h"
+#include "DialogManager.h"
 #include "Game.h"
 #include "Level.h"
 #include "PolarStar.h"
@@ -12,7 +13,8 @@
 #include <cassert>
 #include <iostream>
 
-Player::Player() : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsOnGround()
+Player::Player(DialogManager &dialog)
+    : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsOnGround(), m_DialogManager(dialog)
 {
     HoldWeapon(new PolarStar());
 }
@@ -300,6 +302,12 @@ void Player::DealDamage(int damage)
         m_Health -= damage;
         m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
         std::cout << "Dealth " << damage << " damage to player!" << std::endl;
+
+        if (m_Health < 0)
+        {
+            m_DialogManager.QueueMessage("You have died.");
+            m_DialogManager.QueueMessage("Want to retry?");
+        }
     }
 }
 

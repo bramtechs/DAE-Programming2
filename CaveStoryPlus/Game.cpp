@@ -30,11 +30,10 @@ void Game::Initialize()
     LevelBuilder levelBuilder{};
     m_pActiveLevel = levelBuilder.BuildCaveLevel();
     // m_pActiveLevel = levelBuilder.BuildHermitGunsmithLevel();
-    m_pPlayer = new Player();
+    m_pDialogManager = new DialogManager(*m_pTextManager);
+    m_pPlayer = new Player(*m_pDialogManager);
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
     m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
-
-    m_pDialogManager = new DialogManager(*m_pTextManager);
 
     m_Camera.SetCenter(m_pPlayer->GetCameraFocusPosition());
 }

@@ -130,6 +130,5 @@ void Level::Draw() const
     for (const Interactable *pInteractable : m_Interactables)
     {
         pInteractable->Draw();
-        pInteractable->DrawDebug();
     }
 }

@@ -2,13 +2,15 @@
 #include "pch.h"
 #include "utils.h"
 
+#include <algorithm>
+
 BarWidget::BarWidget(Color4f bgColor, Color4f fgColor) : m_BgColor(std::move(bgColor)), m_FgColor(std::move(fgColor))
 {
 }
 
 void BarWidget::SetProgress(float progress)
 {
-    m_Progress = progress;
+    m_Progress = std::clamp(progress, 0.f, 1.f);
 }
 
 void BarWidget::Draw(const Rectf &region) const

@@ -25,7 +25,7 @@ void PlayerGUI::Update()
 void PlayerGUI::Draw() const
 {
     const float padding{40.f};
-    DrawHUD(Rectf{padding, g_ScreenHeight - padding - 100.f, 250, 60});
+    DrawHUD(Rectf{padding, g_ScreenHeight - padding - 100.f, 330, 60});
 }
 
 void PlayerGUI::DrawHUD(const Rectf &region) const
@@ -47,8 +47,8 @@ std::array<Rectf, 3> PlayerGUI::GetRowColumns(const Rectf &region, int row, int 
     rowRegion.height /= totalRows;
     rowRegion.bottom += rowRegion.height * row;
 
-    const std::pair<Rectf, Rectf> halves{utils::SplitRectHorizontally(rowRegion)};
-    const std::pair<Rectf, Rectf> leftHalves{utils::SplitRectHorizontally(halves.first)};
+    const std::pair<Rectf, Rectf> halves{utils::SplitRectHorizontally(rowRegion, 0.4f)};
+    const std::pair<Rectf, Rectf> leftHalves{utils::SplitRectHorizontally(halves.first, 0.35f)};
 
     return {leftHalves.first, leftHalves.second, halves.second};
 }

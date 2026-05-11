@@ -9,11 +9,12 @@
 
 class Texture;
 class Weapon;
+class DialogManager;
 class BulletManager;
 class Player
 {
   public:
-    Player();
+    explicit Player(DialogManager& dialogs);
     ~Player();
 
     void Update(float delta, Level &level);
@@ -92,6 +93,7 @@ class Player
     AnimState m_CurrentAnimationState{AnimState::idle};
     Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
     Weapon *m_pHeldWeapon{};
+    DialogManager &m_DialogManager;
 
     float m_HorizontalMoveForce{24.f};
     float m_MaxHorizontalVelocity{4.f};
