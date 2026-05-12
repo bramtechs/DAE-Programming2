@@ -125,10 +125,10 @@ void Level::Draw() const
         pEnemy->DrawDebug();
     }
 
-    m_BulletManager.Draw();
-
     for (const Interactable *pInteractable : m_Interactables)
     {
         pInteractable->Draw();
     }
+
+    m_BulletManager.Draw();
 }
