@@ -14,7 +14,7 @@ class BulletManager;
 class Player
 {
   public:
-    explicit Player(DialogManager& dialogs);
+    explicit Player(DialogManager &dialogs);
     ~Player();
 
     void Update(float delta, Level &level);
@@ -22,6 +22,15 @@ class Player
 
     void SetPosition(const Vector2f &pos);
     void SetPosition(float left, float bottom);
+
+    void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
+    void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
+
+    void DealDamage(int amount);
+
+    void AddGold(int amount = 1);
+    void AddMaxHealth(int amount);
+    void HoldWeapon(Weapon *pWeapon);
 
     Vector2f GetPosition() const;
 
@@ -33,15 +42,6 @@ class Player
 
     int GetHealth() const;
     int GetMaxHealth() const;
-
-    void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
-
-    void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
-
-    void DealDamage(int amount);
-
-    void AddGold(int amount = 1);
-    void AddMaxHealth(int amount);
 
   private:
     enum class AnimState
@@ -58,8 +58,6 @@ class Player
     void UpdateAnimationState(AnimState state, int startFrame, int endFrame);
     void UpdateMovement(float delta, Level &level);
     void UpdateShooting(float delta, Level &level);
-
-    void HoldWeapon(Weapon *pWeapon);
 
     bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,
                              const Vector2f &collisionAxis, utils::HitInfo &outHitInfo) const;

@@ -1,5 +1,6 @@
 #include "LevelBuilder.h"
 #include "BatEnemy.h"
+#include "ChestInteractable.h"
 #include "DecorInteractable.h"
 #include "DoorInteractable.h"
 #include "Level.h"
@@ -48,8 +49,8 @@ Level *LevelBuilder::BuildHermitGunsmithLevel()
     // pLevel->SpawnInteractable();
 
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, &LevelBuilder::BuildCaveLevel));
-
     pLevel->SpawnInteractable(new DecorInteractable(Vector2f{11.f, 6.f}, Rectf{496.f, 368.f, 48.f, 32.f}));
+    pLevel->SpawnInteractable(new ChestInteractable(Vector2f{14.f, 6.f}));
 
     return pLevel;
 }

@@ -8,6 +8,7 @@ class Player;
 class Interactable
 {
   public:
+    explicit Interactable(const Rectf &region);
     explicit Interactable(const Vector2f &cell, const Vector2f &size = Vector2f{1.f, 1.f});
     explicit Interactable(const Vector2f &cell, const float size);
     virtual ~Interactable();
@@ -41,7 +42,7 @@ class Interactable
 
     Rectf GetRegion() const;
     Rectf GetTileRegion() const;
-
+    Vector2f GetPosition() const;
     Vector2f GetCenter() const;
 
   protected:

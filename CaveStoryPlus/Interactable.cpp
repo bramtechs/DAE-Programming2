@@ -7,8 +7,7 @@
 Texture *Interactable::m_pSpriteSheetTexture{};
 int Interactable::m_InstanceCount{};
 
-Interactable::Interactable(const Vector2f &cell, const Vector2f &size)
-    : m_Region(utils::RectWithCenter(cell + Vector2f{0.5f, 0.5f}, size.x, size.y))
+Interactable::Interactable(const Rectf &region) : m_Region(region)
 {
     if (m_InstanceCount == 0)
     {
@@ -16,6 +15,11 @@ Interactable::Interactable(const Vector2f &cell, const Vector2f &size)
     }
 
     ++m_InstanceCount;
+}
+
+Interactable::Interactable(const Vector2f &cell, const Vector2f &size)
+    : Interactable(utils::RectWithCenter(cell + Vector2f{0.5f, 0.5f}, size.x, size.y))
+{
 }
 
 Interactable::Interactable(const Vector2f &cell, float size) : Interactable(cell, Vector2f{size, size})
@@ -64,4 +68,9 @@ Rectf Interactable::GetTileRegion() const
 Vector2f Interactable::GetCenter() const
 {
     return Vector2f{m_Region.left + m_Region.width * 0.5f, m_Region.bottom + m_Region.height * 0.5f};
+}
+
+Vector2f Interactable::GetPosition() const
+{
+    return Vector2f{m_Region.left, m_Region.bottom};
 }

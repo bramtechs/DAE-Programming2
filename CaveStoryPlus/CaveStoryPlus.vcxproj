@@ -177,6 +177,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChestInteractable.h" />
     <ClInclude Include="ColliderReader.h" />
     <ClInclude Include="ColliderWriter.h" />
     <ClInclude Include="DecorInteractable.h" />
@@ -225,6 +226,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChestInteractable.cpp" />
     <ClCompile Include="ColliderReader.cpp" />
     <ClCompile Include="ColliderWriter.cpp" />
     <ClCompile Include="DecorInteractable.cpp" />

@@ -105,6 +105,9 @@
     <ClInclude Include="DecorInteractable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChestInteractable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Prog2Game.targets" />
@@ -198,6 +201,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DecorInteractable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestInteractable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

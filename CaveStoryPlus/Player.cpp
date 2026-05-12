@@ -16,7 +16,6 @@
 Player::Player(DialogManager &dialog)
     : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsOnGround(), m_DialogManager(dialog)
 {
-    HoldWeapon(new PolarStar());
 }
 
 Player::~Player()
