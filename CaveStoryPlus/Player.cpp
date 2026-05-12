@@ -323,6 +323,12 @@ void Player::AddMaxHealth(int amount)
 
 void Player::UpdateAnimationFrames(float delta)
 {
+    if (m_Velocity.Length() < 0.01f)
+    {
+        m_CurrentAnimationFrame = 0;
+        return;
+    }
+
     switch (m_CurrentAnimationState)
     {
 
@@ -334,15 +340,7 @@ void Player::UpdateAnimationFrames(float delta)
     case AnimState::walking: {
         const int walkStartFrame{0};
         const int walkEndFrame{1};
-        if (std::abs(m_Velocity.x) < 0.01f)
-        {
-            // don't walk in-place
-            m_CurrentAnimationFrame = 0;
-        }
-        else
-        {
-            UpdateAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
-        }
+        UpdateAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
         break;
     }
 
