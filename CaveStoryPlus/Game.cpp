@@ -42,6 +42,7 @@ void Game::Cleanup()
 {
     delete m_pEditor;
     delete m_pActiveLevel;
+    delete m_pNextLevel;
     delete m_pDialogManager;
     delete m_pTextManager;
     delete m_pPlayerGUI;
@@ -50,6 +51,15 @@ void Game::Cleanup()
 
 void Game::Update(float elapsedSec)
 {
+    if (m_pNextLevel)
+    {
+        delete m_pActiveLevel;
+        m_pActiveLevel = m_pNextLevel;
+        m_pNextLevel = nullptr;
+        m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
+        m_Camera.SetCenter(m_pPlayer->GetPosition()); // avoid camera lerp effect
+    }
+
     if (m_pEditor)
     {
         m_Camera.MoveWithKeyboard(elapsedSec);
@@ -104,9 +114,8 @@ void Game::Draw() const
 
 void Game::SwitchLevel(Level *pLevel)
 {
-    delete m_pActiveLevel;
-    m_pActiveLevel = pLevel;
-    m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
+    // level switch is delayed to next frame
+    m_pNextLevel = pLevel;
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)

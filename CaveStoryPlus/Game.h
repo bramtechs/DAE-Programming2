@@ -73,6 +73,7 @@ class Game final : public BaseGame
     DialogManager *m_pDialogManager{};
     TextManager *m_pTextManager{};
     Level *m_pActiveLevel{};
+    Level *m_pNextLevel{};
     Player *m_pPlayer{};
     PlayerGUI *m_pPlayerGUI{};
     Editor *m_pEditor{};

@@ -45,5 +45,8 @@ Level *LevelBuilder::BuildHermitGunsmithLevel()
 {
     Level *pLevel{new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", Vector2f(7.f, 6.f))};
     // pLevel->SpawnInteractable();
+
+    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, &LevelBuilder::BuildCaveLevel));
+
     return pLevel;
 }
