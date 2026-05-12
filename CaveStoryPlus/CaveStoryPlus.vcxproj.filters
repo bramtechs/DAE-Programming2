@@ -102,6 +102,9 @@
     <ClInclude Include="SpikeInteractable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DecorInteractable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Prog2Game.targets" />
@@ -192,6 +195,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpikeInteractable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DecorInteractable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -96,6 +96,7 @@ void Game::Draw() const
 
     if (m_pEditor)
     {
+        m_pActiveLevel->DrawDebug();
         m_pEditor->Draw();
     }
 

@@ -179,6 +179,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderReader.h" />
     <ClInclude Include="ColliderWriter.h" />
+    <ClInclude Include="DecorInteractable.h" />
     <ClInclude Include="DialogManager.h" />
     <ClInclude Include="DialogMessage.h" />
     <ClInclude Include="DoorInteractable.h" />
@@ -226,6 +227,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColliderReader.cpp" />
     <ClCompile Include="ColliderWriter.cpp" />
+    <ClCompile Include="DecorInteractable.cpp" />
     <ClCompile Include="DialogManager.cpp" />
     <ClCompile Include="DialogMessage.cpp" />
     <ClCompile Include="DoorInteractable.cpp" />

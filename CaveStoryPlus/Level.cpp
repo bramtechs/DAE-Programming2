@@ -122,7 +122,6 @@ void Level::Draw() const
     for (const Enemy *pEnemy : m_Enemies)
     {
         pEnemy->Draw();
-        pEnemy->DrawDebug();
     }
 
     for (const Interactable *pInteractable : m_Interactables)
@@ -131,4 +130,17 @@ void Level::Draw() const
     }
 
     m_BulletManager.Draw();
+}
+
+void Level::DrawDebug() const
+{
+    for (const Enemy *pEnemy : m_Enemies)
+    {
+        pEnemy->DrawDebug();
+    }
+
+    for (const Interactable *pInteractable : m_Interactables)
+    {
+        pInteractable->DrawDebug();
+    }
 }

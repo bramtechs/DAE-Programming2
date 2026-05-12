@@ -21,6 +21,7 @@ class Level
 
     void Update(float delta, Player &player);
     void Draw() const;
+    void DrawDebug() const;
 
     void GetLevelSize(int &outWidth, int &outHeight) const;
 
