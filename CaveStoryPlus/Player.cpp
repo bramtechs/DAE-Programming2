@@ -323,42 +323,45 @@ void Player::AddMaxHealth(int amount)
 
 void Player::UpdateAnimationFrames(float delta)
 {
-    // player.png
-    const int idleFrame{0};
-    const int walkStartFrame{0};
-    const int walkEndFrame{1};
-    const int fallingFrame{1};
-    const int jumpingFrame{2};
-    const int usingDoorFrame{7};
-    const int slideFrame{8};
-
     switch (m_CurrentAnimationState)
     {
 
-    case AnimState::idle:
-        m_CurrentAnimationFrame = idleFrame;
+    case AnimState::idle: {
+        m_CurrentAnimationFrame = 0;
         break;
+    }
 
-    case AnimState::walking:
-        UpdateAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
+    case AnimState::walking: {
+        const int walkStartFrame{0};
+        const int walkEndFrame{1};
+        if (std::abs(m_Velocity.x) < 0.01f)
+        {
+            // don't walk in-place
+            m_CurrentAnimationFrame = 0;
+        }
+        else
+        {
+            UpdateAnimationState(AnimState::walking, walkStartFrame, walkEndFrame);
+        }
         break;
+    }
 
-    case AnimState::jumping:
-        m_CurrentAnimationFrame = jumpingFrame;
+    case AnimState::jumping: {
+        m_CurrentAnimationFrame = 2;
         break;
-
-    case AnimState::falling:
-        m_CurrentAnimationFrame = fallingFrame;
+    }
+    case AnimState::falling: {
+        m_CurrentAnimationFrame = 1;
         break;
-
-    case AnimState::sliding:
-        m_CurrentAnimationFrame = slideFrame;
+    }
+    case AnimState::sliding: {
+        m_CurrentAnimationFrame = 8;
         break;
-
-    case AnimState::usingdoor:
-        m_CurrentAnimationFrame = usingDoorFrame;
+    }
+    case AnimState::usingdoor: {
+        m_CurrentAnimationFrame = 7;
         break;
-
+    }
     default:
         break;
     }
