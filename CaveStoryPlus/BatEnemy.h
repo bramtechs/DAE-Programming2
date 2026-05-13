@@ -8,7 +8,7 @@ class Player;
 class BatEnemy final : public Enemy
 {
   public:
-    explicit BatEnemy(std::vector<Vector2f> waypoints, float initialProgress = 0.5f);
+    explicit BatEnemy(std::vector<Vector2f> &&waypoints, float initialProgress = 0.5f);
 
     void InteractWithPlayer(Player &player) override;
 

@@ -21,7 +21,7 @@ class Enemy
     // returns true if died
     bool TakeDamage(int damage);
 
-    void SetPosition(Vector2f position);
+    void SetCenter(Vector2f position);
     Vector2f GetPosition() const;
 
     Rectf GetRegion() const;

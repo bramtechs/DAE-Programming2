@@ -190,6 +190,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="GizmoManager.h" />
     <ClInclude Include="GoldInteractable.h" />
     <ClInclude Include="Interactable.h" />
+    <ClInclude Include="JumperEnemy.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="LifeCapsuleInteractable.h" />
@@ -239,6 +240,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="GizmoManager.cpp" />
     <ClCompile Include="GoldInteractable.cpp" />
     <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="JumperEnemy.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="LifeCapsuleInteractable.cpp" />
