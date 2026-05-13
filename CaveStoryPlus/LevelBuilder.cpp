@@ -21,8 +21,8 @@ Level *LevelBuilder::BuildCaveLevel()
     pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{24.5f, 7.5f}, Vector2f{24.5f, 12.5f}}, 0.f));
     pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{34.5f, 10.5f}, Vector2f{34.5f, 5.5f}}));
 
-    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{33.5f, 4.5f}));
-    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{45.5f, 33.5f}));
+    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{33.5f, 4.5f}, *pLevel));
+    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{45.5f, 33.5f}, *pLevel));
 
     // interactables
 

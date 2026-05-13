@@ -36,6 +36,8 @@ class PolygonCollider
 
     bool Overlaps(const Circlef &circle) const;
 
+    bool IsPointAbove(const Vector2f &point) const;
+
     const std::vector<Vector2f> &GetPolygon() const
     {
         return m_Vertices;

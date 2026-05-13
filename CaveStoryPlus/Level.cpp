@@ -95,7 +95,7 @@ void Level::Update(float delta, Player &player)
         pEnemy->Update(delta);
         if (m_BulletManager.InteractWithEnemy(*pEnemy))
         {
-            SpawnInteractable(new GoldInteractable(pEnemy->GetPosition(), *this));
+            SpawnInteractable(new GoldInteractable(pEnemy->GetCenter(), *this));
 
             // when killed the enemy
             delete *it;

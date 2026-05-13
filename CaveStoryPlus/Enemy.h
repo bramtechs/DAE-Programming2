@@ -22,9 +22,10 @@ class Enemy
     bool TakeDamage(int damage);
 
     void SetCenter(Vector2f position);
-    Vector2f GetPosition() const;
+    Vector2f GetCenter() const;
 
     Rectf GetRegion() const;
+    Circlef GetCircleRegion() const;
 
   protected:
     const Texture &GetSpriteSheet() const

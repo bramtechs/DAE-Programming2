@@ -1,5 +1,6 @@
 #include "JumperEnemy.h"
 #include "Player.h"
+#include "PolygonCollider.h"
 #include "Texture.h"
 #include "pch.h"
 
@@ -7,7 +8,7 @@ const Rectf JumperEnemy::m_ChargingSourceRect{0.f, 0.f, 32.f, 32.f};
 const Rectf JumperEnemy::m_IdleSourceRect{32.f, 0.f, 32.f, 32.f};
 const Rectf JumperEnemy::m_JumpingSourceRect{64.f, 0.f, 32.f, 32.f};
 
-JumperEnemy::JumperEnemy(const Vector2f &pos) : Enemy(Vector2f{1.f, 1.f})
+JumperEnemy::JumperEnemy(const Vector2f &pos, Level &level) : Enemy(Vector2f{1.f, 1.f}), m_Level(level)
 {
     SetCenter(pos);
 }
@@ -16,7 +17,7 @@ void JumperEnemy::InteractWithPlayer(Player &player)
 {
     m_IsLookingRight = player.GetPosition().x > m_Position.x;
 
-    if (m_State == State::idle && player.GetPosition().Distance(GetPosition()) < m_ChargeRange)
+    if (m_State == State::idle && player.GetPosition().Distance(GetCenter()) < m_ChargeRange)
     {
         m_State = State::charging;
     }
@@ -30,6 +31,8 @@ void JumperEnemy::Update(float delta)
         if (m_ChargeTimer > m_ChargeTime)
         {
             m_State = State::jumping;
+            m_LastPosition = m_Position;
+            m_ChargeTimer = 0.f;
             m_Velocity.x = m_IsLookingRight ? 1.f : -1.f;
             m_Velocity.y = m_JumpForce;
         }
@@ -38,7 +41,39 @@ void JumperEnemy::Update(float delta)
     {
         m_Position += m_Velocity * delta;
         m_Velocity.y -= m_Gravity * delta;
+
+        PolygonCollider collider{};
+        if (IsOverlappingLevel(collider))
+        {
+            m_Position = m_LastPosition;
+            if (m_Velocity.y <= 0.f && collider.IsPointAbove(m_Position))
+            {
+                m_State = State::idle;
+            }
+            else if (m_Velocity.y > 0.f)
+            {
+                m_Velocity.y = 0.f;
+            }
+        }
+        else
+        {
+            m_LastPosition = m_Position;
+        }
     }
+}
+
+bool JumperEnemy::IsOverlappingLevel(PolygonCollider &outShape) const
+{
+    for (const PolygonCollider &collider : m_Level.GetColliders())
+    {
+        if (utils::IsOverlapping(collider.GetPolygon(), GetCircleRegion()))
+        {
+            outShape = collider;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void JumperEnemy::Draw() const
@@ -49,7 +84,10 @@ void JumperEnemy::Draw() const
 void JumperEnemy::DrawDebug() const
 {
     utils::SetColor(Color4f{1.f, 0.f, 0.f, 1.f});
-    utils::DrawEllipse(GetPosition(), m_ChargeRange, m_ChargeRange);
+    utils::DrawEllipse(GetCenter(), m_ChargeRange, m_ChargeRange);
+
+    utils::SetColor(Color4f{0.f, 0.f, 1.f, 1.f});
+    utils::DrawEllipse(GetCircleRegion());
 }
 
 Rectf JumperEnemy::GetSourceRect() const

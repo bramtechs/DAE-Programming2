@@ -160,6 +160,11 @@ void utils::DrawEllipse(const Ellipsef &ellipse, float lineWidth)
     DrawEllipse(ellipse.center.x, ellipse.center.y, ellipse.radiusX, ellipse.radiusY, lineWidth);
 }
 
+void utils::DrawEllipse(const Circlef& circle, float lineWidth)
+{
+    DrawEllipse(circle.center.x, circle.center.y, circle.radius, circle.radius, lineWidth);
+}
+
 void utils::FillEllipse(float centerX, float centerY, float radX, float radY)
 {
     if (radX > 0 && radY > 0)

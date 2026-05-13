@@ -36,6 +36,7 @@ void FillRect(const Rectf &rect);
 void DrawEllipse(float centerX, float centerY, float radX, float radY, float lineWidth = 1.0f);
 void DrawEllipse(const Vector2f &center, float radX, float radY, float lineWidth = 1.0f);
 void DrawEllipse(const Ellipsef &ellipse, float lineWidth = 1.0f);
+void DrawEllipse(const Circlef &circle, float lineWidth = 1.0f);
 void FillEllipse(float centerX, float centerY, float radX, float radY);
 void FillEllipse(const Ellipsef &ellipse);
 void FillEllipse(const Vector2f &center, float radX, float radY);

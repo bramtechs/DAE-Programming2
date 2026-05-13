@@ -1,10 +1,12 @@
 #pragma once
 #include "Enemy.h"
 
+class Level;
+class PolygonCollider;
 class JumperEnemy final : public Enemy
 {
   public:
-    explicit JumperEnemy(const Vector2f &pos);
+    explicit JumperEnemy(const Vector2f &pos, Level &level);
 
     void InteractWithPlayer(Player &player) override;
 
@@ -23,9 +25,13 @@ class JumperEnemy final : public Enemy
     };
 
     Vector2f m_Velocity{};
+    Vector2f m_LastPosition{};
     State m_State{};
     float m_ChargeTimer{};
     bool m_IsLookingRight{};
+    Level &m_Level;
+
+    bool IsOverlappingLevel(PolygonCollider& outShape) const;
 
     Rectf GetSourceRect() const;
 

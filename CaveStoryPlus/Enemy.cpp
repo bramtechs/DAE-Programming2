@@ -37,7 +37,7 @@ void Enemy::SetCenter(Vector2f position)
     m_Position = position;
 }
 
-Vector2f Enemy::GetPosition() const
+Vector2f Enemy::GetCenter() const
 {
     return m_Position;
 }
@@ -50,6 +50,11 @@ Rectf Enemy::GetRegion() const
     r.width = m_Size.x;
     r.height = m_Size.y;
     return r;
+}
+
+Circlef Enemy::GetCircleRegion() const
+{
+    return Circlef{GetCenter(), std::min(m_Size.x, m_Size.y) * 0.5f};
 }
 
 void Enemy::DrawDebug() const
