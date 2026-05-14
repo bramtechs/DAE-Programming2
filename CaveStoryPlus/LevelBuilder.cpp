@@ -35,7 +35,7 @@ Level *LevelBuilder::BuildCaveLevel()
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{53.f, 8.f}, &LevelBuilder::BuildHermitGunsmithLevel));
 
     // spikes
-    pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{33.f, 33.f}, SpikeInteractable::Orientation::ceiling));
+    pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{32.f, 33.f}, SpikeInteractable::Orientation::ceiling));
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{31.f, 30.f}, SpikeInteractable::Orientation::floor));
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{24.f, 30.f}, SpikeInteractable::Orientation::ceiling));
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{22.f, 25.f}, SpikeInteractable::Orientation::floor));
