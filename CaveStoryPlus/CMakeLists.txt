@@ -29,6 +29,8 @@ add_executable(${PROJECT_NAME}
   ChestInteractable.cpp
   ChestInteractable.h
   DecorInteractable.cpp
+  GunSmithNpcInteractable.cpp
+  GunSmithNpcInteractable.h
   DecorInteractable.h
   JumperEnemy.cpp
   JumperEnemy.h

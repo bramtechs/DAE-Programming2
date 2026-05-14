@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LevelBuilder.h"
 #include "BatEnemy.h"
 #include "ChestInteractable.h"
@@ -6,8 +7,8 @@
 #include "JumperEnemy.h"
 #include "Level.h"
 #include "LifeCapsuleInteractable.h"
+#include "GunSmithNpcInteractable.h"
 #include "SpikeInteractable.h"
-#include "pch.h"
 
 Level *LevelBuilder::BuildCaveLevel()
 {
@@ -54,6 +55,7 @@ Level *LevelBuilder::BuildHermitGunsmithLevel()
 
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, &LevelBuilder::BuildCaveLevel));
     pLevel->SpawnInteractable(new DecorInteractable(Vector2f{11.f, 6.f}, Rectf{496.f, 368.f, 48.f, 32.f}));
+    pLevel->SpawnInteractable(new GunSmithNpcInteractable(Vector2f{10.f, 6.f}));
     pLevel->SpawnInteractable(new ChestInteractable(Vector2f{14.f, 6.f}));
 
     return pLevel;

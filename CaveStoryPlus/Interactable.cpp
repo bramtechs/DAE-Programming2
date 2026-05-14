@@ -11,7 +11,7 @@ Interactable::Interactable(const Rectf &region) : m_Region(region)
 {
     if (m_InstanceCount == 0)
     {
-        m_pSpriteSheetTexture = new Texture("NpcSym.bmp");
+        m_pSpriteSheetTexture = new Texture("NpcSym.png");
     }
 
     ++m_InstanceCount;

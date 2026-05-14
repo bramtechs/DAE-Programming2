@@ -1,10 +1,10 @@
 #pragma once
 #include "Interactable.h"
 
-class DecorInteractable final : public Interactable
+class DecorInteractable : public Interactable
 {
   public:
-    explicit DecorInteractable(const Rectf &region, const Rectf& sourceRect = {});
+    explicit DecorInteractable(const Rectf &region, const Rectf &sourceRect = {});
     explicit DecorInteractable(const Vector2f &cell, const Rectf &sourceRect = {});
 
     DecorInteractable(const DecorInteractable &) = delete;
