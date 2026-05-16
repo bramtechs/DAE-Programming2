@@ -301,9 +301,9 @@ void Player::DealDamage(int damage)
     {
         m_Health -= damage;
         m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
-        std::cout << "Dealth " << damage << " damage to player!" << std::endl;
+        std::cout << "Dealt " << damage << " damage to player!" << std::endl;
 
-        if (m_Health < 0)
+        if (m_Health <= 0)
         {
             m_DialogManager.QueueMessage("You have died.");
             m_DialogManager.QueueMessage("Want to retry?");
