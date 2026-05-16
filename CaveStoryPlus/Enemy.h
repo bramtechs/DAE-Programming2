@@ -31,18 +31,33 @@ class Enemy
     Circlef GetCircleRegion() const;
 
   protected:
+    void AddPosition(const Vector2f &offset)
+    {
+        m_Position += offset;
+    }
+
+    void SetPosition(const Vector2f &pos)
+    {
+        m_Position = pos;
+    }
+
+    const Vector2f &GetPosition() const
+    {
+        return m_Position;
+    }
+
     const Texture &GetSpriteSheet() const
     {
         return *m_pSpriteSheetTexture;
     }
 
+  private:
+    void DealBodyDamage(Player &player);
+
     Vector2f m_Position{};
     Vector2f m_Size{};
     int m_Health{};
     int m_BodyDamage{1};
-
-  private:
-    void DealBodyDamage(Player &player);
 
     static Texture *m_pSpriteSheetTexture;
     static int m_InstanceCount;

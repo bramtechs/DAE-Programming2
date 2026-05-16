@@ -17,7 +17,7 @@ void JumperEnemy::InteractWithPlayer(Player &player)
 {
     Enemy::InteractWithPlayer(player);
 
-    m_IsLookingRight = player.GetPosition().x > m_Position.x;
+    m_IsLookingRight = player.GetPosition().x > GetPosition().x;
 
     if (m_State == State::idle && player.GetPosition().Distance(GetCenter()) < m_ChargeRange)
     {
@@ -33,7 +33,7 @@ void JumperEnemy::Update(float delta)
         if (m_ChargeTimer > m_ChargeTime)
         {
             m_State = State::jumping;
-            m_LastPosition = m_Position;
+            m_LastPosition = GetPosition();
             m_ChargeTimer = 0.f;
             m_Velocity.x = m_IsLookingRight ? 1.f : -1.f;
             m_Velocity.y = m_JumpForce;
@@ -41,14 +41,14 @@ void JumperEnemy::Update(float delta)
     }
     else if (m_State == State::jumping)
     {
-        m_Position += m_Velocity * delta;
+        AddPosition(m_Velocity * delta);
         m_Velocity.y -= m_Gravity * delta;
 
         PolygonCollider collider{};
         if (IsOverlappingLevel(collider))
         {
-            m_Position = m_LastPosition;
-            if (m_Velocity.y <= 0.f && collider.IsPointAbove(m_Position))
+            SetPosition(m_LastPosition);
+            if (m_Velocity.y <= 0.f && collider.IsPointAbove(GetPosition()))
             {
                 m_State = State::idle;
             }
@@ -59,7 +59,7 @@ void JumperEnemy::Update(float delta)
         }
         else
         {
-            m_LastPosition = m_Position;
+            m_LastPosition = GetPosition();
         }
     }
 }

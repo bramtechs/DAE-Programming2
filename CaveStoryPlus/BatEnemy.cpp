@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "utils.h"
 
-BatEnemy::BatEnemy(std::vector<Vector2f>&& waypoints, float initialProgress)
+BatEnemy::BatEnemy(std::vector<Vector2f> &&waypoints, float initialProgress)
     : Enemy(Vector2f{0.8f, 0.8f}), m_Waypoints(std::move(waypoints))
 {
     m_TimeElapsed = MeasureTotalDistance() * initialProgress;
@@ -12,7 +12,7 @@ BatEnemy::BatEnemy(std::vector<Vector2f>&& waypoints, float initialProgress)
 void BatEnemy::InteractWithPlayer(Player &player)
 {
     Enemy::InteractWithPlayer(player);
-    m_LookingRight = player.GetPosition().x > m_Position.x;
+    m_LookingRight = player.GetPosition().x > GetPosition().x;
 }
 
 void BatEnemy::Update(float delta)
@@ -74,13 +74,13 @@ void BatEnemy::PositionAlongRoute(float offset)
         float segmentLength{m_Waypoints[i].Distance(m_Waypoints[i + 1])};
         if (accumulated + segmentLength >= offset)
         {
-            m_Position = m_Waypoints[i].MoveTowards(m_Waypoints[i + 1], offset - accumulated);
+            SetPosition(m_Waypoints[i].MoveTowards(m_Waypoints[i + 1], offset - accumulated));
             return;
         }
         accumulated += segmentLength;
     }
 
-    m_Position = m_Waypoints.back();
+    SetPosition(m_Waypoints.back());
 }
 
 float BatEnemy::MeasureTotalDistance() const
