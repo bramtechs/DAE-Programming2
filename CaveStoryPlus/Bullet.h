@@ -22,6 +22,7 @@ class Bullet
     void SetScale(float scale);
 
     Rectf GetRegion() const;
+    Circlef GetCircleRegion() const;
 
     bool IsOverlapping(const Rectf &region) const;
 

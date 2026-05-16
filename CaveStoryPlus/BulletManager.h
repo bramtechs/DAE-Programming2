@@ -1,8 +1,8 @@
 #pragma once
 #include "Texture.h"
-
 #include <vector>
 
+class Level;
 class Enemy;
 class Bullet;
 class BulletManager final
@@ -22,6 +22,8 @@ class BulletManager final
 
     // returns true if enemy killed
     bool InteractWithEnemy(Enemy &enemy);
+
+    void InteractWithLevel(Level &level);
 
     void SpawnPolarStarBullet(const Vector2f &pos, float shootAngle);
 

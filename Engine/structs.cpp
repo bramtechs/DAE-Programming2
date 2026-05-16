@@ -28,6 +28,11 @@ Rectf Rectf::PadPerc(float perc) const
     return Rectf(left + pad * 0.5f, bottom + pad * 0.5f, width - pad, height - pad);
 }
 
+Vector2f Rectf::GetCenter() const
+{
+    return Vector2f(left + width * 0.5f, bottom + height * 0.5f);
+}
+
 //-----------------------------------------------------------------
 // Circlef Constructors
 //-----------------------------------------------------------------

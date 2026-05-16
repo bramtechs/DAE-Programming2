@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BulletManager.h"
 #include "Bullet.h"
+#include "Level.h"
 #include "Enemy.h"
 #include "utils.h"
 
@@ -46,6 +47,28 @@ bool BulletManager::InteractWithEnemy(Enemy &enemy)
         }
     }
     return killed;
+}
+
+void BulletManager::InteractWithLevel(Level &level)
+{
+    auto it{m_Bullets.begin()};
+    while (it != m_Bullets.end())
+    {
+        bool didErase{};
+        for (const PolygonCollider &collider : level.GetColliders())
+        {
+            if (collider.Overlaps(it->GetCircleRegion()))
+            {
+                it = m_Bullets.erase(it);
+                didErase = true;
+                break;
+            }
+        }
+        if (!didErase)
+        {
+            ++it;
+        }
+    }
 }
 
 void BulletManager::SpawnPolarStarBullet(const Vector2f &pos, float shootAngle)

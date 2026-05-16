@@ -58,9 +58,11 @@ void Bullet::Draw(const Texture &texture) const
 
     glPopMatrix();
 
-#if 0 // debug graphics
+#if 1 // debug graphics
     utils::SetColor(Color4f{1.f, 0.f, 0.f, 1.f});
     utils::FillRect(GetRegion());
+    utils::SetColor(Color4f{0.f, 1.f, 0.f, 1.f});
+    utils::DrawEllipse(GetCircleRegion(), 1.f);
 #endif
 }
 
@@ -73,6 +75,13 @@ Rectf Bullet::GetRegion() const
     region.left = m_Position.x - region.width * 0.5f;
     region.bottom = m_Position.y - region.height * 0.5f;
     return region;
+}
+
+Circlef Bullet::GetCircleRegion() const
+{
+    const Rectf region{GetRegion()};
+    const float size{std::min(region.width, region.height)};
+    return Circlef(region.GetCenter(), size);
 }
 
 bool Bullet::IsOverlapping(const Rectf &region) const

@@ -20,6 +20,8 @@ struct Rectf
 
     Rectf PadPerc(float perc) const;
 
+    Vector2f GetCenter() const;
+
     float left;
     float bottom;
     float width;

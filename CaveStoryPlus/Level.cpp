@@ -87,6 +87,7 @@ void Level::InteractWithInteractables(const Player &player, Game &game, bool hol
 void Level::Update(float delta, Player &player)
 {
     m_BulletManager.Update(delta);
+    m_BulletManager.InteractWithLevel(*this);
 
     for (auto it{m_Enemies.begin()}; it != m_Enemies.end();)
     {
