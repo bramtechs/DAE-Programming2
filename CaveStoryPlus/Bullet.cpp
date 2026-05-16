@@ -58,7 +58,7 @@ void Bullet::Draw(const Texture &texture) const
 
     glPopMatrix();
 
-#if 1 // debug graphics
+#if 0 // debug graphics
     utils::SetColor(Color4f{1.f, 0.f, 0.f, 1.f});
     utils::FillRect(GetRegion());
     utils::SetColor(Color4f{0.f, 1.f, 0.f, 1.f});
