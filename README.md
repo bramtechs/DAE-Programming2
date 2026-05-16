@@ -74,10 +74,10 @@ This section gives a clear and detailed overview of which parts of the original 
 - [ ] Player damage on enemy contact
 - [ ] Basic HUD showing player health
 - [ ] Beginning of Mimiga Village area layout
-- [ ] Trigger zone that stops player and opens dialog
+- [X] Trigger zone that stops player and opens dialog
 - [X] Dialog box UI with text rendering
 - [X] Input handling to advance dialog text
-- [ ] Camera lock during dialog events
+- [X] Camera lock during dialog events
 
 ### What I will probably make as well:
 - [ ] Save station entity placed in first level
