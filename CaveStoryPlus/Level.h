@@ -1,6 +1,7 @@
 #pragma once
 #include "BulletManager.h"
 #include "PolygonCollider.h"
+#include "Game.h"
 #include "structs.h"
 
 #include <string>
@@ -35,6 +36,8 @@ class Level
 
     void InteractWithInteractables(const Player &player, Game &game, bool holdingInteractKey);
 
+    Rectf GetBounds() const;
+
     const std::vector<PolygonCollider> GetSolidEnemyColliders() const;
 
     const std::vector<PolygonCollider> &GetColliders() const
@@ -63,6 +66,8 @@ class Level
     }
 
   private:
+    static constexpr float m_BgTextureScale{g_TileSize / 2.f};
+
     void DrawTileGrid() const;
     void DrawColliders() const;
 

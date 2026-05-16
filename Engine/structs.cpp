@@ -33,6 +33,16 @@ Vector2f Rectf::GetCenter() const
     return Vector2f(left + width * 0.5f, bottom + height * 0.5f);
 }
 
+float Rectf::GetRight() const
+{
+    return left + width;
+}
+
+float Rectf::GetTop() const
+{
+    return bottom + height;
+}
+
 //-----------------------------------------------------------------
 // Circlef Constructors
 //-----------------------------------------------------------------

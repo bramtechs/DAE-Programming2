@@ -83,6 +83,11 @@ void Game::Update(float elapsedSec)
         m_pDialogManager->Update(elapsedSec);
     }
 
+    if (m_pActiveLevel)
+    {
+        m_Camera.ClampInside(m_pActiveLevel->GetBounds());
+    }
+
     m_pPlayerGUI->Update();
 }
 

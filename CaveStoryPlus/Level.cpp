@@ -84,6 +84,14 @@ void Level::InteractWithInteractables(const Player &player, Game &game, bool hol
     }
 }
 
+Rectf Level::GetBounds() const
+{
+    const float levelWidth{m_pFullTexture ? (m_pFullTexture->GetWidth() / m_BgTextureScale) : 0.f};
+    const float levelHeight{m_pFullTexture ? (m_pFullTexture->GetHeight() / m_BgTextureScale) : 0.f};
+
+    return Rectf{0.f, 0.f, levelWidth, levelHeight};
+}
+
 const std::vector<PolygonCollider> Level::GetSolidEnemyColliders() const
 {
     static std::vector<PolygonCollider> s_Colliders{};
@@ -132,8 +140,8 @@ void Level::Update(float delta, Player &player)
 
 void Level::Draw() const
 {
-    const float scaledWidth{m_pFullTexture->GetWidth() / g_TileSize * 2.f};
-    const float scaledHeight{m_pFullTexture->GetHeight() / g_TileSize * 2.f};
+    const float scaledWidth{m_pFullTexture->GetWidth() / m_BgTextureScale};
+    const float scaledHeight{m_pFullTexture->GetHeight() / m_BgTextureScale};
     m_pFullTexture->Draw(Rectf{0.f, 0.f, scaledWidth, scaledHeight});
 
     for (const Enemy *pEnemy : m_Enemies)

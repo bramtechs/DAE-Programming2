@@ -22,6 +22,9 @@ struct Rectf
 
     Vector2f GetCenter() const;
 
+    float GetRight() const;
+    float GetTop() const;
+
     float left;
     float bottom;
     float width;

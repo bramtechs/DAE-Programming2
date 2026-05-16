@@ -3,26 +3,27 @@
 
 class Camera
 {
-public:
-	Camera(const Rectf& viewPort);
+  public:
+    explicit Camera(const Rectf &viewPort);
 
-	void Begin() const;
+    void Begin() const;
 
-	void End() const;
+    void End() const;
 
-	void SetCenter(const Vector2f& pos);
+    void SetCenter(const Vector2f &pos);
 
-	void MoveWithKeyboard(float delta);
-	void MoveTowards(const Vector2f& pos, float delta);
+    void MoveWithKeyboard(float delta);
+    void MoveTowards(const Vector2f &pos, float delta);
 
-	Vector2f ScreenToWorldPos(const Vector2f& screenPos) const;
+    void ClampInside(const Rectf &clampBounds);
 
-	Rectf GetViewPort() const;
+    Vector2f ScreenToWorldPos(const Vector2f &screenPos) const;
 
-private:
-	Vector2f m_Center;
-	Rectf m_ViewPort;
-	float m_Zoom;
-	float m_MoveSpeed;
+    Rectf GetViewPort() const;
+
+  private:
+    Vector2f m_Center;
+    Rectf m_ViewPort;
+    float m_Zoom;
+    float m_MoveSpeed;
 };
-
