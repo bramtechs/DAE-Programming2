@@ -11,7 +11,7 @@ Enemy::Enemy(const Vector2f &size) : m_Size(size)
 {
     if (m_InstanceCount == 0)
     {
-        m_pSpriteSheetTexture = new Texture("NpcCemet.bmp");
+        m_pSpriteSheetTexture = new Texture("NpcCemet.png");
     }
 
     ++m_InstanceCount;

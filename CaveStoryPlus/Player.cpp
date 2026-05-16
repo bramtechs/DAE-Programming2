@@ -16,7 +16,7 @@
 Player::Player(DialogManager &dialog)
     : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsOnGround(), m_DialogManager(dialog)
 {
-    HoldWeapon(new PolarStar());
+    // HoldWeapon(new PolarStar());
 }
 
 Player::~Player()
@@ -267,6 +267,12 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
             m_JumpWindowTimer = m_JumpWindow;
         }
         break;
+
+    case SDLK_F4:
+        // cheat to get the Polar Star early
+        HoldWeapon(new PolarStar());
+        break;
+
     default:
         break;
     }

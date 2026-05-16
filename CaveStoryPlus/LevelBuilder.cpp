@@ -4,6 +4,7 @@
 #include "ChestInteractable.h"
 #include "DecorInteractable.h"
 #include "DoorInteractable.h"
+#include "BlockEnemy.h"
 #include "JumperEnemy.h"
 #include "Level.h"
 #include "LifeCapsuleInteractable.h"
@@ -24,6 +25,11 @@ Level *LevelBuilder::BuildCaveLevel()
 
     pLevel->SpawnEnemy(new JumperEnemy(Vector2f{33.5f, 4.5f}, *pLevel));
     pLevel->SpawnEnemy(new JumperEnemy(Vector2f{45.5f, 33.5f}, *pLevel));
+
+    pLevel->SpawnEnemy(new BlockEnemy(Vector2f{42.f, 33.f}));
+    pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 35.f}));
+    pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 34.f}));
+    pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 33.f}));
 
     // interactables
 

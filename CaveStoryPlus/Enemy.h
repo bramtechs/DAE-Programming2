@@ -56,7 +56,7 @@ class Enemy
 
     Vector2f m_Position{};
     Vector2f m_Size{};
-    int m_Health{};
+    int m_Health{3};
     int m_BodyDamage{1};
 
     static Texture *m_pSpriteSheetTexture;
