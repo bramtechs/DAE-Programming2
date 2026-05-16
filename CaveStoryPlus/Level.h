@@ -1,6 +1,7 @@
 #pragma once
 #include "BulletManager.h"
 #include "PolygonCollider.h"
+#include "structs.h"
 
 #include <string>
 #include <vector>
@@ -33,6 +34,8 @@ class Level
     void SpawnInteractable(Interactable *pInteractable);
 
     void InteractWithInteractables(const Player &player, Game &game, bool holdingInteractKey);
+
+    const std::vector<PolygonCollider> GetSolidEnemyColliders() const;
 
     const std::vector<PolygonCollider> &GetColliders() const
     {

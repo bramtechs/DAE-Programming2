@@ -84,6 +84,22 @@ void Level::InteractWithInteractables(const Player &player, Game &game, bool hol
     }
 }
 
+const std::vector<PolygonCollider> Level::GetSolidEnemyColliders() const
+{
+    static std::vector<PolygonCollider> s_Colliders{};
+
+    s_Colliders.clear();
+    for (const Enemy *pEnemy : m_Enemies)
+    {
+        if (pEnemy->IsSolid())
+        {
+            s_Colliders.emplace_back(pEnemy->GetRegion());
+        }
+    }
+
+    return s_Colliders;
+}
+
 void Level::Update(float delta, Player &player)
 {
     m_BulletManager.Update(delta);

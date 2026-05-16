@@ -7,6 +7,7 @@ BatEnemy::BatEnemy(std::vector<Vector2f> &&waypoints, float initialProgress)
     : Enemy(Vector2f{0.8f, 0.8f}), m_Waypoints(std::move(waypoints))
 {
     m_TimeElapsed = MeasureTotalDistance() * initialProgress;
+    SetHealth(2);
 }
 
 void BatEnemy::InteractWithPlayer(Player &player)

@@ -7,6 +7,15 @@ PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices) : m_Vertices(st
 {
 }
 
+PolygonCollider::PolygonCollider(const Rectf &rectangle)
+{
+    // anti clockwise
+    m_Vertices.emplace_back(rectangle.left, rectangle.bottom);
+    m_Vertices.emplace_back(rectangle.left + rectangle.width, rectangle.bottom);
+    m_Vertices.emplace_back(rectangle.left + rectangle.width, rectangle.bottom + rectangle.height);
+    m_Vertices.emplace_back(rectangle.left, rectangle.bottom + rectangle.height);
+}
+
 bool PolygonCollider::StartDragAround(const Vector2f &tileMousePos)
 {
     for (int i{}; i < m_Vertices.size(); ++i)

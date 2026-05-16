@@ -494,7 +494,12 @@ bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vecto
     gizmo.end = end;
     m_GizmoManager.QueueGizmo(gizmo);
     */
-    return RaycastAgainstLevel(start, end, level.GetColliders(), collisionAxis, outHitInfo);
+    bool hit{RaycastAgainstLevel(start, end, level.GetColliders(), collisionAxis, outHitInfo)};
+    if (!hit)
+    {
+        hit = RaycastAgainstLevel(start, end, level.GetSolidEnemyColliders(), collisionAxis, outHitInfo);
+    }
+    return hit;
 }
 
 bool Player::CheckRaycastPair(const Level &level, const Vector2f &firstStart, const Vector2f &firstEnd,

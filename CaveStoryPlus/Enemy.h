@@ -21,6 +21,11 @@ class Enemy
 
     virtual void DrawDebug() const;
 
+    virtual bool IsSolid() const
+    {
+        return false;
+    }
+
     // returns true if died
     bool TakeDamage(int damage);
 
@@ -31,6 +36,11 @@ class Enemy
     Circlef GetCircleRegion() const;
 
   protected:
+    void SetHealth(int health)
+    {
+        m_Health = health;
+    }
+
     void AddPosition(const Vector2f &offset)
     {
         m_Position += offset;

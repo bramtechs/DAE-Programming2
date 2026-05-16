@@ -9,6 +9,7 @@ class PolygonCollider
   public:
     PolygonCollider() = default;
     explicit PolygonCollider(std::vector<Vector2f> vertices);
+    explicit PolygonCollider(const Rectf &rectangle);
 
     void PickColor(int index);
 
