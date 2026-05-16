@@ -15,6 +15,8 @@ JumperEnemy::JumperEnemy(const Vector2f &pos, Level &level) : Enemy(Vector2f{1.f
 
 void JumperEnemy::InteractWithPlayer(Player &player)
 {
+    Enemy::InteractWithPlayer(player);
+
     m_IsLookingRight = player.GetPosition().x > m_Position.x;
 
     if (m_State == State::idle && player.GetPosition().Distance(GetCenter()) < m_ChargeRange)

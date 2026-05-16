@@ -7,10 +7,13 @@ class Enemy
 {
   public:
     Enemy(const Vector2f &size);
-
     virtual ~Enemy();
+    Enemy(const Enemy &) = delete;
+    Enemy &operator=(const Enemy &) = delete;
+    Enemy(Enemy &&) = delete;
+    Enemy &operator=(Enemy &&) = delete;
 
-    virtual void InteractWithPlayer(Player &player) = 0;
+    virtual void InteractWithPlayer(Player &player);
 
     virtual void Update(float delta) = 0;
 
@@ -36,8 +39,11 @@ class Enemy
     Vector2f m_Position{};
     Vector2f m_Size{};
     int m_Health{};
+    int m_BodyDamage{1};
 
   private:
+    void DealBodyDamage(Player &player);
+
     static Texture *m_pSpriteSheetTexture;
     static int m_InstanceCount;
 };

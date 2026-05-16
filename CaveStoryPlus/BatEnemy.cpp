@@ -11,6 +11,7 @@ BatEnemy::BatEnemy(std::vector<Vector2f>&& waypoints, float initialProgress)
 
 void BatEnemy::InteractWithPlayer(Player &player)
 {
+    Enemy::InteractWithPlayer(player);
     m_LookingRight = player.GetPosition().x > m_Position.x;
 }
 

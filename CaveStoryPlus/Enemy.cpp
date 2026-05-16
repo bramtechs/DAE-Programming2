@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Texture.h"
+#include "Player.h"
 #include "pch.h"
 #include "utils.h"
 
@@ -55,6 +56,19 @@ Rectf Enemy::GetRegion() const
 Circlef Enemy::GetCircleRegion() const
 {
     return Circlef{GetCenter(), std::min(m_Size.x, m_Size.y) * 0.5f};
+}
+
+void Enemy::InteractWithPlayer(Player& player)
+{
+    DealBodyDamage(player);
+}
+
+void Enemy::DealBodyDamage(Player &player)
+{
+    if (utils::IsOverlapping(GetRegion(), player.GetRegion()))
+    {
+        player.DealDamage(m_BodyDamage);
+    }
 }
 
 void Enemy::DrawDebug() const
