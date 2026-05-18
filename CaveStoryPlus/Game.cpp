@@ -30,7 +30,8 @@ void Game::Initialize()
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
     m_pPlayer = new Player(*m_pDialogManager);
     const LevelBuilder levelBuilder(*m_pPlayer);
-    m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
+    //m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
+    m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaVillage);
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
     m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
 

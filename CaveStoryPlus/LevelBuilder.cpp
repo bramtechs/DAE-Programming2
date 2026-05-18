@@ -27,6 +27,8 @@ Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
         return BuildCaveLevel();
     case LevelBuilder::Type::hermitGunsmith:
         return BuildHermitGunsmithLevel();
+    case LevelBuilder::Type::mimigaVillage:
+        return BuildMimigaVillageLevel();
     }
 
     assert(0 && "Case not handled");
@@ -47,6 +49,9 @@ Level *LevelBuilder::BuildCaveLevel() const
 
     pLevel->SpawnEnemy(new JumperEnemy(Vector2f{33.5f, 4.5f}, *pLevel));
     pLevel->SpawnEnemy(new JumperEnemy(Vector2f{45.5f, 33.5f}, *pLevel));
+
+    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{50.5f, 32.5f}, *pLevel));
+    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{53.5f, 33.5f}, *pLevel));
 
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{42.f, 33.f}));
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 35.f}));
@@ -86,6 +91,13 @@ Level *LevelBuilder::BuildHermitGunsmithLevel() const
     ChestInteractable *pChest{new ChestInteractable(Vector2f{14.f, 6.f})};
     pChest->SetOpened(!m_Player.IsHoldingWeapon<PolarStar>());
     pLevel->SpawnInteractable(pChest);
+
+    return pLevel;
+}
+
+Level *LevelBuilder::BuildMimigaVillageLevel() const
+{
+    Level *pLevel{new Level("mimiga_village.png", "mimiga_village_map.txt", Vector2f(8.f, 53.f))};
 
     return pLevel;
 }

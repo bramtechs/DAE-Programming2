@@ -10,7 +10,9 @@ class LevelBuilder
     enum class Type
     {
         cave,
-        hermitGunsmith
+        hermitGunsmith,
+        mimigaVillage,
+        mimigaReservoir
     };
 
     explicit LevelBuilder(const Player &player);
@@ -20,6 +22,7 @@ class LevelBuilder
   private:
     Level *BuildCaveLevel() const;
     Level *BuildHermitGunsmithLevel() const;
+    Level *BuildMimigaVillageLevel() const;
 
     const Player &m_Player;
 };
