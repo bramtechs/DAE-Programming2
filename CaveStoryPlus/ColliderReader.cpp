@@ -4,42 +4,45 @@
 
 #include <iostream>
 
-ColliderReader::ColliderReader(const std::string& colliderFilePath)
-    : m_FilePath(colliderFilePath), m_Stream(m_FilePath)
+ColliderReader::ColliderReader(const std::string &colliderFilePath) : m_FilePath(colliderFilePath)
 {
 }
 
-size_t ColliderReader::ReadAllInto(std::vector<PolygonCollider>& colliders)
+size_t ColliderReader::ReadAllInto(std::vector<PolygonCollider> &colliders)
 {
-    if (!m_Stream.good())
-    {
-        std::cerr << "Could not read colliders from: " << m_FilePath << std::endl;
-        return 0;
-    }
-
     const size_t startCount{colliders.size()};
-    
-    PolygonCollider next{};
-    for (std::string line; std::getline(m_Stream, line);)
+    try
     {
-        if (line.find("[PolygonCollider]") != std::string::npos)
+        std::ifstream stream{};
+        stream.exceptions(std::ios::badbit); // throw on IO errors
+        stream.open(m_FilePath);
+
+        PolygonCollider next{};
+        for (std::string line; std::getline(stream, line);)
         {
-            PolygonCollider col{ ReadSingle() };
-            col.PickColor(static_cast<int>(colliders.size()));
-            colliders.emplace_back(std::move(col));
+            if (line.find("[PolygonCollider]") != std::string::npos)
+            {
+                PolygonCollider col{ReadSingle(stream)};
+                col.PickColor(static_cast<int>(colliders.size()));
+                colliders.emplace_back(std::move(col));
+            }
         }
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "Could not read (some) colliders from: " << m_FilePath << "\n" << ex.what() << std::endl;
     }
 
     return colliders.size() - startCount;
 }
 
-PolygonCollider ColliderReader::ReadSingle()
+PolygonCollider ColliderReader::ReadSingle(std::ifstream &stream)
 {
     PolygonCollider col{};
 
-    for (std::string line; std::getline(m_Stream, line);)
+    for (std::string line; std::getline(stream, line);)
     {
-        const size_t seperatorPos{ line.find(';') };
+        const size_t seperatorPos{line.find(';')};
         if (seperatorPos == std::string::npos)
         {
             break;
@@ -47,7 +50,7 @@ PolygonCollider ColliderReader::ReadSingle()
 
         Vector2f point{};
         point.x = std::stof(line);
-        point.y = std::stof(line.substr(seperatorPos+1));
+        point.y = std::stof(line.substr(seperatorPos + 1));
         col.AddPoint(point);
     }
 

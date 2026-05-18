@@ -6,15 +6,13 @@
 class PolygonCollider;
 class ColliderReader
 {
-public:
-    explicit ColliderReader(const std::string& colliderFilePath);
+  public:
+    explicit ColliderReader(const std::string &colliderFilePath);
 
-    size_t ReadAllInto(std::vector<PolygonCollider>& colliders);
-    
-    PolygonCollider ReadSingle();
+    size_t ReadAllInto(std::vector<PolygonCollider> &colliders);
 
-private:
+  private:
+    PolygonCollider ReadSingle(std::ifstream &stream);
+
     std::string m_FilePath;
-    std::ifstream m_Stream;
 };
-

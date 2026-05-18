@@ -23,6 +23,7 @@ class LevelBuilder
     Level *BuildCaveLevel() const;
     Level *BuildHermitGunsmithLevel() const;
     Level *BuildMimigaVillageLevel() const;
+    Level *BuildReservoirLevel() const;
 
     const Player &m_Player;
 };

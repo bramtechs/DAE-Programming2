@@ -30,6 +30,8 @@ Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
         return BuildHermitGunsmithLevel();
     case LevelBuilder::Type::mimigaVillage:
         return BuildMimigaVillageLevel();
+    case LevelBuilder::Type::mimigaReservoir:
+        return BuildReservoirLevel();
     }
 
     assert(0 && "Case not handled");
@@ -103,6 +105,16 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
     pLevel->SpawnInteractable(new MimigaVillageNpc(Vector2f{10.f, 25.f}));
 
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{1.f, 21.f}, LevelBuilder::Type::mimigaReservoir));
+
+    return pLevel;
+}
+
+Level *LevelBuilder::BuildReservoirLevel() const
+{
+    Level *pLevel{new Level("mimiga_village_reservoir.png", "mimiga_village_reservoir_map.txt", Vector2f{36.f, 5.f})};
+    
+    pLevel->SpawnInteractable(
+        new DoorInteractable(Vector2f{36.f, 5.f}, LevelBuilder::Type::mimigaVillage, Vector2f{1.f, 21.f}));
 
     return pLevel;
 }
