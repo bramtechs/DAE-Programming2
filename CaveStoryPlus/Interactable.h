@@ -30,7 +30,7 @@ class Interactable
         return false;
     }
 
-    // returns bool if consumed, should be destroyed
+    // returns bool if should be destroyed
     virtual bool OnTouch(Game & /*game*/)
     {
         return false;

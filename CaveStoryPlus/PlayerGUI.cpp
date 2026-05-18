@@ -6,6 +6,8 @@
 
 const Rectf PlayerGUI::m_LvlLabelTextureSource{163.f, 163.f, 24.f, 13.f};
 const Rectf PlayerGUI::m_HeartTextureSource{0.f, 80.f, 16.f, 16.f};
+const std::array<Rectf, 2> PlayerGUI::m_OxygenTextureSources{Rectf{225.f, 144.f, 63.f, 15.f},
+                                                             Rectf{225.f, 160.f, 63.f, 15.f}};
 
 PlayerGUI::PlayerGUI(const Player &player) : m_Player(player), m_pTexture(new Texture("TextBox.png"))
 {
@@ -16,16 +18,33 @@ PlayerGUI::~PlayerGUI()
     delete m_pTexture;
 }
 
-void PlayerGUI::Update()
+void PlayerGUI::Update(float delta)
 {
     m_HealthLabel.SetValue(m_Player.GetHealth());
     m_HealthBar.SetProgress(m_Player.GetHealth() / static_cast<float>(m_Player.GetMaxHealth()));
+
+    m_AnimTimer += delta;
+
+    m_OxygenLabel.SetValue(m_Player.GetOxygen());
 }
 
-void PlayerGUI::Draw() const
+void PlayerGUI::Draw(const Rectf &viewport) const
 {
     const float padding{40.f};
     DrawHUD(Rectf{padding, g_ScreenHeight - padding - 100.f, 330, 60});
+
+    if (!m_Player.HasMaximumOxygen())
+    {
+        const int frame{(std::fmod(m_AnimTimer, 1.f) < 0.5f) ? 0 : 1};
+        const Rectf oxygenRect{viewport.width * 0.5f - 80.f, viewport.height * 0.7f,
+                               m_OxygenTextureSources[frame].width * 2.f, m_OxygenTextureSources[frame].height * 2.f};
+        m_pTexture->Draw(oxygenRect, m_OxygenTextureSources[frame]);
+
+        const float digitSize{26.f};
+        const Rectf digitRegion{oxygenRect.left + m_OxygenTextureSources[frame].width * 2.5f, oxygenRect.bottom,
+                                digitSize, digitSize};
+        m_OxygenLabel.Draw(digitRegion, false);
+    }
 }
 
 void PlayerGUI::DrawHUD(const Rectf &region) const

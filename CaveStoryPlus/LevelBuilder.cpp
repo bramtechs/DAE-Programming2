@@ -13,6 +13,7 @@
 #include "PickupInteractable.h"
 #include "LifeCapsuleInteractable.h"
 #include "ReservoirFisherNpc.h"
+#include "WaterInteractable.h"
 #include "GunSmithNpcInteractable.h"
 #include "SpikeInteractable.h"
 
@@ -81,6 +82,11 @@ Level *LevelBuilder::BuildCaveLevel() const
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{17.f, 14.f}, SpikeInteractable::Orientation::ceiling));
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{33.f, 12.f}, SpikeInteractable::Orientation::ceiling));
 
+    // water
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{38.f, 3.f, 20.f, 3.f}));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{32.f, 3.f, 4.f, 2.f}));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{26.f, 6.f, 6.f, 1.f}));
+
     return pLevel;
 }
 
@@ -94,7 +100,7 @@ Level *LevelBuilder::BuildHermitGunsmithLevel() const
     pLevel->SpawnInteractable(new GunSmithNpcInteractable(Vector2f{10.f, 6.f}));
 
     ChestInteractable *pChest{new ChestInteractable(Vector2f{14.f, 6.f})};
-    pChest->SetOpened(!m_Player.IsHoldingWeapon<PolarStar>());
+    pChest->SetOpened(m_Player.IsHoldingWeapon<PolarStar>());
     pLevel->SpawnInteractable(pChest);
 
     return pLevel;
@@ -120,6 +126,7 @@ Level *LevelBuilder::BuildReservoirLevel() const
 
     pLevel->SpawnInteractable(new PickupInteractable(Vector2f{5.f, 4.f}));
     pLevel->SpawnInteractable(new ReservoirFisherNpc(Vector2f{5.5f, 6.63f}));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{1.f, 1.f, 23.f, 5.5f}));
 
     return pLevel;
 }

@@ -30,8 +30,8 @@ void Game::Initialize()
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
     m_pPlayer = new Player(*m_pDialogManager);
     const LevelBuilder levelBuilder(*m_pPlayer);
-    //m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaVillage);
-    m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaReservoir);
+    m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
+    //m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaReservoir);
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
     m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
 
@@ -88,7 +88,7 @@ void Game::Update(float elapsedSec)
         m_Camera.ClampInside(m_pActiveLevel->GetBounds());
     }
 
-    m_pPlayerGUI->Update();
+    m_pPlayerGUI->Update(elapsedSec);
 }
 
 void Game::Draw() const
@@ -107,7 +107,7 @@ void Game::Draw() const
 
     m_Camera.End();
 
-    m_pPlayerGUI->Draw();
+    m_pPlayerGUI->Draw(GetViewPort());
 
     const Vector2f screenSize{GetViewPort().width, GetViewPort().height};
     m_pDialogManager->Draw(screenSize);

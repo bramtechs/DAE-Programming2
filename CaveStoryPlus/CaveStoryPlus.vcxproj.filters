@@ -126,6 +126,9 @@
     <ClInclude Include="ReservoirFisherNpc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WaterInteractable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Prog2Game.targets" />
@@ -240,6 +243,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReservoirFisherNpc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterInteractable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

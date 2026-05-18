@@ -27,6 +27,8 @@ class Player
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
 
     void DealDamage(int amount);
+    void DrainOxygen();
+    bool HasMaximumOxygen() const;
 
     void AddGold(int amount = 1);
     void AddMaxHealth(int amount);
@@ -46,6 +48,7 @@ class Player
 
     Rectf GetRegion() const;
 
+    int GetOxygen() const;
     int GetHealth() const;
     int GetMaxHealth() const;
 
@@ -85,6 +88,7 @@ class Player
     constexpr static float m_TimePerFrame{0.15f};
     constexpr static int m_SpriteSheetCols{11};
     constexpr static int m_SpriteSheetRows{2};
+    constexpr static int m_MaxOxygen{100};
     constexpr static float m_FlashInterval{0.2f};
     constexpr static float m_InvincibilityOnHitSeconds{2.f};
 
@@ -109,10 +113,12 @@ class Player
     float m_JumpWindowTimer{0.1f};
     float m_LastShootTimer{};
     float m_InvincibilityTimer{};
+    float m_SecondsSinceOxygenDrain{};
 
     int m_CurrentAnimationFrame{};
     int m_Gold{};
     int m_MaxHealth{3};
+    int m_Oxygen{m_MaxOxygen};
     int m_Health{m_MaxHealth};
 
     bool m_LookingLeft{};

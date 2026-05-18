@@ -37,6 +37,12 @@ void Player::Update(float delta, Level &level)
     UpdateShooting(delta, level);
 
     m_InvincibilityTimer -= delta;
+
+    if (m_SecondsSinceOxygenDrain > 0.5f)
+    {
+        m_Oxygen = m_MaxOxygen;
+    }
+    m_SecondsSinceOxygenDrain += delta;
 }
 
 void Player::UpdateMovement(float delta, Level &level)
@@ -229,6 +235,11 @@ Rectf Player::GetRegion() const
     return Rectf{m_Position.x, m_Position.y, 1.f, 1.f};
 }
 
+int Player::GetOxygen() const
+{
+    return m_Oxygen;
+}
+
 int Player::GetHealth() const
 {
     return m_Health;
@@ -315,6 +326,21 @@ void Player::DealDamage(int damage)
             m_DialogManager.QueueMessage("Want to retry?");
         }
     }
+}
+
+void Player::DrainOxygen()
+{
+    m_Oxygen = std::max(m_Oxygen - 1, 0);
+    m_SecondsSinceOxygenDrain = 0.f;
+    if (m_Oxygen <= 0)
+    {
+        DealDamage(1);
+    }
+}
+
+bool Player::HasMaximumOxygen() const
+{
+    return m_Oxygen >= 100;
 }
 
 void Player::AddGold(int amount)
