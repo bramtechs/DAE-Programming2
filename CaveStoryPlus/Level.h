@@ -36,6 +36,8 @@ class Level
 
     void InteractWithInteractables(const Player &player, Game &game, bool holdingInteractKey);
 
+    void SetSpawnPos(const Vector2f &pos);
+    
     Rectf GetBounds() const;
 
     const std::vector<PolygonCollider> GetSolidEnemyColliders() const;

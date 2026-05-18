@@ -57,7 +57,8 @@ Level *LevelBuilder::BuildHermitGunsmithLevel()
     Level *pLevel{new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", Vector2f(7.f, 6.f))};
     // pLevel->SpawnInteractable();
 
-    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, &LevelBuilder::BuildCaveLevel));
+    pLevel->SpawnInteractable(
+        new DoorInteractable(Vector2f{7.f, 6.f}, &LevelBuilder::BuildCaveLevel, Vector2f{53.f, 8.f}));
     pLevel->SpawnInteractable(new DecorInteractable(Vector2f{11.f, 6.f}, Rectf{496.f, 368.f, 48.f, 32.f}));
     pLevel->SpawnInteractable(new GunSmithNpcInteractable(Vector2f{10.f, 6.f}));
     pLevel->SpawnInteractable(new ChestInteractable(Vector2f{14.f, 6.f}));

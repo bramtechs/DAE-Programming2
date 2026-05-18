@@ -118,10 +118,11 @@ void Game::Draw() const
     }
 }
 
-void Game::SwitchLevel(Level *pLevel)
+Level* Game::SwitchLevel(Level *pLevel)
 {
     // level switch is delayed to next frame
     m_pNextLevel = pLevel;
+    return pLevel;
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)

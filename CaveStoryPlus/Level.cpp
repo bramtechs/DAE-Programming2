@@ -84,6 +84,11 @@ void Level::InteractWithInteractables(const Player &player, Game &game, bool hol
     }
 }
 
+void Level::SetSpawnPos(const Vector2f &pos)
+{
+    m_SpawnPos = pos;
+}
+
 Rectf Level::GetBounds() const
 {
     const float levelWidth{m_pFullTexture ? (m_pFullTexture->GetWidth() / m_BgTextureScale) : 0.f};
