@@ -12,6 +12,7 @@
 #include "MimigaVillageNpc.h"
 #include "PickupInteractable.h"
 #include "LifeCapsuleInteractable.h"
+#include "ReservoirFisherNpc.h"
 #include "GunSmithNpcInteractable.h"
 #include "SpikeInteractable.h"
 
@@ -118,6 +119,7 @@ Level *LevelBuilder::BuildReservoirLevel() const
         new DoorInteractable(Vector2f{36.f, 5.f}, LevelBuilder::Type::mimigaVillage, Vector2f{1.f, 21.f}));
 
     pLevel->SpawnInteractable(new PickupInteractable(Vector2f{5.f, 4.f}));
+    pLevel->SpawnInteractable(new ReservoirFisherNpc(Vector2f{5.5f, 6.63f}));
 
     return pLevel;
 }
