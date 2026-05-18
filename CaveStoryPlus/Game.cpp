@@ -27,11 +27,10 @@ void Game::Initialize()
 {
     m_pTextManager = new TextManager();
 
-    LevelBuilder levelBuilder{};
-    m_pActiveLevel = levelBuilder.BuildCaveLevel();
-    // m_pActiveLevel = levelBuilder.BuildHermitGunsmithLevel();
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
     m_pPlayer = new Player(*m_pDialogManager);
+    const LevelBuilder levelBuilder(*m_pPlayer);
+    m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
     m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
 
@@ -118,11 +117,11 @@ void Game::Draw() const
     }
 }
 
-Level* Game::SwitchLevel(Level *pLevel)
+void Game::SwitchLevel(Level *pLevel)
 {
     // level switch is delayed to next frame
+    // to prevent lifetime problems.
     m_pNextLevel = pLevel;
-    return pLevel;
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)

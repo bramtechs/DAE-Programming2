@@ -32,6 +32,12 @@ class Player
     void AddMaxHealth(int amount);
     void HoldWeapon(Weapon *pWeapon);
 
+    template <typename T> bool IsHoldingWeapon() const
+    {
+        static_assert(std::is_base_of_v<Weapon, T>, "T needs to have base Weapon");
+        return dynamic_cast<T *>(m_pHeldWeapon) != nullptr;
+    }
+
     Vector2f GetPosition() const;
 
     Vector2f GetHandPosition() const;

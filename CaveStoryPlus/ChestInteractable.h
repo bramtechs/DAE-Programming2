@@ -6,6 +6,8 @@ class ChestInteractable final : public Interactable
   public:
     explicit ChestInteractable(const Vector2f &cell);
 
+    void SetOpened(bool open);
+
     void Update(float delta) override;
     void Draw() const override;
 

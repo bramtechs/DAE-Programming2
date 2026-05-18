@@ -119,14 +119,17 @@ Rectf CalcCoverRegion(Rectf region, const Rectf &source);
 
 std::pair<Rectf, Rectf> SplitRectHorizontally(const Rectf &rect, float divisor = 0.5f);
 
-template <typename T, typename = std::enable_if_t<std::is_floating_point<T>::value>>
-T SnapRounded(T value, T snapInterval)
+template <typename T> T SnapRounded(T value, T snapInterval)
 {
+    static_assert(std::is_floating_point_v<T>, "Needs floating point");
+
     return std::round(value / snapInterval) * snapInterval;
 }
 
-template <typename T, typename = std::enable_if_t<std::is_arithmetic<T>::value>> T Clamp(T value, T min, T max)
+template <typename T> T Clamp(T value, T min, T max)
 {
+    static_assert(std::is_arithmetic_v<T>, "Needs arithmetic");
+
     if (value < min)
     {
         return min;

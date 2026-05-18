@@ -12,6 +12,11 @@ ChestInteractable::ChestInteractable(const Vector2f &cell) : Interactable(Rectf{
 {
 }
 
+void ChestInteractable::SetOpened(bool open)
+{
+    m_IsOpened = open;
+}
+
 void ChestInteractable::Update(float delta)
 {
 }

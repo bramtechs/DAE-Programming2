@@ -1,14 +1,25 @@
 #pragma once
 #include "Vector2f.h"
 
+class Player;
 class Level;
+
 class LevelBuilder
 {
   public:
-    static Level *BuildCaveLevel();
+    enum class Type
+    {
+        cave,
+        hermitGunsmith
+    };
 
-    static Level *BuildHermitGunsmithLevel();
+    explicit LevelBuilder(const Player &player);
+
+    Level *BuildLevel(Type type) const;
 
   private:
-    LevelBuilder() = delete;
+    Level *BuildCaveLevel() const;
+    Level *BuildHermitGunsmithLevel() const;
+
+    const Player &m_Player;
 };

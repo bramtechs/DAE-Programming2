@@ -6,12 +6,34 @@
 #include "DoorInteractable.h"
 #include "BlockEnemy.h"
 #include "JumperEnemy.h"
+#include "Player.h"
+#include "PolarStar.h"
 #include "Level.h"
 #include "LifeCapsuleInteractable.h"
 #include "GunSmithNpcInteractable.h"
 #include "SpikeInteractable.h"
 
-Level *LevelBuilder::BuildCaveLevel()
+#include <cassert>
+
+LevelBuilder::LevelBuilder(const Player &player) : m_Player(player)
+{
+}
+
+Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
+{
+    switch (type)
+    {
+    case LevelBuilder::Type::cave:
+        return BuildCaveLevel();
+    case LevelBuilder::Type::hermitGunsmith:
+        return BuildHermitGunsmithLevel();
+    }
+
+    assert(0 && "Case not handled");
+    return nullptr;
+}
+
+Level *LevelBuilder::BuildCaveLevel() const
 {
     Level *pLevel{new Level("cave_first_map.png", "cave_first_map.txt", Vector2f(37.f, 33.f))};
 
@@ -37,7 +59,7 @@ Level *LevelBuilder::BuildCaveLevel()
     pLevel->SpawnInteractable(new LifeCapsuleInteractable(Vector2f{6.f, 20.f}));
 
     // 53x8 door
-    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{53.f, 8.f}, &LevelBuilder::BuildHermitGunsmithLevel));
+    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{53.f, 8.f}, LevelBuilder::Type::hermitGunsmith));
 
     // spikes
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{32.f, 33.f}, SpikeInteractable::Orientation::ceiling));
@@ -52,16 +74,18 @@ Level *LevelBuilder::BuildCaveLevel()
     return pLevel;
 }
 
-Level *LevelBuilder::BuildHermitGunsmithLevel()
+Level *LevelBuilder::BuildHermitGunsmithLevel() const
 {
     Level *pLevel{new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", Vector2f(7.f, 6.f))};
     // pLevel->SpawnInteractable();
 
-    pLevel->SpawnInteractable(
-        new DoorInteractable(Vector2f{7.f, 6.f}, &LevelBuilder::BuildCaveLevel, Vector2f{53.f, 8.f}));
+    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, LevelBuilder::Type::cave, Vector2f{53.f, 8.f}));
     pLevel->SpawnInteractable(new DecorInteractable(Vector2f{11.f, 6.f}, Rectf{496.f, 368.f, 48.f, 32.f}));
     pLevel->SpawnInteractable(new GunSmithNpcInteractable(Vector2f{10.f, 6.f}));
-    pLevel->SpawnInteractable(new ChestInteractable(Vector2f{14.f, 6.f}));
+
+    ChestInteractable *pChest{new ChestInteractable(Vector2f{14.f, 6.f})};
+    pChest->SetOpened(!m_Player.IsHoldingWeapon<PolarStar>());
+    pLevel->SpawnInteractable(pChest);
 
     return pLevel;
 }

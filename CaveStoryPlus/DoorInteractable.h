@@ -1,5 +1,6 @@
 #pragma once
 #include "Interactable.h"
+#include "LevelBuilder.h"
 #include <functional>
 #include <optional>
 
@@ -8,10 +9,8 @@ class LevelBuilder;
 class DoorInteractable final : public Interactable
 {
   public:
-    using LevelBuilder = std::function<Level *()>;
-
-    explicit DoorInteractable(const Vector2f &cell, const LevelBuilder &levelBuilder);
-    explicit DoorInteractable(const Vector2f &cell, const LevelBuilder &levelBuilder, Vector2f customSpawn);
+    explicit DoorInteractable(const Vector2f &cell, LevelBuilder::Type type, const Vector2f &customSpawn);
+    explicit DoorInteractable(const Vector2f &cell, LevelBuilder::Type type);
 
     void Update(float delta) override;
 
@@ -20,6 +19,6 @@ class DoorInteractable final : public Interactable
     bool OnInteract(Game &game) override;
 
   private:
-    const LevelBuilder m_LevelBuilderFunc;
-    const std::optional<Vector2f> m_CustomSpawn;
+    LevelBuilder::Type m_LevelType;
+    std::optional<Vector2f> m_CustomSpawn;
 };
