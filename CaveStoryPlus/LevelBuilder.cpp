@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "PolarStar.h"
 #include "Level.h"
+#include "MimigaVillageNpc.h"
 #include "LifeCapsuleInteractable.h"
 #include "GunSmithNpcInteractable.h"
 #include "SpikeInteractable.h"
@@ -98,6 +99,10 @@ Level *LevelBuilder::BuildHermitGunsmithLevel() const
 Level *LevelBuilder::BuildMimigaVillageLevel() const
 {
     Level *pLevel{new Level("mimiga_village.png", "mimiga_village_map.txt", Vector2f(8.f, 53.f))};
+
+    pLevel->SpawnInteractable(new MimigaVillageNpc(Vector2f{10.f, 25.f}));
+
+    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{1.f, 21.f}, LevelBuilder::Type::mimigaReservoir));
 
     return pLevel;
 }

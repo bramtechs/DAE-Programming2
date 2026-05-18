@@ -46,6 +46,7 @@ class Interactable
     Vector2f GetCenter() const;
 
   protected:
+      // TODO: do not reference count for rule of 0
     const Texture &GetSpriteSheetTexture() const
     {
         return *m_pSpriteSheetTexture;

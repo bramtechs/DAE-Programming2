@@ -117,6 +117,9 @@
     <ClInclude Include="BlockEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MimigaVillageNpc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Prog2Game.targets" />
@@ -222,6 +225,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlockEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MimigaVillageNpc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

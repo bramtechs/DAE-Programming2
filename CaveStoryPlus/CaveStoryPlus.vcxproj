@@ -196,6 +196,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="LifeCapsuleInteractable.h" />
+    <ClInclude Include="MimigaVillageNpc.h" />
     <ClInclude Include="MultiLineLabel.h" />
     <ClInclude Include="NumberLabel.h" />
     <ClInclude Include="pch.h" />
@@ -249,6 +250,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="LifeCapsuleInteractable.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MimigaVillageNpc.cpp" />
     <ClCompile Include="MultiLineLabel.cpp" />
     <ClCompile Include="NumberLabel.cpp" />
     <ClCompile Include="pch.cpp" />
