@@ -132,7 +132,11 @@ void Level::Update(float delta, Player &player)
         if (m_BulletManager.InteractWithEnemy(*pEnemy))
         {
             // when killed the enemy
-            SpawnInteractable(new GoldInteractable(pEnemy->GetCenter(), *this));
+            for (int i{}; i < pEnemy->GetGoldDropCount(); ++i)
+            {
+                SpawnInteractable(new GoldInteractable(pEnemy->GetCenter(), *this));
+            }
+
             delete *it;
             it = m_Enemies.erase(it);
         }

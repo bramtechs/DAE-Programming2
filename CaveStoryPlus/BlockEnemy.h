@@ -20,6 +20,11 @@ class BlockEnemy final : public Enemy
         return true;
     }
 
+    int GetGoldDropCount() const override
+    {
+        return 0;
+    }
+
   private:
     static const Rectf m_TextureSource;
 };

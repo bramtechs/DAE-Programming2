@@ -16,6 +16,11 @@ class JumperEnemy final : public Enemy
 
     void DrawDebug() const override;
 
+    int GetGoldDropCount() const override
+    {
+        return 2;
+    }
+
   private:
     enum class State
     {
@@ -31,7 +36,7 @@ class JumperEnemy final : public Enemy
     bool m_IsLookingRight{};
     Level &m_Level;
 
-    bool IsOverlappingLevel(PolygonCollider& outShape) const;
+    bool IsOverlappingLevel(PolygonCollider &outShape) const;
 
     Rectf GetSourceRect() const;
 

@@ -26,6 +26,11 @@ class Enemy
         return false;
     }
 
+    virtual int GetGoldDropCount() const
+    {
+        return 1;
+    }
+
     // returns true if died
     bool TakeDamage(int damage);
 

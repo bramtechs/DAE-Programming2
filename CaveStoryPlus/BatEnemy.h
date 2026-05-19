@@ -17,6 +17,11 @@ class BatEnemy final : public Enemy
 
     void DrawDebug() const override;
 
+    int GetGoldDropCount() const override
+    {
+        return 1;
+    }
+
   private:
     Rectf GetAnimationSource(bool right, int frame) const;
 
