@@ -19,7 +19,9 @@ class PlayerGUI
 
     void Update(float delta);
 
-    void Draw(const Rectf& viewport) const;
+    void Draw(const Rectf &viewport) const;
+
+    void OnLevelUp();
 
   private:
     void DrawHUD(const Rectf &region) const;
@@ -29,9 +31,11 @@ class PlayerGUI
     const static Rectf m_LvlLabelTextureSource;
     const static Rectf m_HeartTextureSource;
     const static std::array<Rectf, 2> m_OxygenTextureSources;
+    const static std::array<Rectf, 2> m_LevelupSources;
 
     const Player &m_Player;
     Texture *m_pTexture{};
+
     NumberLabel m_LevelLabel{};
     NumberLabel m_HealthLabel{};
     NumberLabel m_OxygenLabel{};
@@ -40,4 +44,5 @@ class PlayerGUI
     BarWidget m_HealthBar{utils::ColorHex(0x3F0C21), utils::ColorHex(0xFF0201)};
 
     float m_AnimTimer{};
+    float m_ShowLevelUpTimer{};
 };

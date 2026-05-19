@@ -19,6 +19,7 @@ class Player
 
     void Update(float delta, Level &level);
     void Draw() const;
+    void DrawGUI(const Rectf &viewport) const;
 
     void SetPosition(const Vector2f &pos);
     void SetPosition(float left, float bottom);
@@ -48,9 +49,37 @@ class Player
 
     Rectf GetRegion() const;
 
-    int GetOxygen() const;
-    int GetHealth() const;
-    int GetMaxHealth() const;
+    int GetLevel() const
+    {
+        return m_Level;
+    }
+
+    int GetGold() const
+    {
+        return m_Gold;
+    }
+
+    float GetLevelProgress() const;
+
+    int GetOxygen() const
+    {
+        return m_Oxygen;
+    }
+
+    int GetHealth() const
+    {
+        return m_Health;
+    }
+
+    int GetMaxHealth() const
+    {
+        return m_MaxHealth;
+    }
+
+    float GetHealthPercentage() const
+    {
+        return m_Health / static_cast<float>(m_MaxHealth);
+    }
 
   private:
     enum class AnimState
@@ -82,6 +111,8 @@ class Player
     bool CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
     bool CheckIfHitsRightWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const;
 
+    static int GetGoldNeededForLevel(int level);
+
     constexpr static float m_HitboxHeight{0.8f};
     constexpr static float m_HitboxWidth{0.75f};
     constexpr static float m_CellSize{32.f};
@@ -102,6 +133,7 @@ class Player
     AnimState m_CurrentAnimationState{AnimState::idle};
     Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
     Weapon *m_pHeldWeapon{};
+    PlayerGUI *m_pGUI{};
     DialogManager &m_DialogManager;
 
     float m_HorizontalMoveForce{24.f};
@@ -117,6 +149,7 @@ class Player
 
     int m_CurrentAnimationFrame{};
     int m_Gold{};
+    int m_Level{0};
     int m_MaxHealth{3};
     int m_Oxygen{m_MaxOxygen};
     int m_Health{m_MaxHealth};

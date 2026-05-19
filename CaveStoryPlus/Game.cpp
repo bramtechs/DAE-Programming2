@@ -32,7 +32,6 @@ void Game::Initialize()
     m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
     // m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaReservoir);
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
-    m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
 
     m_Camera.SetCenter(m_pPlayer->GetCameraFocusPosition());
 }
@@ -44,7 +43,6 @@ void Game::Cleanup()
     delete m_pNextLevel;
     delete m_pDialogManager;
     delete m_pTextManager;
-    delete m_pPlayerGUI;
     delete m_pPlayer;
 }
 
@@ -86,31 +84,28 @@ void Game::Update(float elapsedSec)
     {
         m_Camera.ClampInside(m_pActiveLevel->GetBounds());
     }
-
-    m_pPlayerGUI->Update(elapsedSec);
 }
 
 void Game::Draw() const
 {
     m_Camera.Begin();
-
-    ClearBackground();
-    m_pActiveLevel->Draw();
-    m_pPlayer->Draw();
-
-    if (m_pEditor)
     {
-        m_pActiveLevel->DrawDebug();
-        m_pEditor->Draw();
-    }
+        ClearBackground();
+        m_pActiveLevel->Draw();
+        m_pPlayer->Draw();
 
+        if (m_pEditor)
+        {
+            m_pActiveLevel->DrawDebug();
+            m_pEditor->Draw();
+        }
+    }
     m_Camera.End();
 
-    m_pPlayerGUI->Draw(GetViewPort());
-    m_pActiveLevel->DrawGUI(GetViewPort());
-
-    const Vector2f screenSize{GetViewPort().width, GetViewPort().height};
-    m_pDialogManager->Draw(screenSize);
+    const Rectf viewPort{GetViewPort()};
+    m_pPlayer->DrawGUI(viewPort);
+    m_pActiveLevel->DrawGUI(viewPort);
+    m_pDialogManager->Draw(viewPort);
 
     if (m_pEditor)
     {

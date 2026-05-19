@@ -160,7 +160,7 @@ void utils::DrawEllipse(const Ellipsef &ellipse, float lineWidth)
     DrawEllipse(ellipse.center.x, ellipse.center.y, ellipse.radiusX, ellipse.radiusY, lineWidth);
 }
 
-void utils::DrawEllipse(const Circlef& circle, float lineWidth)
+void utils::DrawEllipse(const Circlef &circle, float lineWidth)
 {
     DrawEllipse(circle.center.x, circle.center.y, circle.radius, circle.radius, lineWidth);
 }
@@ -720,6 +720,11 @@ Rectf utils::RectWithCenter(float left, float bottom, float width, float height)
     rect.width = width;
     rect.height = height;
     return rect;
+}
+
+Rectf utils::RectWithCenter(const Vector2f &pos, const Vector2f &size)
+{
+    return RectWithCenter(pos, size.x, size.y);
 }
 
 Rectf utils::RectWithCenter(const Vector2f &pos, float size)

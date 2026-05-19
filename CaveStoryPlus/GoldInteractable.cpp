@@ -1,10 +1,10 @@
+#include "pch.h"
 #include "GoldInteractable.h"
 #include "Game.h"
 #include "Level.h"
 #include "Player.h"
 #include "Texture.h"
 #include "Vector2f.h"
-#include "pch.h"
 #include "utils.h"
 
 GoldInteractable::GoldInteractable(const Vector2f &cell, Level &level) : Interactable(cell, 0.75f), m_Level(level)

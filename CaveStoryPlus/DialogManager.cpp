@@ -1,7 +1,7 @@
+#include "pch.h"
 #include "DialogManager.h"
 #include "DialogMessage.h"
 #include "Game.h"
-#include "pch.h"
 
 #include <iostream>
 
@@ -28,12 +28,12 @@ void DialogManager::Update(float delta)
     }
 }
 
-void DialogManager::Draw(const Vector2f &screenSize) const
+void DialogManager::Draw(const Rectf &viewport) const
 {
     if (!m_Messages.empty())
     {
         const DialogMessage &message{m_Messages.front()};
-        message.Draw(screenSize);
+        message.Draw(Vector2f{viewport.width, viewport.height});
     }
 }
 

@@ -9,15 +9,15 @@
 class DialogManager
 {
   public:
-    explicit DialogManager(TextManager &textManager, Game& game);
+    explicit DialogManager(TextManager &textManager, Game &game);
 
     void Update(float delta);
-    void Draw(const Vector2f &screenSize) const;
+    void Draw(const Rectf &viewport) const;
 
     bool IsDialogOpen() const;
 
-    DialogMessage& QueueMessage(const std::string &text);
-    DialogMessage& QueueMessage(std::initializer_list<std::string>&& lines);
+    DialogMessage &QueueMessage(const std::string &text);
+    DialogMessage &QueueMessage(std::initializer_list<std::string> &&lines);
 
     void HandleKeyInput(const SDL_KeyboardEvent &e);
 

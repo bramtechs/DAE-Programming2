@@ -7,13 +7,15 @@
 #include "SDL_keyboard.h"
 #include "Texture.h"
 #include "Weapon.h"
+#include "PlayerGUI.h"
 #include "pch.h"
 #include "utils.h"
 
 #include <cassert>
 #include <iostream>
 
-Player::Player(DialogManager &dialog) : m_pSpriteSheet(new Texture("player.png")), m_DialogManager(dialog)
+Player::Player(DialogManager &dialog)
+    : m_pSpriteSheet(new Texture("player.png")), m_pGUI(new PlayerGUI(*this)), m_DialogManager(dialog)
 {
     // HoldWeapon(new PolarStar());
 }
@@ -22,6 +24,7 @@ Player::~Player()
 {
     delete m_pSpriteSheet;
     delete m_pHeldWeapon;
+    delete m_pGUI;
 }
 
 void Player::Update(float delta, Level &level)
@@ -42,6 +45,8 @@ void Player::Update(float delta, Level &level)
         m_Oxygen = m_MaxOxygen;
     }
     m_SecondsSinceOxygenDrain += delta;
+
+    m_pGUI->Update(delta);
 }
 
 void Player::UpdateMovement(float delta, Level &level)
@@ -201,6 +206,11 @@ void Player::Draw() const
     }
 }
 
+void Player::DrawGUI(const Rectf &viewport) const
+{
+    m_pGUI->Draw(viewport);
+}
+
 void Player::SetPosition(const Vector2f &pos)
 {
     m_Position = pos;
@@ -232,21 +242,6 @@ Vector2f Player::GetCameraFocusPosition() const
 Rectf Player::GetRegion() const
 {
     return Rectf{m_Position.x, m_Position.y, 1.f, 1.f};
-}
-
-int Player::GetOxygen() const
-{
-    return m_Oxygen;
-}
-
-int Player::GetHealth() const
-{
-    return m_Health;
-}
-
-int Player::GetMaxHealth() const
-{
-    return m_MaxHealth;
 }
 
 void Player::HoldWeapon(Weapon *pWeapon)
@@ -345,6 +340,22 @@ bool Player::HasMaximumOxygen() const
 void Player::AddGold(int amount)
 {
     m_Gold += amount;
+    while (m_Gold >= GetGoldNeededForLevel(m_Level + 1))
+    {
+        ++m_Level;
+        m_pGUI->OnLevelUp();
+    }
+}
+
+int Player::GetGoldNeededForLevel(int level)
+{
+    if (level <= 0)
+    {
+        return 0;
+    }
+
+    // 5 * 2^(level-1)
+    return 5 << (level - 1);
 }
 
 void Player::AddMaxHealth(int amount)
@@ -541,4 +552,11 @@ bool Player::CheckRaycastPair(const Level &level, const Vector2f &firstStart, co
     }
 
     return firstHit || secondHasHit;
+}
+
+float Player::GetLevelProgress() const
+{
+    const int prevNeeded{GetGoldNeededForLevel(m_Level)};
+    const int nextNeeded{GetGoldNeededForLevel(m_Level + 1)};
+    return (m_Gold - prevNeeded) / static_cast<float>(nextNeeded - prevNeeded);
 }

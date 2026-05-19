@@ -75,7 +75,6 @@ class Game final : public BaseGame
     Level *m_pActiveLevel{};
     Level *m_pNextLevel{};
     Player *m_pPlayer{};
-    PlayerGUI *m_pPlayerGUI{};
     Editor *m_pEditor{};
 
     // FUNCTIONS
