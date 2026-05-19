@@ -9,7 +9,7 @@ class WaterInteractable final : public Interactable
     void Update(float delta) override;
     void Draw() const override;
 
-    bool OnTouch(Game &game);
+    bool OnTouch(Game &game) override;
 
   private:
     static constexpr float m_SecondsBetweenDrain{0.1f};

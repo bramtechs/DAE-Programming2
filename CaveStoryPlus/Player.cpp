@@ -13,8 +13,7 @@
 #include <cassert>
 #include <iostream>
 
-Player::Player(DialogManager &dialog)
-    : m_pSpriteSheet(new Texture("player.png")), m_LookingLeft(), m_IsOnGround(), m_DialogManager(dialog)
+Player::Player(DialogManager &dialog) : m_pSpriteSheet(new Texture("player.png")), m_DialogManager(dialog)
 {
     // HoldWeapon(new PolarStar());
 }

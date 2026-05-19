@@ -9,7 +9,7 @@ class PickupInteractable final : public Interactable
     void Update(float delta) override;
     void Draw() const override;
 
-    bool OnInteract(Game &game);
+    bool OnInteract(Game &game) override;
 
   private:
     static constexpr float m_TimePerFrame{0.2f};

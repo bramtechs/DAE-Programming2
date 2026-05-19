@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Level.h"
 #include "ColliderReader.h"
 #include "Editor.h"
@@ -6,16 +7,16 @@
 #include "GoldInteractable.h"
 #include "Interactable.h"
 #include "Texture.h"
-#include "pch.h"
-#include "utils.h"
 
 #include <cassert>
 #include <iostream>
 
-Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const Vector2f &spawnPos)
+Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
+             const Vector2f &spawnPos)
     : m_CollidersPath(collidersPath), m_SpawnPos(spawnPos)
 {
     m_pFullTexture = new Texture(fullTexturePath);
+    m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});
 
     m_LevelCols = static_cast<int>(m_pFullTexture->GetWidth()) / 16;
     m_LevelRows = static_cast<int>(m_pFullTexture->GetHeight()) / 16;
@@ -31,6 +32,11 @@ Level::Level(const std::string &fullTexturePath, const std::string &collidersPat
 Level::~Level()
 {
     delete m_pFullTexture;
+
+    if (m_pNameTexture)
+    {
+        delete m_pNameTexture;
+    }
 
     for (Enemy *pEnemy : m_Enemies)
     {
@@ -125,9 +131,8 @@ void Level::Update(float delta, Player &player)
         pEnemy->Update(delta);
         if (m_BulletManager.InteractWithEnemy(*pEnemy))
         {
-            SpawnInteractable(new GoldInteractable(pEnemy->GetCenter(), *this));
-
             // when killed the enemy
+            SpawnInteractable(new GoldInteractable(pEnemy->GetCenter(), *this));
             delete *it;
             it = m_Enemies.erase(it);
         }
@@ -140,6 +145,17 @@ void Level::Update(float delta, Player &player)
     for (Interactable *pInteractable : m_Interactables)
     {
         pInteractable->Update(delta);
+    }
+
+    if (m_NameShownTimer > 0.f)
+    {
+        m_NameShownTimer -= delta;
+    }
+    else
+    {
+        // texture is no longer needed after being shown
+        delete m_pNameTexture;
+        m_pNameTexture = nullptr;
     }
 }
 
@@ -160,6 +176,17 @@ void Level::Draw() const
     }
 
     m_BulletManager.Draw();
+}
+
+void Level::DrawGUI(const Rectf &viewport) const
+{
+    if (m_pNameTexture && m_NameShownTimer > 0.f)
+    {
+        Vector2f pos{viewport.width * 0.5f, viewport.height * 0.7f};
+        pos.x -= m_pNameTexture->GetWidth() * 0.5f;
+        pos.y -= m_pNameTexture->GetHeight() * 0.5f;
+        m_pNameTexture->Draw(pos);
+    }
 }
 
 void Level::DrawDebug() const

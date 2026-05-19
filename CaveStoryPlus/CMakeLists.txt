@@ -25,6 +25,8 @@ add_executable(${PROJECT_NAME}
   BarWidget.cpp
   PlayerGUI.cpp
   PlayerGUI.h
+  BlockEnemy.h
+  BlockEnemy.cpp
   Game.h
   ChestInteractable.cpp
   ChestInteractable.h
@@ -68,6 +70,14 @@ add_executable(${PROJECT_NAME}
   Bullet.h
   Bullet.cpp
   Weapon.h
+  MimigaVillageNpc.h
+  PickupInteractable.h
+  PickupInteractable.cpp
+  ReservoirFisherNpc.h
+  ReservoirFisherNpc.cpp
+  MimigaVillageNpc.cpp
+  WaterInteractable.h
+  WaterInteractable.cpp
   PolarStar.h
   PolarStar.cpp
 )

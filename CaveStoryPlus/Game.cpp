@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "Camera.h"
 #include "DialogManager.h"
 #include "Editor.h"
@@ -31,7 +30,7 @@ void Game::Initialize()
     m_pPlayer = new Player(*m_pDialogManager);
     const LevelBuilder levelBuilder(*m_pPlayer);
     m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
-    //m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaReservoir);
+    // m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaReservoir);
     m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
     m_pPlayerGUI = new PlayerGUI(*m_pPlayer);
 
@@ -108,6 +107,7 @@ void Game::Draw() const
     m_Camera.End();
 
     m_pPlayerGUI->Draw(GetViewPort());
+    m_pActiveLevel->DrawGUI(GetViewPort());
 
     const Vector2f screenSize{GetViewPort().width, GetViewPort().height};
     m_pDialogManager->Draw(screenSize);
