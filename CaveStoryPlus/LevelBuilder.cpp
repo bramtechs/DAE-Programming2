@@ -67,10 +67,14 @@ Level *LevelBuilder::BuildCaveLevel() const
     // interactables
 
     // 6x20 live capsule
-    pLevel->SpawnInteractable(new LifeCapsuleInteractable(Vector2f{6.f, 20.f}));
+    if (m_Player.GetMaxHealth() == 3)
+    {
+        pLevel->SpawnInteractable(new LifeCapsuleInteractable(Vector2f{6.f, 20.f}));
+    }
 
     // 53x8 door
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{53.f, 8.f}, LevelBuilder::Type::hermitGunsmith));
+    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{55.f, 35.f}, LevelBuilder::Type::mimigaVillage));
 
     // spikes
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{32.f, 33.f}, SpikeInteractable::Orientation::ceiling));
