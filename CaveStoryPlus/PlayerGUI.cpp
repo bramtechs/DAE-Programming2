@@ -57,7 +57,7 @@ void PlayerGUI::Draw(const Rectf &viewport) const
     {
         const int frame{(std::fmod(m_AnimTimer, 0.5f) < 0.25f) ? 0 : 1};
         const Rectf source{m_LevelupSources[frame]};
-        const Rectf destRegion{utils::RectWithCenter(Vector2f{viewport.width * 0.5f, viewport.height * 0.7f},
+        const Rectf destRegion{utils::RectWithCenter(Vector2f{viewport.width * 0.5f, viewport.height * 0.6f},
                                                      Vector2f{source.width, source.height} * 2.f)};
         m_pTexture->Draw(destRegion, source);
     }

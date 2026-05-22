@@ -3,7 +3,9 @@
 #include "ColliderReader.h"
 #include "Editor.h"
 #include "Enemy.h"
+#include "Player.h"
 #include "Game.h"
+#include "HeartInteractable.h"
 #include "GoldInteractable.h"
 #include "Interactable.h"
 #include "Texture.h"
@@ -131,12 +133,7 @@ void Level::Update(float delta, Player &player)
         pEnemy->Update(delta);
         if (m_BulletManager.InteractWithEnemy(*pEnemy))
         {
-            // when killed the enemy
-            for (int i{}; i < pEnemy->GetGoldDropCount(); ++i)
-            {
-                SpawnInteractable(new GoldInteractable(pEnemy->GetCenter(), *this));
-            }
-
+            SpawnEnemyCollectibles(*pEnemy, !player.HasMaximumHealth());
             delete *it;
             it = m_Enemies.erase(it);
         }
@@ -146,9 +143,18 @@ void Level::Update(float delta, Player &player)
         }
     }
 
-    for (Interactable *pInteractable : m_Interactables)
+    for (auto it{m_Interactables.begin()}; it != m_Interactables.end();)
     {
-        pInteractable->Update(delta);
+        (*it)->Update(delta);
+        if ((*it)->IsExpired())
+        {
+            delete *it;
+            it = m_Interactables.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 
     if (m_NameShownTimer > 0.f)
@@ -160,6 +166,21 @@ void Level::Update(float delta, Player &player)
         // texture is no longer needed after being shown
         delete m_pNameTexture;
         m_pNameTexture = nullptr;
+    }
+}
+
+void Level::SpawnEnemyCollectibles(const Enemy &enemy, bool playerIsDamaged)
+{
+    if (playerIsDamaged && rand() % 100 < 50)
+    {
+        SpawnInteractable(new HeartInteractable(enemy.GetCenter()));
+        return;
+    }
+
+    // when killed the enemy
+    for (int i{}; i < enemy.GetGoldDropCount(); ++i)
+    {
+        SpawnInteractable(new GoldInteractable(enemy.GetCenter(), *this));
     }
 }
 

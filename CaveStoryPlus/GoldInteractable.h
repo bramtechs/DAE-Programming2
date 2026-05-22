@@ -8,10 +8,12 @@ class GoldInteractable final : public Interactable
   public:
     explicit GoldInteractable(const Vector2f &cell, Level &level);
 
+    // returns true if expired
     void Update(float delta) override;
 
     void Draw() const override;
 
+    // returns bool if should be destroyed
     bool OnTouch(Game &game) override;
 
   private:

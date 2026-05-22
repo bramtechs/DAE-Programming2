@@ -24,6 +24,11 @@ class Interactable
     virtual void Update(float delta) = 0;
     virtual void Draw() const = 0;
 
+    virtual bool IsExpired() const
+    {
+        return false;
+    }
+
     // returns bool if consumed, should be destroyed
     virtual bool OnInteract(Game &game)
     {
@@ -46,7 +51,7 @@ class Interactable
     Vector2f GetCenter() const;
 
   protected:
-      // TODO: do not reference count for rule of 0
+    // TODO: do not reference count for rule of 0
     const Texture &GetSpriteSheetTexture() const
     {
         return *m_pSpriteSheetTexture;

@@ -30,8 +30,10 @@ class Player
     void DealDamage(int amount);
     void DrainOxygen();
     bool HasMaximumOxygen() const;
+    bool HasMaximumHealth() const;
 
-    void AddGold(int amount = 1);
+    void AddGold(int amount);
+    void AddHealth(int amount);
     void AddMaxHealth(int amount);
     void HoldWeapon(Weapon *pWeapon);
 

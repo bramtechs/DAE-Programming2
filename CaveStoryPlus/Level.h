@@ -76,6 +76,8 @@ class Level final
   private:
     static constexpr float m_BgTextureScale{g_TileSize / 2.f};
 
+    void SpawnEnemyCollectibles(const Enemy& enemy, bool playerIsDamaged);
+
     void DrawTileGrid() const;
     void DrawColliders() const;
 

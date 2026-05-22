@@ -337,6 +337,11 @@ bool Player::HasMaximumOxygen() const
     return m_Oxygen >= 100;
 }
 
+bool Player::HasMaximumHealth() const
+{
+    return m_Health >= m_MaxHealth;
+}
+
 void Player::AddGold(int amount)
 {
     m_Gold += amount;
@@ -345,6 +350,11 @@ void Player::AddGold(int amount)
         ++m_Level;
         m_pGUI->OnLevelUp();
     }
+}
+
+void Player::AddHealth(int amount)
+{
+    m_Health = std::min(amount + 1, m_MaxHealth);
 }
 
 int Player::GetGoldNeededForLevel(int level)

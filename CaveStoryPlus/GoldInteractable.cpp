@@ -49,7 +49,7 @@ void GoldInteractable::Draw() const
 
 bool GoldInteractable::OnTouch(Game &game)
 {
-    game.GetPlayer()->AddGold();
+    game.GetPlayer()->AddGold(1);
     return true;
 }
 
