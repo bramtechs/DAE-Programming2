@@ -43,7 +43,8 @@ Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
 
 Level *LevelBuilder::BuildCaveLevel() const
 {
-    Level *pLevel{new Level("cave_first_map.png", "cave_first_map.txt", "First Cave", Vector2f(37.f, 33.f))};
+    Level *pLevel{new Level("cave_first_map.png", "cave_first_map.txt", "First Cave", Vector2f(37.f, 33.f),
+                            MusicManager::Track::cave)};
 
     // enemies
     pLevel->SpawnEnemy(new BatEnemy(std::vector<Vector2f>{Vector2f{10.5f, 17.5f}, Vector2f{10.5f, 22.5f}}));
@@ -96,8 +97,8 @@ Level *LevelBuilder::BuildCaveLevel() const
 
 Level *LevelBuilder::BuildHermitGunsmithLevel() const
 {
-    Level *pLevel{
-        new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", "Hermit Gunsmith", Vector2f(7.f, 6.f))};
+    Level *pLevel{new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", "Hermit Gunsmith",
+                            Vector2f(7.f, 6.f), MusicManager::Track::cave)};
     // pLevel->SpawnInteractable();
 
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, LevelBuilder::Type::cave, Vector2f{53.f, 8.f}));
@@ -113,7 +114,8 @@ Level *LevelBuilder::BuildHermitGunsmithLevel() const
 
 Level *LevelBuilder::BuildMimigaVillageLevel() const
 {
-    Level *pLevel{new Level("mimiga_village.png", "mimiga_village_map.txt", "Mimiga Village", Vector2f(8.f, 53.f))};
+    Level *pLevel{new Level("mimiga_village.png", "mimiga_village_map.txt", "Mimiga Village", Vector2f(8.f, 53.f),
+                            MusicManager::Track::village)};
 
     pLevel->SpawnInteractable(new MimigaVillageNpc(Vector2f{10.f, 25.f}));
 
@@ -125,7 +127,7 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
 Level *LevelBuilder::BuildReservoirLevel() const
 {
     Level *pLevel{new Level("mimiga_village_reservoir.png", "mimiga_village_reservoir_map.txt", "Reservoir",
-                            Vector2f{36.f, 5.f})};
+                            Vector2f{36.f, 5.f}, MusicManager::Track::village)};
 
     pLevel->SpawnInteractable(
         new DoorInteractable(Vector2f{36.f, 5.f}, LevelBuilder::Type::mimigaVillage, Vector2f{1.f, 21.f}));

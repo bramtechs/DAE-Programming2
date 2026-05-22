@@ -18,8 +18,8 @@ class Player;
 class Level final
 {
   public:
-    explicit Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
-                   const Vector2f &spawnPos);
+    explicit Level(const std::string &fullTexturePath, std::string collidersPath, const std::string &displayName,
+                   const Vector2f &spawnPos, MusicManager::Track track);
     ~Level();
     Level(const Level &) = delete;
     Level(Level &&) = delete;
@@ -58,7 +58,12 @@ class Level final
         return m_Colliders;
     }
 
-    std::string GetCollidersFilePath() const
+    MusicManager::Track GetMusicTrack() const
+    {
+        return m_MusicTrack;
+    }
+
+    const std::string &GetCollidersFilePath() const
     {
         return m_CollidersPath;
     }
@@ -76,13 +81,14 @@ class Level final
   private:
     static constexpr float m_BgTextureScale{g_TileSize / 2.f};
 
-    void SpawnEnemyCollectibles(const Enemy& enemy, bool playerIsDamaged);
+    void SpawnEnemyCollectibles(const Enemy &enemy, bool playerIsDamaged);
 
     void DrawTileGrid() const;
     void DrawColliders() const;
 
     Texture *m_pFullTexture{};
     std::string m_CollidersPath{};
+    MusicManager::Track m_MusicTrack{};
     std::vector<PolygonCollider> m_Colliders{};
     std::vector<Enemy *> m_Enemies{};
     std::vector<Interactable *> m_Interactables{};

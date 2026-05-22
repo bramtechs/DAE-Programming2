@@ -13,9 +13,9 @@
 #include <cassert>
 #include <iostream>
 
-Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
-             const Vector2f &spawnPos)
-    : m_CollidersPath(collidersPath), m_SpawnPos(spawnPos)
+Level::Level(const std::string &fullTexturePath, std::string collidersPath, const std::string &displayName,
+             const Vector2f &spawnPos, MusicManager::Track track)
+    : m_CollidersPath(std::move(collidersPath)), m_SpawnPos(spawnPos), m_MusicTrack(track)
 {
     m_pFullTexture = new Texture(fullTexturePath);
     m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});

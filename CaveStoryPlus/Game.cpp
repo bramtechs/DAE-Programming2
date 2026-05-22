@@ -25,15 +25,9 @@ Game::~Game()
 void Game::Initialize()
 {
     m_pTextManager = new TextManager();
-
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
     m_pPlayer = new Player(*m_pDialogManager);
-    const LevelBuilder levelBuilder(*m_pPlayer);
-    m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::cave);
-    // m_pActiveLevel = levelBuilder.BuildLevel(LevelBuilder::Type::mimigaReservoir);
-    m_pPlayer->SetPosition(m_pActiveLevel->GetSpawnPos());
-
-    m_Camera.SetCenter(m_pPlayer->GetCameraFocusPosition());
+    SwitchLevel(LevelBuilder(*m_pPlayer).BuildLevel(LevelBuilder::Type::cave));
 }
 
 void Game::Cleanup()
@@ -84,6 +78,8 @@ void Game::Update(float elapsedSec)
     {
         m_Camera.ClampInside(m_pActiveLevel->GetBounds());
     }
+
+    m_MusicManager.Update();
 }
 
 void Game::Draw() const
@@ -118,6 +114,7 @@ void Game::SwitchLevel(Level *pLevel)
     // level switch is delayed to next frame
     // to prevent lifetime problems.
     m_pNextLevel = pLevel;
+    m_MusicManager.SwitchTrack(m_pNextLevel->GetMusicTrack());
 }
 
 void Game::ProcessKeyDownEvent(const SDL_KeyboardEvent &e)

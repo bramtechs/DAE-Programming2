@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME}
   DoorInteractable.cpp
   ColliderReader.cpp
   ColliderReader.h
+  HeartInteractable.cpp
   ColliderWriter.cpp
   ColliderWriter.h
   Editor.cpp
@@ -26,6 +27,8 @@ add_executable(${PROJECT_NAME}
   PlayerGUI.cpp
   PlayerGUI.h
   BlockEnemy.h
+  MusicManager.h
+  MusicManager.cpp
   BlockEnemy.cpp
   Game.h
   ChestInteractable.cpp

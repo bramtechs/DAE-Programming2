@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseGame.h"
+#include "MusicManager.h"
 #include "Camera.h"
 
 #include <SDL2/SDL_ttf.h>
@@ -66,6 +67,11 @@ class Game final : public BaseGame
         return m_pPlayer;
     }
 
+    MusicManager &GetMusicManager()
+    {
+        return m_MusicManager;
+    }
+
   private:
     static Vector2f m_LastMousePos;
 
@@ -76,6 +82,7 @@ class Game final : public BaseGame
     Level *m_pNextLevel{};
     Player *m_pPlayer{};
     Editor *m_pEditor{};
+    MusicManager m_MusicManager{};
 
     // FUNCTIONS
     void Initialize();
