@@ -2,9 +2,7 @@
 #include "base.h"
 #include <algorithm>
 #include <chrono>
-#include <filesystem>
 #include <iostream>
-#include <string_view>
 
 BaseGame::BaseGame(const Window &window)
     : m_Window{window}, m_Viewport{0, 0, window.width, window.height}, m_pWindow{nullptr}, m_pContext{nullptr},
@@ -20,33 +18,12 @@ BaseGame::~BaseGame()
 
 void BaseGame::InitializeGameEngine()
 {
-    std::filesystem::path exePath{};
-
 #ifdef _WIN32
     // disable console close window button
     HWND hwnd = GetConsoleWindow();
     HMENU hmenu = GetSystemMenu(hwnd, FALSE);
     EnableMenuItem(hmenu, SC_CLOSE, MF_GRAYED);
-
-    // migrate to exe working dir
-    wchar_t pPath[MAX_PATH];
-    if (GetModuleFileNameW(nullptr, pPath, std::size(pPath)) == 0)
-    {
-        std::cerr << "Failed to get path to current executable." << std::endl;
-    }
-
-    exePath = pPath;
-
-#else
-    migrateDir = std::filesystem::canonical("/proc/self/exe");
 #endif
-
-    std::error_code err{};
-    std::filesystem::current_path(exePath.parent_path(), err);
-    if (err)
-    {
-        std::cerr << "Failed to migrate to working directory: " << err.message() << std::endl;
-    }
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER /*| SDL_INIT_AUDIO*/) < 0)
