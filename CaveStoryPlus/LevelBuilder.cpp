@@ -10,6 +10,7 @@
 #include "PolarStar.h"
 #include "Level.h"
 #include "MimigaVillageNpc.h"
+#include "ShackNpcInteractable.h"
 #include "PickupInteractable.h"
 #include "LifeCapsuleInteractable.h"
 #include "ReservoirFisherNpc.h"
@@ -145,6 +146,7 @@ Level *LevelBuilder::BuildMimigaShackLevel() const
 {
     Level *pLevel{new Level("mimiga_village_shack.png", "mimiga_village_shack_map.txt", "Shack", Vector2f{5.f, 6.f},
                             MusicManager::Track::none)};
+    pLevel->SpawnInteractable(new ShackNpcInteractable(Vector2f{12.f, 6.f}));
 
     if (false)
     {
