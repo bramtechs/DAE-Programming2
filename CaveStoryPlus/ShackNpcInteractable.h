@@ -11,4 +11,6 @@ class ShackNpcInteractable final : public DecorInteractable
   private:
     static Rectf m_HidingSourceRegion;
     static Rectf m_TalkingSourceRegion;
+
+    bool m_DoneTalking{};
 };
