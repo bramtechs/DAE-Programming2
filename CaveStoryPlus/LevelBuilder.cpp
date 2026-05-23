@@ -34,7 +34,9 @@ Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
     case LevelBuilder::Type::mimigaVillage:
         return BuildMimigaVillageLevel();
     case LevelBuilder::Type::mimigaReservoir:
-        return BuildReservoirLevel();
+        return BuildMimigaReservoirLevel();
+    case LevelBuilder::Type::mimigaShack:
+        return BuildMimigaShackLevel();
     }
 
     assert(0 && "Case not handled");
@@ -124,7 +126,7 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
     return pLevel;
 }
 
-Level *LevelBuilder::BuildReservoirLevel() const
+Level *LevelBuilder::BuildMimigaReservoirLevel() const
 {
     Level *pLevel{new Level("mimiga_village_reservoir.png", "mimiga_village_reservoir_map.txt", "Reservoir",
                             Vector2f{36.f, 5.f}, MusicManager::Track::village)};
@@ -135,6 +137,19 @@ Level *LevelBuilder::BuildReservoirLevel() const
     pLevel->SpawnInteractable(new PickupInteractable(Vector2f{5.f, 4.f}));
     pLevel->SpawnInteractable(new ReservoirFisherNpc(Vector2f{5.5f, 6.63f}));
     pLevel->SpawnInteractable(new WaterInteractable(Rectf{1.f, 1.f, 23.f, 5.5f}));
+
+    return pLevel;
+}
+
+Level *LevelBuilder::BuildMimigaShackLevel() const
+{
+    Level *pLevel{new Level("mimiga_village_shack.png", "mimiga_village_shack_map.txt", "Shack", Vector2f{5.f, 6.f},
+                            MusicManager::Track::none)};
+
+    if (false)
+    {
+        pLevel->SpawnInteractable(new DoorInteractable(Vector2f{5.f, 6.f}, LevelBuilder::Type::mimigaVillage));
+    }
 
     return pLevel;
 }

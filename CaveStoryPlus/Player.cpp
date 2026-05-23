@@ -54,7 +54,7 @@ void Player::UpdateMovement(float delta, Level &level)
     const Uint8 *const pStates{SDL_GetKeyboardState(nullptr)};
     bool holdingLeft{};
     bool holdingRight{};
-    if (pStates[SDL_SCANCODE_RIGHT] || pStates[SDL_SCANCODE_D])
+    if (pStates[SDL_SCANCODE_RIGHT])
     {
         // when going in opposite direction add more velocity for tighter movement
         const float boost{m_Velocity.x < 0.f ? 2.f : 1.f};
@@ -65,7 +65,7 @@ void Player::UpdateMovement(float delta, Level &level)
         holdingRight = true;
     }
 
-    if (pStates[SDL_SCANCODE_LEFT] || pStates[SDL_SCANCODE_A])
+    if (pStates[SDL_SCANCODE_LEFT])
     {
         const float boost{m_Velocity.x > 0.f ? 2.f : 1.f};
         m_Velocity.x = std::max(-m_MaxHorizontalVelocity, m_Velocity.x - m_HorizontalMoveForce * delta * boost);
@@ -150,7 +150,7 @@ void Player::UpdateMovement(float delta, Level &level)
     {
         m_JumpWindowTimer -= delta;
 
-        if (pStates[SDL_SCANCODE_SPACE] || pStates[SDL_SCANCODE_Z])
+        if (pStates[SDL_SCANCODE_Z])
         {
             m_Velocity.y += m_JumpForce * delta * 2.3f;
             if (m_IsOnGround)
@@ -255,15 +255,12 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
     switch (e.keysym.sym)
     {
     case SDLK_UP:
-    case SDLK_w:
         m_WeaponOrientation = Weapon::Orientation::north;
         break;
     case SDLK_DOWN:
-    case SDLK_s:
         m_WeaponOrientation = Weapon::Orientation::south;
         break;
     case SDLK_z:
-    case SDLK_SPACE:
         if (m_IsOnGround)
         {
             // apply initial jump impulse
@@ -273,10 +270,12 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
         }
         break;
 
+#ifndef NDEBUG
     case SDLK_F4:
         // cheat to get the Polar Star early
         HoldWeapon(new PolarStar());
         break;
+#endif
 
     default:
         break;
@@ -287,14 +286,12 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
-    case SDLK_w:
     case SDLK_UP:
         if (m_WeaponOrientation == Weapon::Orientation::north)
         {
             m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
         }
         break;
-    case SDLK_s:
     case SDLK_DOWN:
         if (m_WeaponOrientation == Weapon::Orientation::south)
         {

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MusicManager.h"
 #include "SoundStream.h"
 

@@ -27,7 +27,7 @@ void Game::Initialize()
     m_pTextManager = new TextManager();
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
     m_pPlayer = new Player(*m_pDialogManager);
-    SwitchLevel(LevelBuilder(*m_pPlayer).BuildLevel(LevelBuilder::Type::cave));
+    SwitchLevel(LevelBuilder(*m_pPlayer).BuildLevel(LevelBuilder::Type::mimigaShack));
 }
 
 void Game::Cleanup()
