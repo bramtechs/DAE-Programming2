@@ -1,0 +1,3 @@
+Checks: '-*,readability-*,modernize-*,bugprone-*,cppcoreguidelines-*,llvm-use-ranges,performance-*,-performance-avoid-endl,-modernize-use-trailing-return-type,-readability-identifier-length,-readability-uppercase-literal-suffix,-cppcoreguidelines-pro-type-union-access,-readability-named-parameter,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-type-vararg,-bugprone-suspicious-stringview-data-usage,-performance-no-int-to-ptr,-readability-suspicious-call-argument,-readability-redundant-member-init'
+HeaderFilterRegex: 'src/.*'
+FormatStyle: file

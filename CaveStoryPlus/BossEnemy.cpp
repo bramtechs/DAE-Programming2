@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BossEnemy.h"
 #include "Texture.h"
+#include "Player.h"
 #include "Game.h"
 
 #include <cassert>
@@ -13,6 +14,41 @@ BossEnemy::BossEnemy(const Vector2f &pos) : Enemy(Vector2f{m_PixelsWidth / g_Til
 
 void BossEnemy::Update(float delta)
 {
+    UpdateAnimations(delta);
+
+    if (m_pPlayer == nullptr)
+    {
+        assert(0 && "No player to attack");
+        return;
+    }
+
+    switch (m_State)
+    {
+    case State::running: {
+        const float targetX{m_pPlayer->GetPosition().x};
+        const float diffX{GetPosition().x - targetX};
+
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
+void BossEnemy::Draw() const
+{
+    GetSpriteSheet().Draw(GetRegion(), m_SourceRect);
+}
+
+void BossEnemy::StartAttacking(Player &player)
+{
+    m_State = State::running;
+    m_pPlayer = &player;
+}
+
+void BossEnemy::UpdateAnimations(float delta)
+{
     m_AnimTimer += delta;
     if (m_AnimTimer > m_SecondsPerFrame)
     {
@@ -20,11 +56,6 @@ void BossEnemy::Update(float delta)
         ++m_AnimFrame;
     }
     CalcSourceRect();
-}
-
-void BossEnemy::Draw() const
-{
-    GetSpriteSheet().Draw(GetRegion(), m_SourceRect);
 }
 
 void BossEnemy::CalcSourceRect()

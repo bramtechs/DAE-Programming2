@@ -3,6 +3,7 @@
 #include "Texture.h"
 
 #include <SDL2/SDL_ttf.h>
+#include <cassert>
 #include <iostream>
 
 TextManager::TextManager()
@@ -22,11 +23,12 @@ TextManager::~TextManager()
     }
 }
 
-Texture *TextManager::BakeText(const std::string &text, int ptSize, const Color4f &color)
+Texture TextManager::BakeText(const std::string &text, int ptSize, const Color4f &color) const
 {
-    if (!m_pUsedFont)
+    if (m_pUsedFont == nullptr)
     {
-        return new Texture("");
+        assert(0 && "No font set for TextManager.");
+        return Texture("");
     }
 
     if (TTF_SetFontSize(m_pUsedFont, ptSize) != 0)
@@ -34,5 +36,5 @@ Texture *TextManager::BakeText(const std::string &text, int ptSize, const Color4
         std::cerr << "Failed to adjust font size: " << TTF_GetError() << std::endl;
     }
 
-    return new Texture(text, m_pUsedFont, color);
+    return Texture(text, m_pUsedFont, color);
 }

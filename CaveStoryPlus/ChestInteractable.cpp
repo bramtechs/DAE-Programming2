@@ -40,8 +40,8 @@ bool ChestInteractable::OnInteract(Game &game)
         if (Player * pPlayer{game.GetPlayer()})
         {
             DialogManager &dialogs{*game.GetDialogManager()};
-            dialogs.QueueMessage("Opened the treasure chest.");
-            dialogs.QueueMessage("Obtained the Polar Star.");
+            dialogs.QueueMessage({"Opened the treasure chest."});
+            dialogs.QueueMessage({"Obtained the Polar Star."});
 
             pPlayer->HoldWeapon(new PolarStar());
             m_IsOpened = true;

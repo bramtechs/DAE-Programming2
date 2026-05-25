@@ -11,6 +11,6 @@ GunSmithNpcInteractable::GunSmithNpcInteractable(const Vector2f &cell)
 
 bool GunSmithNpcInteractable::OnInteract(Game &game)
 {
-    game.GetDialogManager()->QueueMessage("ZZZzzz...zzz...");
+    game.GetDialogManager()->QueueMessage({"ZZZzzz...zzz..."});
     return false;
 }

@@ -33,8 +33,8 @@ void PickupInteractable::Draw() const
 
 bool PickupInteractable::OnInteract(Game &game)
 {
-    game.GetDialogManager()->QueueMessage("Something shines brightly...");
-    game.GetDialogManager()->QueueMessage("Obtained the Silver Locket.");
+    game.GetDialogManager()->QueueMessage({"Something shines brightly..."});
+    game.GetDialogManager()->QueueMessage({"Obtained the Silver Locket."});
     return true;
 }
 

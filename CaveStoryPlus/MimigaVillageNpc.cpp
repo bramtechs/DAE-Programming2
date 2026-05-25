@@ -15,7 +15,7 @@ bool MimigaVillageNpc::OnInteract(Game &game)
     switch (m_State)
     {
     case State::hiding: {
-        DialogMessage &message{game.GetDialogManager()->QueueMessage(".....")};
+        DialogMessage &message{game.GetDialogManager()->QueueMessage({"....."})};
         message.AttachCallback([this](Game &) { StopHiding(); });
         break;
     }

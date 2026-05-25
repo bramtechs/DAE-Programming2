@@ -16,12 +16,18 @@ add_executable(${PROJECT_NAME}
   ColliderWriter.cpp
   ColliderWriter.h
   Editor.cpp
+  ShackNpcInteractable.cpp
+  ShackNpcInteractable.h
+  BossEnemy.h
+  BossEnemy.cpp
   MultiLineLabel.h
   MultiLineLabel.cpp
   Editor.h
   Enemy.cpp
   Enemy.h
   Game.cpp
+  TextLine.h
+  TextLine.cpp
   BarWidget.h
   BarWidget.cpp
   PlayerGUI.cpp

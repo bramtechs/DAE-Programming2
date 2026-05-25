@@ -9,14 +9,9 @@ DialogManager::DialogManager(TextManager &textManager, Game &game) : m_TextManag
 {
 }
 
-DialogMessage &DialogManager::QueueMessage(const std::string &text)
+DialogMessage &DialogManager::QueueMessage(std::vector<std::string> &&lines)
 {
-    return m_Messages.emplace(text, m_TextManager);
-}
-
-DialogMessage &DialogManager::QueueMessage(std::initializer_list<std::string> &&lines)
-{
-    return m_Messages.emplace(lines, m_TextManager);
+    return m_Messages.emplace(std::move(lines), m_TextManager);
 }
 
 void DialogManager::Update(float delta)

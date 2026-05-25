@@ -313,8 +313,8 @@ void Player::DealDamage(int damage)
 
         if (m_Health <= 0)
         {
-            m_DialogManager.QueueMessage("You have died.");
-            m_DialogManager.QueueMessage("Want to retry?");
+            m_DialogManager.QueueMessage({"You have died."});
+            m_DialogManager.QueueMessage({"Want to retry?"});
         }
     }
 }

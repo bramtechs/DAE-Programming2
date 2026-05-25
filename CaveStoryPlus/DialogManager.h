@@ -16,8 +16,7 @@ class DialogManager
 
     bool IsDialogOpen() const;
 
-    DialogMessage &QueueMessage(const std::string &text);
-    DialogMessage &QueueMessage(std::initializer_list<std::string> &&lines);
+    DialogMessage &QueueMessage(std::vector<std::string> &&lines);
 
     void HandleKeyInput(const SDL_KeyboardEvent &e);
 
