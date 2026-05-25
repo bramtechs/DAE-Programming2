@@ -41,7 +41,7 @@ void JumperEnemy::Update(float delta)
     }
     else if (m_State == State::jumping)
     {
-        AddPosition(m_Velocity * delta);
+        Translate(m_Velocity * delta);
         m_Velocity.y -= m_Gravity * delta;
 
         PolygonCollider collider{};

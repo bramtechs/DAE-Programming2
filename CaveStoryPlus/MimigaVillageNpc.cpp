@@ -16,7 +16,7 @@ bool MimigaVillageNpc::OnInteract(Game &game)
     {
     case State::hiding: {
         DialogMessage &message{game.GetDialogManager()->QueueMessage({"....."})};
-        message.AttachCallback([this](Game &) { StopHiding(); });
+        message.SetReadEvent(new StopHidingDialogEvent(*this));
         break;
     }
     case State::talking: {
@@ -28,7 +28,7 @@ bool MimigaVillageNpc::OnInteract(Game &game)
         manager.QueueMessage({"Well, really..."});
         DialogMessage &last{manager.QueueMessage({"...including Sue it's seven.", "But she's not one of us.",
                                                   "She's just an outsider that came into our village."})};
-        last.AttachCallback([this](Game &) { m_State = State::doneTalking; });
+        last.SetReadEvent(new DoneTalkingDialogEvent(*this));
         break;
     }
     case State::doneTalking:
@@ -39,8 +39,21 @@ bool MimigaVillageNpc::OnInteract(Game &game)
     return false;
 }
 
-void MimigaVillageNpc::StopHiding()
+MimigaVillageNpc::StopHidingDialogEvent::StopHidingDialogEvent(MimigaVillageNpc &npc) : m_Npc(npc)
 {
-    m_State = State::talking;
-    SetSourceRect(m_TalkingSourceRegion);
+}
+
+void MimigaVillageNpc::StopHidingDialogEvent::Execute(Game &game)
+{
+    m_Npc.m_State = State::talking;
+    m_Npc.SetSourceRect(m_TalkingSourceRegion);
+}
+
+MimigaVillageNpc::DoneTalkingDialogEvent::DoneTalkingDialogEvent(MimigaVillageNpc &npc) : m_Npc(npc)
+{
+}
+
+void MimigaVillageNpc::DoneTalkingDialogEvent::Execute(Game &game)
+{
+    m_Npc.m_State = State::doneTalking;
 }

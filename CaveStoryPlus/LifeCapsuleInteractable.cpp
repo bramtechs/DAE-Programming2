@@ -1,5 +1,6 @@
 #include "LifeCapsuleInteractable.h"
 #include "DialogManager.h"
+#include "DialogEvent.h"
 #include "Game.h"
 #include "Player.h"
 #include "Texture.h"
@@ -30,16 +31,8 @@ void LifeCapsuleInteractable::Draw() const
 bool LifeCapsuleInteractable::OnInteract(Game &game)
 {
     DialogMessage &msg{game.GetDialogManager()->QueueMessage({"Obtained a Life Capsule.", "Max life increased by 3."})};
-    msg.AttachCallback(GiveExtraMaxHealth);
+    msg.SetReadEvent(new GiveMaxHealthDialogEvent(3));
     return true;
-}
-
-void LifeCapsuleInteractable::GiveExtraMaxHealth(Game &game)
-{
-    if (Player * pPlayer{game.GetPlayer()})
-    {
-        pPlayer->AddMaxHealth(3);
-    }
 }
 
 Rectf LifeCapsuleInteractable::GetAnimationSource(int frame) const
@@ -48,4 +41,13 @@ Rectf LifeCapsuleInteractable::GetAnimationSource(int frame) const
     const int col{2 + frame};
     const int row{6};
     return Rectf{static_cast<float>(col * tileSize), static_cast<float>(row * tileSize), tileSize, tileSize};
+}
+
+LifeCapsuleInteractable::GiveMaxHealthDialogEvent::GiveMaxHealthDialogEvent(int amount) : m_Amount(amount)
+{
+}
+
+void LifeCapsuleInteractable::GiveMaxHealthDialogEvent::Execute(Game &game)
+{
+    game.GetPlayer()->AddMaxHealth(m_Amount);
 }

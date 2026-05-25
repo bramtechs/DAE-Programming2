@@ -1,23 +1,56 @@
 #include "pch.h"
 #include "DialogMessage.h"
 #include "TextManager.h"
+#include "DialogEvent.h"
 #include "structs.h"
 #include "utils.h"
 
 DialogMessage::DialogMessage(std::vector<std::string> &&lines, const TextManager &textManager)
-    : m_TextManager(textManager)
+    : m_pTextManager(&textManager)
 {
     m_TextLines.reserve(lines.size());
 
     for (std::string &line : lines)
     {
-        m_TextLines.emplace_back(std::move(line), m_TextManager);
+        m_TextLines.emplace_back(std::move(line), m_pTextManager);
     }
 }
 
-void DialogMessage::AttachCallback(std::function<void(Game &)> &&cb)
+DialogMessage::~DialogMessage()
 {
-    m_Callback = std::move(cb);
+    delete m_pEvent;
+    m_pEvent = nullptr;
+}
+
+DialogMessage::DialogMessage(DialogMessage &&o) noexcept
+    : m_pTextManager(o.m_pTextManager), m_TextLines(std::move(o.m_TextLines)), m_pEvent(o.m_pEvent), m_Timer(o.m_Timer),
+      m_LinesVisible(o.m_LinesVisible)
+{
+    o.m_TextLines.clear();
+    o.m_pEvent = nullptr;
+}
+
+DialogMessage &DialogMessage::operator=(DialogMessage &&o) noexcept
+{
+    if (this != &o)
+    {
+        delete m_pEvent;
+        m_pTextManager = o.m_pTextManager;
+        m_TextLines = std::move(o.m_TextLines);
+        m_pEvent = o.m_pEvent;
+        m_Timer = o.m_Timer;
+        m_LinesVisible = o.m_LinesVisible;
+
+        o.m_TextLines.clear();
+        o.m_pEvent = nullptr;
+    }
+
+    return *this;
+}
+
+void DialogMessage::SetReadEvent(DialogEvent *pEvent)
+{
+    m_pEvent = pEvent;
 }
 
 void DialogMessage::Update(float delta)
@@ -54,7 +87,7 @@ void DialogMessage::Draw(const Vector2f &screenSize) const
     const Rectf contentRegion{region.PadPerc(0.2f)};
     float y{contentRegion.bottom + (contentRegion.height * 0.5f)};
 
-    for (int lineNum{}; lineNum <= m_LinesVisible && lineNum < m_LineCount; ++lineNum)
+    for (int lineNum{}; lineNum <= m_LinesVisible && lineNum < m_TextLines.size(); ++lineNum)
     {
         const TextLine &textLine{m_TextLines[lineNum]};
         const Vector2f bottomLeft{contentRegion.left, y};
@@ -63,11 +96,11 @@ void DialogMessage::Draw(const Vector2f &screenSize) const
     }
 }
 
-void DialogMessage::ExecuteCallback(Game &game)
+void DialogMessage::ExecuteReadEvent(Game &game)
 {
-    if (m_Callback)
+    if (m_pEvent)
     {
-        m_Callback(game);
+        m_pEvent->Execute(game);
     }
 }
 
@@ -81,7 +114,7 @@ void DialogMessage::Skip()
     TextLine &line{m_TextLines[m_LinesVisible]};
     if (line.IsDone())
     {
-        if (m_LinesVisible + 1 < m_LineCount)
+        if (m_LinesVisible + 1 < m_TextLines.size())
         {
             ++m_LinesVisible;
         }
@@ -94,10 +127,17 @@ void DialogMessage::Skip()
 
 bool DialogMessage::IsDone() const
 {
-    if (m_LineCount == 0)
+    if (m_TextLines.empty())
     {
         return true;
     }
 
-    return m_LinesVisible >= m_LineCount - 1 && m_TextLines[m_LineCount - 1].IsDone();
+    const size_t lastIndex{m_TextLines.size() - 1};
+    if (m_LinesVisible < lastIndex)
+    {
+        // not at the last line yet
+        return false;
+    }
+
+    return m_TextLines[lastIndex].IsDone();
 }

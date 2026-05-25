@@ -12,20 +12,30 @@ ShackNpcInteractable::ShackNpcInteractable(const Vector2f &cell) : DecorInteract
 {
 }
 
+void ShackNpcInteractable::Update(float delta)
+{
+    if (!m_DoneTalking && m_pDialogManager && !m_pDialogManager->IsDialogOpen())
+    {
+        SetSourceRect(m_HidingSourceRegion);
+        m_DoneTalking = true;
+    }
+}
+
 bool ShackNpcInteractable::OnInteract(Game &game)
 {
+    m_pDialogManager = game.GetDialogManager();
     if (m_DoneTalking)
     {
         return false;
     }
 
+#if 0
+
     DialogManager &man{*game.GetDialogManager()};
     man.QueueMessage({"Waaaaaaaaaa!"});
     man.QueueMessage({"Oh, help me!", "Help me!"});
 
-    man.QueueMessage({"...  ?"}).AttachCallback([this](Game &) { //
-        SetSourceRect(m_TalkingSourceRegion);
-    });
+    man.QueueMessage({"...  ?"}).SetReadEvent(new StartTalkingDialogEvent(*this));
 
     man.QueueMessage({"You're not the Doctor?"});
     man.QueueMessage({"Oh, sorry 'bout that.", "The Doctor's such a cruel and evil person.",
@@ -37,17 +47,39 @@ bool ShackNpcInteractable::OnInteract(Game &game)
 
     man.QueueMessage({"But. I don't want it anymore.", "King gets bent out of shape when Sue and I get along.",
                       "Please keep it."})
-        .AttachCallback([](Game &game) { //
-            game.GetActiveLevel()->SpawnEnemy(new BossEnemy(Vector2f{5.f, 6.72f}));
-        });
+        .SetReadEvent(new SpawnBossEnemyDialogEvent(*this));
 
     man.QueueMessage({"Oh Yeaaah!!"});
     man.QueueMessage({"I found you."});
-    man.QueueMessage({"It's no use hiding from me.", "I've got the nose of a clever Harrier!"})
-        .AttachCallback([this](Game &) { //
-            SetSourceRect(m_HidingSourceRegion);
-            m_DoneTalking = true;
-        });
+    man.QueueMessage({"It's no use hiding from me.", "I've got the nose of a clever Harrier!"});
+
+#else
+    SpawnBossEnemyDialogEvent{*this}.Execute(game);
+#endif
 
     return false;
+}
+
+// StartTalkingDialogEvent
+
+ShackNpcInteractable::StartTalkingDialogEvent::StartTalkingDialogEvent(ShackNpcInteractable &npc) : m_Npc(npc)
+{
+}
+
+void ShackNpcInteractable::StartTalkingDialogEvent::Execute(Game &game)
+{
+    m_Npc.SetSourceRect(m_TalkingSourceRegion);
+}
+
+// SpawnBossEnemyDialogEvent
+
+ShackNpcInteractable::SpawnBossEnemyDialogEvent::SpawnBossEnemyDialogEvent(ShackNpcInteractable &npc) : m_Npc(npc)
+{
+}
+
+void ShackNpcInteractable::SpawnBossEnemyDialogEvent::Execute(Game &game)
+{
+    BossEnemy *pBoss{new BossEnemy(Vector2f{5.f, 6.72f}, 5.f, 17.f)};
+    game.GetActiveLevel()->SpawnEnemy(pBoss);
+    pBoss->StartAttacking(*game.GetPlayer());
 }

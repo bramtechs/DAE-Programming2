@@ -46,7 +46,7 @@ class Enemy
         m_Health = health;
     }
 
-    void AddPosition(const Vector2f &offset)
+    void Translate(const Vector2f &offset)
     {
         m_Position += offset;
     }

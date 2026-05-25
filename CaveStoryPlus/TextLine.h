@@ -8,7 +8,7 @@ class Texture;
 class TextLine
 {
   public:
-    explicit TextLine(std::string text, const TextManager &textManager);
+    explicit TextLine(std::string text, const TextManager *pTextManager);
 
     void Draw(const Vector2f &bottomLeft) const;
 
@@ -23,8 +23,8 @@ class TextLine
   private:
     Texture BakeText() const;
 
-    const TextManager &m_TextManager;
+    const TextManager *m_pTextManager;
     std::string m_Text{};
+    size_t m_CharsVisible{};
     Texture m_Texture;
-    int m_CharsVisible{};
 };

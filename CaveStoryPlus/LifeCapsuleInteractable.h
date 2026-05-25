@@ -1,5 +1,6 @@
 #pragma once
 #include "Interactable.h"
+#include "DialogEvent.h"
 
 class LifeCapsuleInteractable final : public Interactable
 {
@@ -12,9 +13,18 @@ class LifeCapsuleInteractable final : public Interactable
     bool OnInteract(Game &game) override;
 
   private:
-    Rectf GetAnimationSource(int frame) const;
+    class GiveMaxHealthDialogEvent final : public DialogEvent
+    {
+      public:
+        explicit GiveMaxHealthDialogEvent(int amount);
 
-    static void GiveExtraMaxHealth(Game &game);
+        void Execute(Game &game) override;
+
+      private:
+        int m_Amount;
+    };
+
+    Rectf GetAnimationSource(int frame) const;
 
     float m_AnimTimer{};
     int m_FrameIndex{};

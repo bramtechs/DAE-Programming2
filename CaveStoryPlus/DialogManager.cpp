@@ -41,7 +41,7 @@ void DialogManager::HandleKeyInput(const SDL_KeyboardEvent &e)
             DialogMessage &message{m_Messages.front()};
             if (message.IsDone())
             {
-                message.ExecuteCallback(m_Game);
+                message.ExecuteReadEvent(m_Game);
                 m_Messages.pop();
             }
             else

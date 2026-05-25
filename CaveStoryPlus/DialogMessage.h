@@ -8,31 +8,38 @@
 
 class Game;
 class TextManager;
+class DialogEvent;
 class DialogMessage
 {
   public:
     explicit DialogMessage(std::vector<std::string> &&lines, const TextManager &textManager);
+    ~DialogMessage();
 
-    void AttachCallback(std::function<void(Game &)> &&cb);
+    DialogMessage(const DialogMessage &) = delete;
+    DialogMessage &operator=(const DialogMessage &) = delete;
+
+    DialogMessage(DialogMessage &&o) noexcept;
+    DialogMessage &operator=(DialogMessage &&o) noexcept;
+
+    void SetReadEvent(DialogEvent *pEvent);
 
     void Update(float delta);
 
     void Draw(const Vector2f &screenSize) const;
 
-    void ExecuteCallback(Game &game);
+    void ExecuteReadEvent(Game &game);
 
     void Skip();
 
     bool IsDone() const;
 
   private:
+    const TextManager *m_pTextManager;
     std::vector<TextLine> m_TextLines{};
-    const TextManager &m_TextManager;
-    std::function<void(Game &)> m_Callback{};
+    DialogEvent *m_pEvent{};
 
     float m_Timer{};
-    int m_LineCount{};
-    int m_LinesVisible{};
+    size_t m_LinesVisible{};
 
     constexpr static float m_SecondsPerChar{0.05f};
 };
