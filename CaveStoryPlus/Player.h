@@ -1,6 +1,7 @@
 #pragma once
 #include "GizmoManager.h"
 #include "Level.h"
+#include "DialogEvent.h"
 #include "Vector2f.h"
 #include "Weapon.h"
 #include "utils.h"
@@ -84,6 +85,12 @@ class Player
     }
 
   private:
+    class RespawnDialogEvent final : public DialogEvent
+    {
+      public:
+        void Execute(Game &game) override;
+    };
+
     enum class AnimState
     {
         idle,

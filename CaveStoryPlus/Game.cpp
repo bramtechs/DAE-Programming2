@@ -109,6 +109,13 @@ void Game::Draw() const
     }
 }
 
+void Game::Restart()
+{
+    delete m_pPlayer;
+    m_pPlayer = new Player(*m_pDialogManager);
+    SwitchLevel(LevelBuilder(*m_pPlayer).BuildLevel(LevelBuilder::Type::cave));
+}
+
 void Game::SwitchLevel(Level *pLevel)
 {
     // level switch is delayed to next frame

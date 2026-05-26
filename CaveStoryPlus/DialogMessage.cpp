@@ -50,6 +50,7 @@ DialogMessage &DialogMessage::operator=(DialogMessage &&o) noexcept
 
 void DialogMessage::SetReadEvent(DialogEvent *pEvent)
 {
+    delete m_pEvent;
     m_pEvent = pEvent;
 }
 

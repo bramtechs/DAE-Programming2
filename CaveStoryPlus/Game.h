@@ -40,6 +40,7 @@ class Game final : public BaseGame
     void ProcessMouseDownEvent(const SDL_MouseButtonEvent &e) override;
     void ProcessMouseUpEvent(const SDL_MouseButtonEvent &e) override;
 
+    void Restart();
     void SwitchLevel(Level *pLevel);
 
     static inline Vector2f GetMousePosition()
