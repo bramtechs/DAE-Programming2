@@ -12,7 +12,7 @@ class BarWidget
     void Draw(const Rectf &region) const;
 
   private:
-    Color4f m_BgColor{utils::ColorHex(0x492601)};
-    Color4f m_FgColor{utils::ColorHex(0xFEFE5C)};
+    Color4f m_BgColor{73.f / 255.f, 38.f / 255.f, 1.f / 255.f, 1.f};
+    Color4f m_FgColor{254.f / 255.f, 254.f / 255.f, 92.f / 255.f, 1.f};
     float m_Progress{};
 };

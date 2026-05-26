@@ -2,6 +2,7 @@
 #include "PickupInteractable.h"
 #include "DialogManager.h"
 #include "Game.h"
+#include "utils.h"
 #include "Texture.h"
 
 #include <algorithm>
@@ -40,7 +41,7 @@ bool PickupInteractable::OnInteract(Game &game)
 
 Rectf PickupInteractable::GetAnimationFrameSource(int frame)
 {
-    frame = std::clamp(frame, 0, 3);
+    frame = utils::Clamp(frame, 0, 3);
     Rectf first{193.f, 96.f, 32.f, 32.f};
     first.left += first.width * frame;
     return first;

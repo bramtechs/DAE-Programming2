@@ -2,23 +2,11 @@
 #include "PolygonCollider.h"
 #include "pch.h"
 
-#include <filesystem>
 #include <iostream>
 
 ColliderWriter::ColliderWriter(const std::string &colliderFilePath)
     : m_Stream(colliderFilePath), m_FilePath(colliderFilePath)
 {
-}
-
-ColliderWriter::~ColliderWriter()
-{
-    std::error_code err{};
-    std::filesystem::path fullPath{std::filesystem::canonical(std::filesystem::current_path() / m_FilePath, err)};
-    if (err)
-    {
-        fullPath = m_FilePath;
-    }
-    std::cout << "Wrote colliders to: " << fullPath.string() << std::endl;
 }
 
 void ColliderWriter::Serialize(const PolygonCollider &collider)

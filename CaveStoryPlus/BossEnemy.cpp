@@ -6,11 +6,14 @@
 
 #include <cassert>
 
+const Rectf BossEnemy::m_BossLabelSourceRect{487.f, 322.f, 58.f, 14.f};
+
 BossEnemy::BossEnemy(const Vector2f &pos, float areaLeft, float areaRight)
     : Enemy(Vector2f{m_PixelsWidth / g_TileSize, m_PixelsHeight / g_TileSize}), m_FloorTop(pos.y), m_AreaLeft(areaLeft),
       m_AreaRight(areaRight)
 {
     SetPosition(pos);
+    SetHealth(m_MaxHealth);
     CalcSourceRect(false);
 }
 
@@ -95,6 +98,8 @@ void BossEnemy::Update(float delta)
     }
 
     Translate(m_Velocity * delta);
+    const float healthProgress{static_cast<float>(GetHealth()) / static_cast<float>(m_MaxHealth)};
+    m_BarWidget.SetProgress(healthProgress);
 }
 
 void BossEnemy::Draw() const
@@ -109,6 +114,20 @@ void BossEnemy::Draw() const
     GetSpriteSheet().Draw(Vector2f{}, m_SourceRect);
 
     glPopMatrix();
+}
+
+void BossEnemy::DrawGUI(const Rectf &viewport) const
+{
+    const Rectf healthBar{utils::RectWithCenter(viewport.width * 0.5f, 100.f, viewport.width * 0.7f, 50.f)};
+    utils::SetColor(Color4f(47.f / 255.f, 46.f / 255.f, 66.f / 255.f, 1.f));
+    utils::FillRect(healthBar);
+
+    const Rectf labelDest{healthBar.left, healthBar.bottom, m_BossLabelSourceRect.width * 2.f,
+                          m_BossLabelSourceRect.height * 2.f};
+    GetSpriteSheet().Draw(labelDest, m_BossLabelSourceRect);
+
+    const Rectf barRegion{utils::SplitRectHorizontally(healthBar, 0.15f)[1]};
+    m_BarWidget.Draw(barRegion.PadPerc(0.35f));
 }
 
 void BossEnemy::StartAttacking(Player &player)

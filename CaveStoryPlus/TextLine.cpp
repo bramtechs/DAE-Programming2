@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "utils.h"
 #include "TextLine.h"
 #include "TextManager.h"
 
@@ -13,8 +14,8 @@ TextLine::TextLine(std::string text, const TextManager *pTextManager)
 
 Texture TextLine::BakeText() const
 {
-    const size_t clamped{std::clamp(m_CharsVisible, size_t{1}, m_Text.size())};
-    const std::string slice{m_Text.substr(0, clamped)};
+    const int clamped{utils::Clamp(static_cast<int>(m_CharsVisible), 1, static_cast<int>(m_Text.size()))};
+    const std::string slice{m_Text.substr(0, static_cast<size_t>(clamped))};
     assert(m_pTextManager && "TextManager is null");
     return m_pTextManager->BakeText(slice, 48);
 }

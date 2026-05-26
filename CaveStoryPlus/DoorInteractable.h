@@ -1,8 +1,6 @@
 #pragma once
 #include "Interactable.h"
 #include "LevelBuilder.h"
-#include <functional>
-#include <optional>
 
 class Level;
 class LevelBuilder;
@@ -20,5 +18,6 @@ class DoorInteractable final : public Interactable
 
   private:
     LevelBuilder::Type m_LevelType;
-    std::optional<Vector2f> m_CustomSpawn;
+    Vector2f m_CustomSpawn;
+    bool m_HasCustomSpawn;
 };

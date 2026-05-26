@@ -212,6 +212,11 @@ void Level::DrawGUI(const Rectf &viewport) const
         pos.y -= m_pNameTexture->GetHeight() * 0.5f;
         m_pNameTexture->Draw(pos);
     }
+
+    for (const Enemy * pEnemy : m_Enemies)
+    {
+        pEnemy->DrawGUI(viewport);
+    }
 }
 
 void Level::DrawDebug() const

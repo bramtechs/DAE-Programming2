@@ -11,7 +11,8 @@ DialogManager::DialogManager(TextManager &textManager, Game &game) : m_TextManag
 
 DialogMessage &DialogManager::QueueMessage(std::vector<std::string> &&lines)
 {
-    return m_Messages.emplace(std::move(lines), m_TextManager);
+    m_Messages.emplace(std::move(lines), m_TextManager);
+    return m_Messages.back();
 }
 
 void DialogManager::Update(float delta)

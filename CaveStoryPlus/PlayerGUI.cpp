@@ -87,8 +87,8 @@ std::array<Rectf, 3> PlayerGUI::GetRowColumns(const Rectf &region, int row, int 
     rowRegion.height /= totalRows;
     rowRegion.bottom += rowRegion.height * row;
 
-    const std::pair<Rectf, Rectf> halves{utils::SplitRectHorizontally(rowRegion, 0.4f)};
-    const std::pair<Rectf, Rectf> leftHalves{utils::SplitRectHorizontally(halves.first, 0.35f)};
+    const std::array<Rectf, 2> halves{utils::SplitRectHorizontally(rowRegion, 0.4f)};
+    const std::array<Rectf, 2> leftHalves{utils::SplitRectHorizontally(halves[0], 0.35f)};
 
-    return {leftHalves.first, leftHalves.second, halves.second};
+    return {leftHalves[0], leftHalves[1], halves[1]};
 }

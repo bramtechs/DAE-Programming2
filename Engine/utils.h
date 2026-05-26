@@ -6,6 +6,7 @@
 #include <cmath>
 #include <type_traits>
 #include <utility>
+#include <array>
 #include <vector>
 
 namespace utils
@@ -118,67 +119,16 @@ Rectf RectWithCenter(const Vector2f &pos, const Vector2f &size);
 // CSS: object-fit: cover
 Rectf CalcCoverRegion(Rectf region, const Rectf &source);
 
-std::pair<Rectf, Rectf> SplitRectHorizontally(const Rectf &rect, float divisor = 0.5f);
+std::array<Rectf, 2> SplitRectHorizontally(const Rectf &rect, float divisor = 0.5f);
 
-template <typename T> T SnapRounded(T value, T snapInterval)
-{
-    static_assert(std::is_floating_point_v<T>, "Needs floating point");
-
-    return std::round(value / snapInterval) * snapInterval;
-}
-
-template <typename T> T Clamp(T value, T min, T max)
-{
-    static_assert(std::is_arithmetic_v<T>, "Needs arithmetic");
-
-    if (value < min)
-    {
-        return min;
-    }
-
-    if (value > max)
-    {
-        return max;
-    }
-
-    return value;
-}
+float SnapRounded(float value, float snapInterval);
+float Clamp(float value, float min, float max);
+int Clamp(int value, int min, int max);
 
 float SineWave(float x, float amplitude, float stretch, float phaseShift, float offsetY);
 float SineBetween(float x, float cycleDuration, float min, float max);
 
 float RandomFloat(float min, float max);
-
-constexpr Color4f ColorRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-    Color4f col{};
-    col.r = static_cast<float>(r) / 255.f;
-    col.g = static_cast<float>(g) / 255.f;
-    col.b = static_cast<float>(b) / 255.f;
-    col.a = static_cast<float>(a) / 255.f;
-    return col;
-}
-
-constexpr Color4f ColorHex(uint32_t hex)
-{
-    if (hex <= 0xFFFFFFu)
-    {
-        // #RRGGBB
-        const uint8_t r{static_cast<uint8_t>((hex >> 16) & 0xFF)};
-        const uint8_t g{static_cast<uint8_t>((hex >> 8) & 0xFF)};
-        const uint8_t b{static_cast<uint8_t>((hex >> 0) & 0xFF)};
-        return ColorRGBA(r, g, b, 255);
-    }
-    else
-    {
-        // #RRGGBBAA
-        const uint8_t r{static_cast<uint8_t>((hex >> 24) & 0xFF)};
-        const uint8_t g{static_cast<uint8_t>((hex >> 16) & 0xFF)};
-        const uint8_t b{static_cast<uint8_t>((hex >> 8) & 0xFF)};
-        const uint8_t a{static_cast<uint8_t>((hex >> 0) & 0xFF)};
-        return ColorRGBA(r, g, b, a);
-    }
-}
 
 #pragma endregion
 

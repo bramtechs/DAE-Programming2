@@ -19,6 +19,10 @@ class Enemy
 
     virtual void Draw() const = 0;
 
+    virtual void DrawGUI(const Rectf &viewport) const
+    {
+    }
+
     virtual void DrawDebug() const;
 
     virtual bool IsSolid() const
@@ -33,6 +37,8 @@ class Enemy
 
     // returns true if died
     bool TakeDamage(int damage);
+
+    int GetHealth() const;
 
     void SetCenter(Vector2f position);
     Vector2f GetCenter() const;

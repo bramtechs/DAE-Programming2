@@ -68,12 +68,12 @@ This section gives a clear and detailed overview of which parts of the original 
 - [x] Camera that follows player within level bounds
 - [x] Rendering the player sprite and animation states (idle, run, jump)
 - [X] Basic enemy entity with position and simple movement pattern
-- [ ] Player projectile system (spawn bullet, movement, lifetime)
+- [X] Player projectile system (spawn bullet, movement, lifetime)
 - [X] Collision detection between bullets and enemies
-- [ ] Enemy damage, hit feedback, and removal on defeat
-- [ ] Player damage on enemy contact
-- [ ] Basic HUD showing player health
-- [ ] Beginning of Mimiga Village area layout
+- [X] Enemy damage, hit feedback, and removal on defeat
+- [X] Player damage on enemy contact
+- [X] Basic HUD showing player health
+- [X] Beginning of Mimiga Village area layout
 - [X] Trigger zone that stops player and opens dialog
 - [X] Dialog box UI with text rendering
 - [X] Input handling to advance dialog text
@@ -83,18 +83,18 @@ This section gives a clear and detailed overview of which parts of the original 
 - [ ] Save station entity placed in first level
 - [ ] Interaction key to activate save station
 - [ ] Save system storing player position and health
-- [ ] Boss entity with larger sprite and multiple hit points
-- [ ] Boss attack pattern (projectiles or movement phases)
-- [ ] Boss health display
+- [X] Boss entity with larger sprite
+- [X] Boss attack patterns (movement phases)
+- [X] Boss health display
 - [ ] Boss defeat event triggering dialog or transition
-- [ ] Transition between cave level and Mimiga Village
-- [ ] NPC entity system for characters in village
-- [ ] NPC interaction trigger and dialog scripts
+- [X] Transition between cave level and Mimiga Village
+- [X] NPC entity system for characters in village
+- [X] NPC interaction trigger and dialog events
 
 ### What I plan to create if I have enough time left:
 - [ ] Smaller details like particles
 - [ ] Full Mimiga Village map layout
-- [ ] Multiple NPCs with unique dialog lines
+- [x] Multiple NPCs with multiple dialog lines
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -180,8 +180,11 @@ Project Link: [https://github.com/HowestDAE/gd25-bramderaeve](https://github.com
 
 Use this space to list resources you find helpful and would like to give credit to. 
 
-* [Example 1: cpp reference on std::vector](https://en.cppreference.com/w/cpp/container/vector)
-* ..
+* [Cave Story Wiki: Textures of the entire levels](https://cavestory.fandom.com/wiki/Mimiga_Village)
+* ["My favourite animation trick: exponential smoothing"](https://lisyarus.github.io/blog/posts/exponential-smoothing.html)
+* [Cave Story Font as TrueType font](https://fontlibrary.org/en/font/cave-story)
+* All other game assets are ripped from CaveStory+ and CaveStory.
+* * ..
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -758,7 +758,7 @@ Rectf utils::CalcCoverRegion(Rectf texDest, const Rectf &source)
     return Rectf{centerX - (calcW * 0.5f), centerY - (calcH * 0.5f), calcW, calcH};
 }
 
-std::pair<Rectf, Rectf> utils::SplitRectHorizontally(const Rectf &rect, float divisor)
+std::array<Rectf, 2> utils::SplitRectHorizontally(const Rectf &rect, float divisor)
 {
     Rectf left{rect};
     left.width *= divisor;
@@ -766,6 +766,41 @@ std::pair<Rectf, Rectf> utils::SplitRectHorizontally(const Rectf &rect, float di
     right.left += left.width;
     right.width = rect.width * (1.f - divisor);
     return {left, right};
+}
+
+float utils::SnapRounded(float value, float snapInterval)
+{
+    return std::round(value / snapInterval) * snapInterval;
+}
+
+float utils::Clamp(float value, float min, float max)
+{
+    if (value < min)
+    {
+        return min;
+    }
+
+    if (value > max)
+    {
+        return max;
+    }
+
+    return value;
+}
+
+int utils::Clamp(int value, int min, int max)
+{
+    if (value < min)
+    {
+        return min;
+    }
+
+    if (value > max)
+    {
+        return max;
+    }
+
+    return value;
 }
 
 float utils::SineWave(float x, float amplitude, float stretch, float phaseShift, float offsetY)

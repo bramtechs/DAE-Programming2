@@ -3,7 +3,6 @@
 #include "Game.h"
 #include "utils.h"
 
-#include <algorithm>
 #include <cmath>
 
 Camera::Camera(const Rectf &viewPort) : m_Center{}, m_ViewPort{viewPort}, m_Zoom{2.f}, m_MoveSpeed{10.f}
@@ -76,8 +75,8 @@ void Camera::ClampInside(const Rectf &clampBounds)
         std::max(0.f, clampBounds.height - tileRowsInViewport),
     };
 
-    m_Center.x = std::clamp(m_Center.x, shrunkBounds.left, shrunkBounds.GetRight());
-    m_Center.y = std::clamp(m_Center.y, shrunkBounds.bottom, shrunkBounds.GetTop());
+    m_Center.x = utils::Clamp(m_Center.x, shrunkBounds.left, shrunkBounds.GetRight());
+    m_Center.y = utils::Clamp(m_Center.y, shrunkBounds.bottom, shrunkBounds.GetTop());
 }
 
 Vector2f Camera::ScreenToWorldPos(const Vector2f &screenPos) const

@@ -76,13 +76,13 @@ void DialogMessage::Update(float delta)
 
 void DialogMessage::Draw(const Vector2f &screenSize) const
 {
-    utils::SetColor(utils::ColorHex(0x242B40));
+    utils::SetColor(Color4f{36.f / 255.f, 43.f / 255.f, 64.f / 255.f, 1.f});
 
     const Vector2f center{screenSize.x * 0.5f, screenSize.y * 0.2f};
     const Rectf region{utils::RectWithCenter(center, screenSize.x * 0.7f, screenSize.y * 0.3f)};
     utils::FillRect(region);
 
-    utils::SetColor(utils::ColorHex(0x4C4F60));
+    utils::SetColor(Color4f{76.f / 255.f, 79.f / 255.f, 96.f / 255.f, 1.f});
     utils::DrawRect(region, 3.f);
 
     const Rectf contentRegion{region.PadPerc(0.2f)};

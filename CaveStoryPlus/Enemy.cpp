@@ -33,6 +33,11 @@ bool Enemy::TakeDamage(int damage)
     return m_Health <= 0;
 }
 
+int Enemy::GetHealth() const
+{
+    return m_Health;
+}
+
 void Enemy::SetCenter(Vector2f position)
 {
     m_Position = position;

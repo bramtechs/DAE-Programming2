@@ -5,12 +5,12 @@
 #include <cassert>
 
 DoorInteractable::DoorInteractable(const Vector2f &cell, LevelBuilder::Type type, const Vector2f &customSpawn)
-    : Interactable(cell), m_LevelType(type), m_CustomSpawn(customSpawn)
+    : Interactable(cell), m_LevelType(type), m_CustomSpawn(customSpawn), m_HasCustomSpawn(true)
 {
 }
 
 DoorInteractable::DoorInteractable(const Vector2f &cell, LevelBuilder::Type type)
-    : Interactable(cell), m_LevelType(type), m_CustomSpawn()
+    : Interactable(cell), m_LevelType(type), m_CustomSpawn(), m_HasCustomSpawn(false)
 {
 }
 
@@ -28,9 +28,9 @@ bool DoorInteractable::OnInteract(Game &game)
     {
         Level *pLevel{LevelBuilder(*pPlayer).BuildLevel(m_LevelType)};
         game.SwitchLevel(pLevel);
-        if (m_CustomSpawn.has_value())
+        if (m_HasCustomSpawn)
         {
-            pLevel->SetSpawnPos(m_CustomSpawn.value());
+            pLevel->SetSpawnPos(m_CustomSpawn);
         }
     }
 

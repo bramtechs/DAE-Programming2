@@ -40,8 +40,10 @@ class PlayerGUI
     NumberLabel m_HealthLabel{};
     NumberLabel m_OxygenLabel{};
 
-    BarWidget m_LevelBar{utils::ColorHex(0x492601), utils::ColorHex(0xFEFE5C)};
-    BarWidget m_HealthBar{utils::ColorHex(0x3F0C21), utils::ColorHex(0xFF0201)};
+    BarWidget m_LevelBar{Color4f{73.f / 255.f, 38.f / 255.f, 1.f / 255.f, 1.f},
+                         Color4f{254.f / 255.f, 254.f / 255.f, 92.f / 255.f, 1.f}};
+    BarWidget m_HealthBar{Color4f{63.f / 255.f, 12.f / 255.f, 33.f / 255.f, 1.f},
+                          Color4f{245.f / 255.f, 73.f / 255.f, 39.f / 255.f, 1.f}};
 
     float m_AnimTimer{};
     float m_ShowLevelUpTimer{};
