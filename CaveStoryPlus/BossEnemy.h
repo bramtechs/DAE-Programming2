@@ -3,6 +3,7 @@
 #include "BarWidget.h"
 #include <cstdint>
 
+class Game;
 class Player;
 class BossEnemy final : public Enemy
 {
@@ -15,7 +16,7 @@ class BossEnemy final : public Enemy
 
     void DrawGUI(const Rectf &viewport) const override;
 
-    void StartAttacking(Player &player);
+    void StartAttacking(Player &player, Game& game);
 
     int GetGoldDropCount() const
     {
@@ -27,7 +28,9 @@ class BossEnemy final : public Enemy
     {
         talking,
         moving,
-        crushing
+        crushing,
+        fleeing,
+        done
     };
 
     constexpr static int m_PixelsWidth{66};
@@ -39,11 +42,14 @@ class BossEnemy final : public Enemy
     constexpr static float m_JumpForce{5.f};
     static const Rectf m_BossLabelSourceRect;
 
+    bool TakeDamage(int amount) override;
+
     void UpdateAnimations(float delta);
 
     void CalcSourceRect(bool isJumping);
 
     Player *m_pPlayer{};
+    Game *m_pGame{};
     Rectf m_SourceRect{};
     State m_State{State::talking};
     Vector2f m_Velocity{};

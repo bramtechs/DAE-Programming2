@@ -36,7 +36,7 @@ class Enemy
     }
 
     // returns true if died
-    bool TakeDamage(int damage);
+    virtual bool TakeDamage(int damage);
 
     int GetHealth() const;
 

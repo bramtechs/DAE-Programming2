@@ -52,6 +52,8 @@ std::string MusicManager::GetTrackBeginPath(Track track)
         return "vivi_intro.ogg";
     case Track::village:
         return "mura_intro.ogg";
+    case Track::boss:
+        return "ginsuke_intro.ogg";
     case Track::none:
         return "";
     }
@@ -68,6 +70,8 @@ std::string MusicManager::GetTrackLoopPath(Track track)
         return "vivi_loop.ogg";
     case Track::village:
         return "mura_loop.ogg";
+    case Track::boss:
+        return "ginsuke_loop.ogg";
     case Track::none:
         return "";
     }

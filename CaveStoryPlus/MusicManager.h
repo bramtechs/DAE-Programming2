@@ -9,7 +9,8 @@ class MusicManager final
     {
         none,
         cave,
-        village
+        village,
+        boss
     };
 
     MusicManager() = default;

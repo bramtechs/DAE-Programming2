@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BossEnemy.h"
 #include "Texture.h"
+#include "DialogManager.h"
 #include "Player.h"
 #include "Game.h"
 
@@ -88,13 +89,18 @@ void BossEnemy::Update(float delta)
     }
 
     // apply gravity
-    m_Velocity.y -= delta * 9.8f;
+    m_Velocity.y -= delta * 9.8f * (m_State == State::fleeing ? -1.f : 1.f);
 
     const float heightAboveFloor{GetPosition().y - m_FloorTop};
     if (heightAboveFloor < 0.f)
     {
         m_Velocity.y = 0.f;
         Translate(Vector2f{0.f, -heightAboveFloor});
+    }
+    else if (m_pGame && m_State == State::fleeing && heightAboveFloor > 30.f)
+    {
+        m_pGame->GetDialogManager()->QueueMessage({"(You won.)"});
+        m_State = State::done;
     }
 
     Translate(m_Velocity * delta);
@@ -108,7 +114,14 @@ void BossEnemy::Draw() const
 
     glTranslatef(GetPosition().x, GetPosition().y, 0.f);
     glScalef(1.f / g_TileSize, 1.f / g_TileSize, 1.f);
-    glScalef(m_Velocity.x < 0.f ? 1.f : -1.f, 1.f, 1.f);
+
+    bool flipH{m_Velocity.x > 0.f};
+    if (m_State == State::talking)
+    {
+        flipH = false;
+    }
+
+    glScalef(flipH ? -1.f : 1.f, 1.f, 1.f);
     glTranslatef(m_SourceRect.width * -0.5f, m_SourceRect.height * -0.5f, 0.f);
 
     GetSpriteSheet().Draw(Vector2f{}, m_SourceRect);
@@ -118,22 +131,42 @@ void BossEnemy::Draw() const
 
 void BossEnemy::DrawGUI(const Rectf &viewport) const
 {
-    const Rectf healthBar{utils::RectWithCenter(viewport.width * 0.5f, 100.f, viewport.width * 0.7f, 50.f)};
-    utils::SetColor(Color4f(47.f / 255.f, 46.f / 255.f, 66.f / 255.f, 1.f));
-    utils::FillRect(healthBar);
+    if (GetHealth() > 0)
+    {
+        const Rectf healthBar{utils::RectWithCenter(viewport.width * 0.5f, 100.f, viewport.width * 0.7f, 50.f)};
+        utils::SetColor(Color4f(47.f / 255.f, 46.f / 255.f, 66.f / 255.f, 1.f));
+        utils::FillRect(healthBar);
 
-    const Rectf labelDest{healthBar.left, healthBar.bottom, m_BossLabelSourceRect.width * 2.f,
-                          m_BossLabelSourceRect.height * 2.f};
-    GetSpriteSheet().Draw(labelDest, m_BossLabelSourceRect);
+        const Rectf labelDest{healthBar.left, healthBar.bottom, m_BossLabelSourceRect.width * 2.f,
+                              m_BossLabelSourceRect.height * 2.f};
+        GetSpriteSheet().Draw(labelDest, m_BossLabelSourceRect);
 
-    const Rectf barRegion{utils::SplitRectHorizontally(healthBar, 0.15f)[1]};
-    m_BarWidget.Draw(barRegion.PadPerc(0.35f));
+        const Rectf barRegion{utils::SplitRectHorizontally(healthBar, 0.15f)[1]};
+        m_BarWidget.Draw(barRegion.PadPerc(0.35f));
+    }
 }
 
-void BossEnemy::StartAttacking(Player &player)
+void BossEnemy::StartAttacking(Player &player, Game &game)
 {
+    m_pGame = &game;
     m_State = State::moving;
     m_pPlayer = &player;
+}
+
+bool BossEnemy::TakeDamage(int amount)
+{
+    SetHealth(GetHealth() - amount);
+    if (GetHealth() <= 0 && (m_State == State::moving || m_State == State::crushing))
+    {
+        assert(m_pGame && "Game not set");
+        m_pGame->GetMusicManager().SwitchTrack(MusicManager::Track::none);
+
+        m_pGame->GetDialogManager()->QueueMessage({"!!!", "I'll remember this!"});
+        m_State = State::fleeing;
+    }
+
+    // despawn is handled by the boss itself for death dialog
+    return false;
 }
 
 void BossEnemy::UpdateAnimations(float delta)
