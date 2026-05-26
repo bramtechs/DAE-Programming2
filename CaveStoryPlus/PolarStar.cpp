@@ -13,6 +13,24 @@ PolarStar::~PolarStar()
     delete m_pTexture;
 }
 
+PolarStar::PolarStar(PolarStar &&o) noexcept : m_pTexture(o.m_pTexture)
+{
+    o.m_pTexture = nullptr;
+}
+
+PolarStar &PolarStar::operator=(PolarStar &&o) noexcept
+{
+    if (this != &o)
+    {
+        delete m_pTexture;
+
+        m_pTexture = o.m_pTexture;
+        o.m_pTexture = nullptr;
+    }
+
+    return *this;
+}
+
 void PolarStar::Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager)
 {
     const float radians{utils::DegreesToRadians(static_cast<float>(orientation))};

@@ -88,13 +88,15 @@ class Level final
 
     Texture *m_pFullTexture{};
     Texture *m_pEnemiesTexture{};
+    Texture *m_pNameTexture{};
+    Texture *m_pInteractablesTexture{};
+
     std::string m_CollidersPath{};
     MusicManager::Track m_MusicTrack{};
     std::vector<PolygonCollider> m_Colliders{};
     std::vector<Enemy *> m_Enemies{};
     std::vector<Interactable *> m_Interactables{};
     BulletManager m_BulletManager{};
-    Texture *m_pNameTexture{};
     Vector2f m_CursorPos{};
     Vector2f m_SpawnPos{};
     float m_NameShownTimer{2.f};

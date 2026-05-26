@@ -11,15 +11,12 @@ class Interactable
     explicit Interactable(const Rectf &region);
     explicit Interactable(const Vector2f &cell, const Vector2f &size = Vector2f{1.f, 1.f});
     explicit Interactable(const Vector2f &cell, const float size);
-    virtual ~Interactable();
+    virtual ~Interactable() = default;
 
-    Interactable(const Interactable &) = delete;
-    Interactable &operator=(const Interactable &) = delete;
-
-    Interactable(Interactable &&) = delete;
-    Interactable &operator=(Interactable &&) = delete;
-
-    bool IsInside(const Player &player) const;
+    Interactable(const Interactable &) = default;
+    Interactable &operator=(const Interactable &) = default;
+    Interactable(Interactable &&) noexcept = default;
+    Interactable &operator=(Interactable &&) noexcept = default;
 
     virtual void Update(float delta) = 0;
     virtual void Draw() const = 0;
@@ -36,7 +33,7 @@ class Interactable
     }
 
     // returns bool if should be destroyed
-    virtual bool OnTouch(Game & /*game*/)
+    virtual bool OnTouch(Game &game)
     {
         return false;
     }
@@ -45,26 +42,20 @@ class Interactable
 
     void Translate(const Vector2f &offset);
 
+    void SetSpriteSheetTexture(Texture *pTexture);
+
+    bool IsInside(const Player &player) const;
     Rectf GetRegion() const;
     Rectf GetTileRegion() const;
     Vector2f GetPosition() const;
     Vector2f GetCenter() const;
 
   protected:
-    // TODO: do not reference count for rule of 0
-    const Texture &GetSpriteSheetTexture() const
-    {
-        return *m_pSpriteSheetTexture;
-    }
+    void SetRegion(const Rectf &region);
 
-    void SetRegion(const Rectf &region)
-    {
-        m_Region = region;
-    }
+    const Texture &GetSpriteSheetTexture() const;
 
   private:
     Rectf m_Region{};
-
-    static Texture *m_pSpriteSheetTexture;
-    static int m_InstanceCount;
+    Texture *m_pSpriteSheetTexture{};
 };

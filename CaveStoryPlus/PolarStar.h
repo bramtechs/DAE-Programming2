@@ -10,9 +10,10 @@ class PolarStar final : public Weapon
     ~PolarStar() override;
 
     PolarStar(const PolarStar &) = delete;
-    PolarStar(PolarStar &&) noexcept = delete;
-    PolarStar &operator=(PolarStar &&) = delete;
     PolarStar &operator=(const PolarStar &) = delete;
+
+    PolarStar(PolarStar &&) noexcept;
+    PolarStar &operator=(PolarStar &&) noexcept;
 
     void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager) override;
     void Draw(const Vector2f &handPos, Orientation orientation) const override;

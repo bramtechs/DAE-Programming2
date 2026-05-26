@@ -20,6 +20,7 @@ Level::Level(const std::string &fullTexturePath, std::string collidersPath, cons
     m_pFullTexture = new Texture(fullTexturePath);
     m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});
     m_pEnemiesTexture = new Texture("enemies.png");
+    m_pInteractablesTexture = new Texture("interactables.png");
 
     m_LevelCols = static_cast<int>(m_pFullTexture->GetWidth()) / 16;
     m_LevelRows = static_cast<int>(m_pFullTexture->GetHeight()) / 16;
@@ -37,6 +38,7 @@ Level::~Level()
     delete m_pFullTexture;
     delete m_pNameTexture;
     delete m_pEnemiesTexture;
+    delete m_pInteractablesTexture;
 
     for (Enemy *pEnemy : m_Enemies)
     {
@@ -59,6 +61,8 @@ void Level::SpawnEnemy(Enemy *pEnemy)
 void Level::SpawnInteractable(Interactable *pInteractable)
 {
     assert(pInteractable && "Passing a nullptr as interactable");
+
+    pInteractable->SetSpriteSheetTexture(m_pInteractablesTexture);
 
     // try to re-use free slot of previous deleted interactable
     for (int i{}; i < m_Interactables.size(); ++i)

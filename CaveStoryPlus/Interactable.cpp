@@ -4,17 +4,10 @@
 #include "pch.h"
 #include "utils.h"
 
-Texture *Interactable::m_pSpriteSheetTexture{};
-int Interactable::m_InstanceCount{};
+#include <cassert>
 
 Interactable::Interactable(const Rectf &region) : m_Region(region)
 {
-    if (m_InstanceCount == 0)
-    {
-        m_pSpriteSheetTexture = new Texture("NpcSym.png");
-    }
-
-    ++m_InstanceCount;
 }
 
 Interactable::Interactable(const Vector2f &cell, const Vector2f &size)
@@ -24,16 +17,6 @@ Interactable::Interactable(const Vector2f &cell, const Vector2f &size)
 
 Interactable::Interactable(const Vector2f &cell, float size) : Interactable(cell, Vector2f{size, size})
 {
-}
-
-Interactable::~Interactable()
-{
-    --m_InstanceCount;
-
-    if (m_InstanceCount == 0)
-    {
-        delete m_pSpriteSheetTexture;
-    }
 }
 
 bool Interactable::IsInside(const Player &player) const
@@ -53,6 +36,11 @@ void Interactable::Translate(const Vector2f &offset)
     m_Region.bottom += offset.y;
 }
 
+void Interactable::SetSpriteSheetTexture(Texture *pTexture)
+{
+    m_pSpriteSheetTexture = pTexture;
+}
+
 Rectf Interactable::GetRegion() const
 {
     return m_Region;
@@ -68,6 +56,17 @@ Rectf Interactable::GetTileRegion() const
 Vector2f Interactable::GetCenter() const
 {
     return Vector2f{m_Region.left + m_Region.width * 0.5f, m_Region.bottom + m_Region.height * 0.5f};
+}
+
+const Texture &Interactable::GetSpriteSheetTexture() const
+{
+    assert(m_pSpriteSheetTexture && "Texture not set");
+    return *m_pSpriteSheetTexture;
+}
+
+void Interactable::SetRegion(const Rectf &region)
+{
+    m_Region = region;
 }
 
 Vector2f Interactable::GetPosition() const
