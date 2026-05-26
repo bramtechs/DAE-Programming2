@@ -32,41 +32,28 @@ void BulletManager::Draw() const
 
 bool BulletManager::InteractWithEnemy(Enemy &enemy)
 {
-    bool killed{};
-    auto it{m_Bullets.begin()};
-    while (it != m_Bullets.end() && !killed)
+    for (Bullet &bullet : m_Bullets)
     {
-        if (it->IsOverlapping(enemy.GetRegion()))
+        if (bullet.IsActive() && bullet.IsOverlapping(enemy.GetRegion()))
         {
-            killed = enemy.TakeDamage(it->GetDamage());
-            it = m_Bullets.erase(it);
-        }
-        else
-        {
-            ++it;
+            enemy.TakeDamage(bullet.GetDamage());
+            bullet.SetActive(false);
         }
     }
-    return killed;
+
+    return enemy.GetHealth() <= 0;
 }
 
 void BulletManager::InteractWithLevel(Level &level)
 {
-    auto it{m_Bullets.begin()};
-    while (it != m_Bullets.end())
+    for (int i{}; i < m_Bullets.size(); ++i)
     {
-        bool didErase{};
         for (const PolygonCollider &collider : level.GetColliders())
         {
-            if (collider.Overlaps(it->GetCircleRegion()))
+            if (collider.Overlaps(m_Bullets[i].GetCircleRegion()))
             {
-                it = m_Bullets.erase(it);
-                didErase = true;
-                break;
+                m_Bullets[i].SetActive(false);
             }
-        }
-        if (!didErase)
-        {
-            ++it;
         }
     }
 }
@@ -78,6 +65,16 @@ void BulletManager::SpawnPolarStarBullet(const Vector2f &pos, float shootAngle)
     bullet.SetDamage(1);
     bullet.SetScale(0.025f);
     bullet.SetSourceRegion(Rectf{256.f, 78.f, 32.f, 4.f});
+
+    // pool used bullets
+    for (Bullet &existingBullet : m_Bullets)
+    {
+        if (!existingBullet.IsActive())
+        {
+            existingBullet = std::move(bullet);
+            return;
+        }
+    }
 
     m_Bullets.emplace_back(std::move(bullet));
 }

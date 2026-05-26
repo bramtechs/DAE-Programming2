@@ -17,7 +17,9 @@ class PlayerGUI
     PlayerGUI &operator=(const PlayerGUI &) = delete;
     PlayerGUI &operator=(PlayerGUI &&) = delete;
 
-    void Update(float delta);
+    void UpdateTimers(float delta);
+
+    void UpdateValues();
 
     void Draw(const Rectf &viewport) const;
 

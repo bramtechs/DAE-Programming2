@@ -38,32 +38,26 @@ void Bullet::SetScale(float scale)
 
 void Bullet::Update(float delta)
 {
-    m_Position += m_Velocity * delta;
-}
-
-float Bullet::GetAngleDegrees() const
-{
-    return utils::RadiansToDegrees(std::atan2f(m_Velocity.y, m_Velocity.x));
+    if (m_IsActive)
+    {
+        m_Position += m_Velocity * delta;
+    }
 }
 
 void Bullet::Draw(const Texture &texture) const
 {
-    glPushMatrix();
-    glTranslatef(m_Position.x, m_Position.y, 0.f);
-    glRotatef(GetAngleDegrees(), 0.f, 0.f, 1.f);
-    glScalef(m_Scale, m_Scale, 1.f);
+    if (m_IsActive)
+    {
+        glPushMatrix();
+        glTranslatef(m_Position.x, m_Position.y, 0.f);
+        glRotatef(GetAngleDegrees(), 0.f, 0.f, 1.f);
+        glScalef(m_Scale, m_Scale, 1.f);
 
-    texture.Draw(utils::RectWithCenter(Vector2f(0.f, 0.f), m_SourceRegion.width, m_SourceRegion.height),
-                 m_SourceRegion);
+        texture.Draw(utils::RectWithCenter(Vector2f(0.f, 0.f), m_SourceRegion.width, m_SourceRegion.height),
+                     m_SourceRegion);
 
-    glPopMatrix();
-
-#if 0 // debug graphics
-    utils::SetColor(Color4f{1.f, 0.f, 0.f, 1.f});
-    utils::FillRect(GetRegion());
-    utils::SetColor(Color4f{0.f, 1.f, 0.f, 1.f});
-    utils::DrawEllipse(GetCircleRegion(), 1.f);
-#endif
+        glPopMatrix();
+    }
 }
 
 Rectf Bullet::GetRegion() const
@@ -84,6 +78,11 @@ Circlef Bullet::GetCircleRegion() const
     return Circlef(region.GetCenter(), size);
 }
 
+float Bullet::GetAngleDegrees() const
+{
+    return utils::RadiansToDegrees(std::atan2f(m_Velocity.y, m_Velocity.x));
+}
+
 bool Bullet::IsOverlapping(const Rectf &region) const
 {
     return utils::IsOverlapping(GetRegion(), region);
@@ -92,4 +91,14 @@ bool Bullet::IsOverlapping(const Rectf &region) const
 int Bullet::GetDamage() const
 {
     return m_Damage;
+}
+
+void Bullet::SetActive(bool on)
+{
+    m_IsActive = on;
+}
+
+bool Bullet::IsActive() const
+{
+    return m_IsActive;
 }

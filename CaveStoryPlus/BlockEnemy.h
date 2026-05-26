@@ -5,10 +5,6 @@ class BlockEnemy final : public Enemy
 {
   public:
     explicit BlockEnemy(const Vector2f &pos);
-    BlockEnemy(const BlockEnemy &) = delete;
-    BlockEnemy(BlockEnemy &&) = delete;
-    BlockEnemy &operator=(const BlockEnemy &) = delete;
-    BlockEnemy &operator=(BlockEnemy &) = delete;
 
     void InteractWithPlayer(Player &player) override;
 

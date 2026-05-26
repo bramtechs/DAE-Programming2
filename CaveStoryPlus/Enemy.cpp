@@ -4,27 +4,8 @@
 #include "pch.h"
 #include "utils.h"
 
-int Enemy::m_InstanceCount{0};
-Texture *Enemy::m_pSpriteSheetTexture{};
-
 Enemy::Enemy(const Vector2f &size) : m_Size(size)
 {
-    if (m_InstanceCount == 0)
-    {
-        m_pSpriteSheetTexture = new Texture("enemies.png");
-    }
-
-    ++m_InstanceCount;
-}
-
-Enemy::~Enemy()
-{
-    --m_InstanceCount;
-
-    if (m_InstanceCount == 0)
-    {
-        delete m_pSpriteSheetTexture;
-    }
 }
 
 bool Enemy::TakeDamage(int damage)
@@ -63,7 +44,12 @@ Circlef Enemy::GetCircleRegion() const
     return Circlef{GetCenter(), std::min(m_Size.x, m_Size.y) * 0.5f};
 }
 
-void Enemy::InteractWithPlayer(Player& player)
+void Enemy::SetSpriteSheetTexture(const Texture &texture)
+{
+    m_pSpriteSheetTexture = &texture;
+}
+
+void Enemy::InteractWithPlayer(Player &player)
 {
     DealBodyDamage(player);
 }

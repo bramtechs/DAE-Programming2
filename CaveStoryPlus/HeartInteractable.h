@@ -18,5 +18,5 @@ class HeartInteractable final : public Interactable
     Rectf GetAnimationFrameSource(bool flashed) const;
 
     float m_Timer{};
-    float m_FlashInterval{1.f};
+    float m_FlashInterval{2.5f};
 };

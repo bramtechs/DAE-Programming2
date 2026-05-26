@@ -67,7 +67,6 @@ void Camera::ClampInside(const Rectf &clampBounds)
     const float tileColsInViewport{m_ViewPort.width / combinedZoom};
     const float tileRowsInViewport{m_ViewPort.height / combinedZoom};
 
-    // make sure entire viewport is clamped not just center
     const Rectf shrunkBounds{
         clampBounds.left + tileColsInViewport * 0.5f, 
         clampBounds.bottom + tileRowsInViewport * 0.5f,

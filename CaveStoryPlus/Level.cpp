@@ -19,6 +19,7 @@ Level::Level(const std::string &fullTexturePath, std::string collidersPath, cons
 {
     m_pFullTexture = new Texture(fullTexturePath);
     m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});
+    m_pEnemiesTexture = new Texture("enemies.png");
 
     m_LevelCols = static_cast<int>(m_pFullTexture->GetWidth()) / 16;
     m_LevelRows = static_cast<int>(m_pFullTexture->GetHeight()) / 16;
@@ -34,11 +35,8 @@ Level::Level(const std::string &fullTexturePath, std::string collidersPath, cons
 Level::~Level()
 {
     delete m_pFullTexture;
-
-    if (m_pNameTexture)
-    {
-        delete m_pNameTexture;
-    }
+    delete m_pNameTexture;
+    delete m_pEnemiesTexture;
 
     for (Enemy *pEnemy : m_Enemies)
     {
@@ -54,41 +52,49 @@ Level::~Level()
 void Level::SpawnEnemy(Enemy *pEnemy)
 {
     assert(pEnemy && "Passing a nullptr as enemy");
+    pEnemy->SetSpriteSheetTexture(*m_pEnemiesTexture);
     m_Enemies.emplace_back(pEnemy);
 }
 
 void Level::SpawnInteractable(Interactable *pInteractable)
 {
     assert(pInteractable && "Passing a nullptr as interactable");
+
+    // try to re-use free slot of previous deleted interactable
+    for (int i{}; i < m_Interactables.size(); ++i)
+    {
+        if (!m_Interactables[i])
+        {
+            m_Interactables[i] = pInteractable;
+            return;
+        }
+    }
+
     m_Interactables.emplace_back(pInteractable);
 }
 
 void Level::InteractWithInteractables(const Player &player, Game &game, bool holdingInteractKey)
 {
-    auto it{m_Interactables.begin()};
-    while (it != m_Interactables.end())
+    for (int i{}; i < m_Interactables.size(); ++i)
     {
-        if ((*it)->IsInside(player))
+        if (m_Interactables[i] && m_Interactables[i]->IsInside(player))
         {
             bool shouldDestroy{};
             if (holdingInteractKey)
             {
-                shouldDestroy = (*it)->OnInteract(game);
+                shouldDestroy = m_Interactables[i]->OnInteract(game);
             }
             else
             {
-                shouldDestroy = (*it)->OnTouch(game);
+                shouldDestroy = m_Interactables[i]->OnTouch(game);
             }
 
             if (shouldDestroy)
             {
-                delete *it;
-                it = m_Interactables.erase(it);
-                continue;
+                delete m_Interactables[i];
+                m_Interactables[i] = nullptr;
             }
         }
-
-        ++it;
     }
 }
 
@@ -112,7 +118,7 @@ const std::vector<PolygonCollider> Level::GetSolidEnemyColliders() const
     s_Colliders.clear();
     for (const Enemy *pEnemy : m_Enemies)
     {
-        if (pEnemy->IsSolid())
+        if (pEnemy && pEnemy->IsSolid())
         {
             s_Colliders.emplace_back(pEnemy->GetRegion());
         }
@@ -126,34 +132,31 @@ void Level::Update(float delta, Player &player)
     m_BulletManager.Update(delta);
     m_BulletManager.InteractWithLevel(*this);
 
-    for (auto it{m_Enemies.begin()}; it != m_Enemies.end();)
+    for (int i{}; i < m_Enemies.size(); ++i)
     {
-        Enemy *pEnemy = *it;
-        pEnemy->InteractWithPlayer(player);
-        pEnemy->Update(delta);
-        if (m_BulletManager.InteractWithEnemy(*pEnemy))
+        if (m_Enemies[i])
         {
-            SpawnEnemyCollectibles(*pEnemy, !player.HasMaximumHealth());
-            delete *it;
-            it = m_Enemies.erase(it);
-        }
-        else
-        {
-            ++it;
+            m_Enemies[i]->InteractWithPlayer(player);
+            m_Enemies[i]->Update(delta);
+            if (m_BulletManager.InteractWithEnemy(*m_Enemies[i]))
+            {
+                SpawnEnemyCollectibles(*m_Enemies[i], !player.HasMaximumHealth());
+                delete m_Enemies[i];
+                m_Enemies[i] = nullptr;
+            }
         }
     }
 
-    for (auto it{m_Interactables.begin()}; it != m_Interactables.end();)
+    for (int i{}; i < m_Interactables.size(); ++i)
     {
-        (*it)->Update(delta);
-        if ((*it)->IsExpired())
+        if (m_Interactables[i])
         {
-            delete *it;
-            it = m_Interactables.erase(it);
-        }
-        else
-        {
-            ++it;
+            m_Interactables[i]->Update(delta);
+            if (m_Interactables[i]->IsExpired())
+            {
+                delete m_Interactables[i];
+                m_Interactables[i] = nullptr;
+            }
         }
     }
 
@@ -192,12 +195,18 @@ void Level::Draw() const
 
     for (const Enemy *pEnemy : m_Enemies)
     {
-        pEnemy->Draw();
+        if (pEnemy)
+        {
+            pEnemy->Draw();
+        }
     }
 
     for (const Interactable *pInteractable : m_Interactables)
     {
-        pInteractable->Draw();
+        if (pInteractable)
+        {
+            pInteractable->Draw();
+        }
     }
 
     m_BulletManager.Draw();
@@ -213,9 +222,12 @@ void Level::DrawGUI(const Rectf &viewport) const
         m_pNameTexture->Draw(pos);
     }
 
-    for (const Enemy * pEnemy : m_Enemies)
+    for (const Enemy *pEnemy : m_Enemies)
     {
-        pEnemy->DrawGUI(viewport);
+        if (pEnemy)
+        {
+            pEnemy->DrawGUI(viewport);
+        }
     }
 }
 
@@ -223,11 +235,17 @@ void Level::DrawDebug() const
 {
     for (const Enemy *pEnemy : m_Enemies)
     {
-        pEnemy->DrawDebug();
+        if (pEnemy)
+        {
+            pEnemy->DrawDebug();
+        }
     }
 
     for (const Interactable *pInteractable : m_Interactables)
     {
-        pInteractable->DrawDebug();
+        if (pInteractable)
+        {
+            pInteractable->DrawDebug();
+        }
     }
 }

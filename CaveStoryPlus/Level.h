@@ -87,6 +87,7 @@ class Level final
     void DrawColliders() const;
 
     Texture *m_pFullTexture{};
+    Texture *m_pEnemiesTexture{};
     std::string m_CollidersPath{};
     MusicManager::Track m_MusicTrack{};
     std::vector<PolygonCollider> m_Colliders{};

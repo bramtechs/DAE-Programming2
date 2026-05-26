@@ -4,7 +4,7 @@
 
 class Enemy;
 class Texture;
-class Bullet
+class Bullet final
 {
   public:
     explicit Bullet(const Vector2f &position);
@@ -28,6 +28,9 @@ class Bullet
 
     int GetDamage() const;
 
+    void SetActive(bool on);
+    bool IsActive() const;
+
   private:
     float GetAngleDegrees() const;
 
@@ -35,5 +38,6 @@ class Bullet
     Vector2f m_Velocity{};
     Rectf m_SourceRegion{};
     float m_Scale{1.f};
+    bool m_IsActive{true};
     int m_Damage{1};
 };

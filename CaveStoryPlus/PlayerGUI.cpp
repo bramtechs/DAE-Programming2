@@ -21,7 +21,13 @@ PlayerGUI::~PlayerGUI()
     delete m_pTexture;
 }
 
-void PlayerGUI::Update(float delta)
+void PlayerGUI::UpdateTimers(float delta)
+{
+    m_AnimTimer += delta;
+    m_ShowLevelUpTimer -= delta;
+}
+
+void PlayerGUI::UpdateValues()
 {
     m_HealthLabel.SetValue(m_Player.GetHealth());
     m_HealthBar.SetProgress(m_Player.GetHealth() / static_cast<float>(m_Player.GetMaxHealth()));
@@ -30,9 +36,6 @@ void PlayerGUI::Update(float delta)
     m_LevelBar.SetProgress(m_Player.GetLevelProgress());
 
     m_OxygenLabel.SetValue(m_Player.GetOxygen());
-
-    m_AnimTimer += delta;
-    m_ShowLevelUpTimer -= delta;
 }
 
 void PlayerGUI::Draw(const Rectf &viewport) const

@@ -17,7 +17,6 @@
 Player::Player(DialogManager &dialog)
     : m_pSpriteSheet(new Texture("player.png")), m_pGUI(new PlayerGUI(*this)), m_DialogManager(dialog)
 {
-    // HoldWeapon(new PolarStar());
 }
 
 Player::~Player()
@@ -46,7 +45,8 @@ void Player::Update(float delta, Level &level)
     }
     m_SecondsSinceOxygenDrain += delta;
 
-    m_pGUI->Update(delta);
+    m_pGUI->UpdateTimers(delta);
+    m_pGUI->UpdateValues();
 }
 
 void Player::UpdateMovement(float delta, Level &level)
@@ -308,6 +308,7 @@ void Player::DealDamage(int damage)
     if (m_InvincibilityTimer <= 0.f)
     {
         m_Health -= damage;
+        m_pGUI->UpdateValues();
         m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
         std::cout << "Dealt " << damage << " damage to player!" << std::endl;
 

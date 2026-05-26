@@ -6,12 +6,13 @@ class Texture;
 class Enemy
 {
   public:
-    Enemy(const Vector2f &size);
-    virtual ~Enemy();
-    Enemy(const Enemy &) = delete;
-    Enemy &operator=(const Enemy &) = delete;
-    Enemy(Enemy &&) = delete;
-    Enemy &operator=(Enemy &&) = delete;
+    explicit Enemy(const Vector2f &size);
+    virtual ~Enemy() = default;
+
+    Enemy(const Enemy &) = default;
+    Enemy &operator=(const Enemy &) = default;
+    Enemy(Enemy &&) noexcept = default;
+    Enemy &operator=(Enemy &&) noexcept = default;
 
     virtual void InteractWithPlayer(Player &player);
 
@@ -34,6 +35,8 @@ class Enemy
     {
         return 1;
     }
+
+    void SetSpriteSheetTexture(const Texture &texture);
 
     // returns true if died
     virtual bool TakeDamage(int damage);
@@ -77,9 +80,7 @@ class Enemy
 
     Vector2f m_Position{};
     Vector2f m_Size{};
+    const Texture *m_pSpriteSheetTexture{};
     int m_Health{3};
     int m_BodyDamage{1};
-
-    static Texture *m_pSpriteSheetTexture;
-    static int m_InstanceCount;
 };

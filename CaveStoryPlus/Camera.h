@@ -7,7 +7,6 @@ class Camera
     explicit Camera(const Rectf &viewPort);
 
     void Begin() const;
-
     void End() const;
 
     void SetCenter(const Vector2f &pos);
