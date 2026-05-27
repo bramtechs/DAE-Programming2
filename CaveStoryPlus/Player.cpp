@@ -250,6 +250,11 @@ void Player::HoldWeapon(Weapon *pWeapon)
     m_pHeldWeapon = pWeapon;
 }
 
+bool Player::IsHoldingWeapon() const
+{
+    return m_pHeldWeapon != nullptr;
+}
+
 void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)

@@ -18,6 +18,7 @@
 #include "GunSmithNpcInteractable.h"
 #include "SpikeInteractable.h"
 
+#include <iostream>
 #include <cassert>
 
 LevelBuilder::LevelBuilder(const Player &player) : m_Player(player)
@@ -26,19 +27,33 @@ LevelBuilder::LevelBuilder(const Player &player) : m_Player(player)
 
 Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
 {
+    Level *pLevel{};
+
     switch (type)
     {
-    case LevelBuilder::Type::cave:
-        return BuildCaveLevel();
-    case LevelBuilder::Type::hermitGunsmith:
-        return BuildHermitGunsmithLevel();
-    case LevelBuilder::Type::mimigaVillage:
-        return BuildMimigaVillageLevel();
-    case LevelBuilder::Type::mimigaReservoir:
-        return BuildMimigaReservoirLevel();
-    case LevelBuilder::Type::mimigaShack:
-        return BuildMimigaShackLevel();
+    case LevelBuilder::Type::cave: {
+        pLevel = BuildCaveLevel();
+        break;
     }
+    case LevelBuilder::Type::hermitGunsmith: {
+        pLevel = BuildHermitGunsmithLevel();
+        break;
+    }
+    case LevelBuilder::Type::mimigaVillage: {
+        pLevel = BuildMimigaVillageLevel();
+        break;
+    }
+    case LevelBuilder::Type::mimigaReservoir: {
+        pLevel = BuildMimigaReservoirLevel();
+        break;
+    }
+    case LevelBuilder::Type::mimigaShack: {
+        pLevel = BuildMimigaShackLevel();
+        break;
+    }
+    }
+
+    std::cout << pLevel << std::endl;
 
     assert(0 && "Case not handled");
     return nullptr;
@@ -109,7 +124,7 @@ Level *LevelBuilder::BuildHermitGunsmithLevel() const
     pLevel->SpawnInteractable(new GunSmithNpcInteractable(Vector2f{10.f, 6.f}));
 
     ChestInteractable *pChest{new ChestInteractable(Vector2f{14.f, 6.f})};
-    pChest->SetOpened(m_Player.IsHoldingWeapon<PolarStar>());
+    pChest->SetOpened(m_Player.IsHoldingWeapon());
     pLevel->SpawnInteractable(pChest);
 
     return pLevel;

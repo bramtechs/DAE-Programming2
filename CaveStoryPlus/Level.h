@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "structs.h"
 
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,7 @@ class Player;
 class Level final
 {
   public:
-    explicit Level(const std::string &fullTexturePath, std::string collidersPath, const std::string &displayName,
+    explicit Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
                    const Vector2f &spawnPos, MusicManager::Track track);
     ~Level();
     Level(const Level &) = delete;
@@ -78,6 +79,8 @@ class Level final
         return m_BulletManager;
     }
 
+    friend std::ostream &operator<<(std::ostream &out, const Level &level);
+
   private:
     static constexpr float m_BgTextureScale{g_TileSize / 2.f};
 
@@ -91,6 +94,7 @@ class Level final
     Texture *m_pNameTexture{};
     Texture *m_pInteractablesTexture{};
 
+    std::string m_LevelName{};
     std::string m_CollidersPath{};
     MusicManager::Track m_MusicTrack{};
     std::vector<PolygonCollider> m_Colliders{};

@@ -707,6 +707,16 @@ float utils::EaseTowards(float src, float dest, float delta)
     return src;
 }
 
+float utils::DegreesToRadians(float degs)
+{
+    return degs * 0.0174532925f;
+}
+
+float utils::RadiansToDegrees(float rads)
+{
+    return rads * 180.f / g_Pi;
+}
+
 Rectf utils::RectWithCenter(const Vector2f &pos, float width, float height)
 {
     return RectWithCenter(pos.x, pos.y, width, height);

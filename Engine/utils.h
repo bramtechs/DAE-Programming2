@@ -98,15 +98,8 @@ bool IntersectRectLine(const Rectf &r, const Vector2f &p1, const Vector2f &p2, f
 
 #pragma region MyOwnUtils
 
-constexpr float DegreesToRadians(float degs)
-{
-    return degs * 0.0174532925f;
-}
-
-constexpr float RadiansToDegrees(float rads)
-{
-    return rads * 180.f / g_Pi;
-}
+float DegreesToRadians(float degs);
+float RadiansToDegrees(float rads);
 
 float EaseTowards(float src, float dest, float delta);
 

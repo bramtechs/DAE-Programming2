@@ -86,7 +86,7 @@ This section gives a clear and detailed overview of which parts of the original 
 - [X] Boss entity with larger sprite
 - [X] Boss attack patterns (movement phases)
 - [X] Boss health display
-- [ ] Boss defeat event triggering dialog or transition
+- [x] Boss defeat event triggering dialog or transition
 - [X] Transition between cave level and Mimiga Village
 - [X] NPC entity system for characters in village
 - [X] NPC interaction trigger and dialog events
@@ -105,16 +105,13 @@ Detailed instructions on how to run your game project are in this section.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * Visual Studio 2022
 
 ### How to run the project
 
-Explain which project (version) must be run.
-* any extra steps if required 
+The game project is called CaveStoryPlus.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- HOW TO PLAY -->
@@ -124,21 +121,31 @@ Use this space to show useful examples of how a game can be played.
 Additional screenshots and demos work well in this space. 
 
 ### Controls
-* keys, .. 
-* .. 
+
+* Left and Right arrow keys to move around.
+* Down arrow to interact with NPC, objects and going through doors.
+* Z key to Jump.
+* X key to shoot and read through dialog.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CLASS STRUCTURE -->
 ## Class structure 
 
 ### Object composition 
-If you applied object composition (optional); explain where and how.
+**Player** object contains pointer to child class object of **Weapon**. 
+The **Player** class also has a field of a **DialogManager** and **PlayerGUI**.
+
+An object of **Level** class contains pointers to different Texture sheets.
+It also contains a **BulletManager** among various **std::vector**s of objects in the game.
+
+A **BossEnemy** object holds a **BarWidget** as a field or component.
 
 ### Inheritance 
-Explain where you applied inheritance (mandatory).
+All interactable things in the game inherit from the base abstract class **Interactable**:
+for example **DoorInteractable**, **GoldInteractable** and **ChestInteractable**.
+
+There is also a **DecorInteractable** class that provides shared code for its children classes (NPCs).
 
 ### ..
 
@@ -149,17 +156,39 @@ Explain where you applied inheritance (mandatory).
 ## Checklist
 
 - [x] Accept / set up github project
-- [ ] week 01 topics applied
-    - [ ] const keyword applied proactively (variables, functions,..)
-    - [ ] static keyword applied proactively (class variables, static functions,..)
-    - [ ] object composition (optional)
-- [ ] week 02 topics applied
-- [ ] week 03 topics applied
-- [ ] week 04 topics applied
-- [ ] week 05 topics applied
+- [x] week 01 topics applied
+    - [x] const keyword applied proactively (variables, functions,..)
+    - [x] static keyword applied proactively (class variables, static functions,..)
+    - [x] object composition (optional)
+- [x] week 02 topics applied
+    - [x] Use of transformations: *BossEnemy, Bullet, Camera, PolarStar*
+    - [x] Use of Manager classes: *BulletManager, TextManager, DialogManager, ...* 
+- [x] week 03 topics applied
+    - [X] Apply OO principles: Data members, Accessors, Mutators, Behavior
+    - [X] Seperate .h from implementation .cpp
+    - [X] Classes with constructors to prevent invariant states.
+- [X] week 04 topics applied
+    - [X] Use of class forwarding in headers when possible over including headers. Prevent cylic dependencies with forward declaration.
+    - [X] object composition
+    - [X] Implementation of platforms. Collision between player and platforms.
+- [x] week 05 topics applied
+    - [x] Single responsibility principle
+    - [x] Class relationships: composition, aggregation, association, inheritance
+    - [x] Delegating constructors to avoid duplicate code (see **Interactable** .cpp file)
+    - [X] Use of inheritance (see Class structure above)
 - [ ] week 06 topics applied
-- [ ] week 07 topics applied
-- [ ] week 08 topics applied
+    - [x] Polymorphism
+    - [x] C++ style casting (used static_cast)
+    - [X] Use of (pure) virtual (see **Interactable** class)
+    - [x] Camera (object space, world space, camera space)
+    - [ ] Sound
+    - [x] Music
+- [x] week 07 topics applied
+    - [x] friend keyword (see **Level** class)
+    - [x] operator overloading (see **Level** class)
+    - [x] use explicit keyword for constructors
+- [x] week 08 topics applied
+    - [x] Copy semantics, Rule of 3
 - [ ] week 09 topics applied (optional)
 - [ ] week 10 topics applied (optional)
 

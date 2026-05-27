@@ -11,12 +11,14 @@
 #include "Texture.h"
 
 #include <cassert>
+#include <iomanip>
 #include <iostream>
 
-Level::Level(const std::string &fullTexturePath, std::string collidersPath, const std::string &displayName,
+Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
              const Vector2f &spawnPos, MusicManager::Track track)
-    : m_CollidersPath(std::move(collidersPath)), m_SpawnPos(spawnPos), m_MusicTrack(track)
+    : m_CollidersPath(collidersPath), m_SpawnPos(spawnPos), m_MusicTrack(track)
 {
+    m_LevelName = displayName;
     m_pFullTexture = new Texture(fullTexturePath);
     m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});
     m_pEnemiesTexture = new Texture("enemies.png");
@@ -252,4 +254,14 @@ void Level::DrawDebug() const
             pInteractable->DrawDebug();
         }
     }
+}
+
+std::ostream &operator<<(std::ostream &out, const Level &level)
+{
+    out << "=== Level: " << std::quoted(level.m_LevelName) << " ===\n";
+    out << "Loaded " << level.m_Colliders.size() << " colliders from " << level.m_CollidersPath << '\n';
+    out << "Enemy count: " << level.m_Enemies.size() << '\n';
+    out << "Interactables count: " << level.m_Interactables.size() << '\n';
+    out << "Spawn point: " << level.m_SpawnPos;
+    return out;
 }
