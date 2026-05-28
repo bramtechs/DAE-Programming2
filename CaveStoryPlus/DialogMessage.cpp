@@ -5,6 +5,8 @@
 #include "structs.h"
 #include "utils.h"
 
+const float DialogMessage::m_SecondsPerChar{0.05f};
+
 DialogMessage::DialogMessage(std::vector<std::string> &&lines, const TextManager &textManager)
     : m_pTextManager(&textManager)
 {

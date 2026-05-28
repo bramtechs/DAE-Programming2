@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "utils.h"
 
-const float PolygonCollider::m_HandleRadius{5.f};
+const float PolygonCollider::m_HandleRadius{0.5f};
 
 PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices) : m_Vertices(std::move(vertices))
 {

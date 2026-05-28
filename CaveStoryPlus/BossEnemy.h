@@ -16,7 +16,7 @@ class BossEnemy final : public Enemy
 
     void DrawGUI(const Rectf &viewport) const override;
 
-    void StartAttacking(Player &player, Game& game);
+    void StartAttacking(Player &player, Game &game);
 
     int GetGoldDropCount() const
     {
@@ -33,13 +33,13 @@ class BossEnemy final : public Enemy
         done
     };
 
-    constexpr static int m_PixelsWidth{66};
-    constexpr static int m_PixelsHeight{45};
-    constexpr static float m_SecondsPerFrame{0.2f};
-    constexpr static float m_MovementAccel{1.35f};
-    constexpr static float m_SecondsBetweenJumps{3.f};
-    constexpr static float m_SecondsCrushing{2.f};
-    constexpr static float m_JumpForce{5.f};
+    static const int m_PixelsWidth;
+    static const int m_PixelsHeight;
+    static const float m_SecondsPerFrame;
+    static const float m_MovementAccel;
+    static const float m_SecondsBetweenJumps;
+    static const float m_SecondsCrushing;
+    static const float m_JumpForce;
     static const Rectf m_BossLabelSourceRect;
 
     bool TakeDamage(int amount) override;

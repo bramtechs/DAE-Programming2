@@ -41,5 +41,5 @@ class DialogMessage
     float m_Timer{};
     size_t m_LinesVisible{};
 
-    constexpr static float m_SecondsPerChar{0.05f};
+    static const float m_SecondsPerChar;
 };

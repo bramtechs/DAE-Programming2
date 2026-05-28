@@ -8,6 +8,13 @@
 #include <cassert>
 
 const Rectf BossEnemy::m_BossLabelSourceRect{487.f, 322.f, 58.f, 14.f};
+const int BossEnemy::m_PixelsWidth{66};
+const int BossEnemy::m_PixelsHeight{45};
+const float BossEnemy::m_SecondsPerFrame{0.2f};
+const float BossEnemy::m_MovementAccel{1.35f};
+const float BossEnemy::m_SecondsBetweenJumps{3.f};
+const float BossEnemy::m_SecondsCrushing{2.f};
+const float BossEnemy::m_JumpForce{5.f};
 
 BossEnemy::BossEnemy(const Vector2f &pos, float areaLeft, float areaRight)
     : Enemy(Vector2f{m_PixelsWidth / g_TileSize, m_PixelsHeight / g_TileSize}), m_FloorTop(pos.y), m_AreaLeft(areaLeft),

@@ -5,11 +5,11 @@
 
 #include <SDL2/SDL_ttf.h>
 
-constexpr float g_ScreenWidth{1280.f};
-constexpr float g_ScreenHeight{720.f};
-constexpr float g_TileSize{32.f};
-constexpr float g_TileCols{1280.f / 32.f};
-constexpr float g_TileRows{720.f / 32.f};
+extern const float g_ScreenWidth;
+extern const float g_ScreenHeight;
+extern const float g_TileSize;
+extern const float g_TileCols;
+extern const float g_TileRows;
 
 class PlayerGUI;
 class TextManager;

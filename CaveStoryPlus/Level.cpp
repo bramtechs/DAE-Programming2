@@ -14,6 +14,8 @@
 #include <iomanip>
 #include <iostream>
 
+const float Level::m_BgTextureScale{g_TileSize / 2.f};
+
 Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
              const Vector2f &spawnPos, MusicManager::Track track)
     : m_CollidersPath(collidersPath), m_SpawnPos(spawnPos), m_MusicTrack(track)

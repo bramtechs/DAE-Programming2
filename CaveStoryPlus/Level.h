@@ -82,7 +82,7 @@ class Level final
     friend std::ostream &operator<<(std::ostream &out, const Level &level);
 
   private:
-    static constexpr float m_BgTextureScale{g_TileSize / 2.f};
+    static const float m_BgTextureScale;
 
     void SpawnEnemyCollectibles(const Enemy &enemy, bool playerIsDamaged);
 

@@ -123,18 +123,18 @@ class Player
 
     static int GetGoldNeededForLevel(int level);
 
-    constexpr static float m_HitboxHeight{0.8f};
-    constexpr static float m_HitboxWidth{0.75f};
-    constexpr static float m_CellSize{32.f};
-    constexpr static float m_TimePerFrame{0.15f};
-    constexpr static int m_SpriteSheetCols{11};
-    constexpr static int m_SpriteSheetRows{2};
-    constexpr static int m_MaxOxygen{100};
-    constexpr static float m_FlashInterval{0.2f};
-    constexpr static float m_InvincibilityOnHitSeconds{2.f};
+    static const float m_HitboxHeight;
+    static const float m_HitboxWidth;
+    static const float m_CellSize;
+    static const float m_TimePerFrame;
+    static const int m_SpriteSheetCols;
+    static const int m_SpriteSheetRows;
+    static const int m_MaxOxygen;
+    static const float m_FlashInterval;
+    static const float m_InvincibilityOnHitSeconds;
 
     // time to hold space for maximum jump power
-    constexpr static float m_JumpWindow{0.5f};
+    static const float m_JumpWindow;
 
     Vector2f m_Position{0.f, 0.f};
     Vector2f m_Velocity{};

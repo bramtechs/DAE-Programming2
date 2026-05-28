@@ -12,6 +12,12 @@
 
 Vector2f Game::m_LastMousePos{};
 
+const float g_ScreenWidth{1280.f};
+const float g_ScreenHeight{720.f};
+const float g_TileSize{32.f};
+const float g_TileCols{1280.f / 32.f};
+const float g_TileRows{720.f / 32.f};
+
 Game::Game(const Window &window) : BaseGame(window), m_Camera(GetViewPort())
 {
     Initialize();

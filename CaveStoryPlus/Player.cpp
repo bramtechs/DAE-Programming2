@@ -14,6 +14,18 @@
 #include <cassert>
 #include <iostream>
 
+const float Player::m_HitboxHeight{0.8f};
+const float Player::m_HitboxWidth{0.75f};
+const float Player::m_CellSize{32.f};
+const float Player::m_TimePerFrame{0.15f};
+const int Player::m_SpriteSheetCols{11};
+const int Player::m_SpriteSheetRows{2};
+const int Player::m_MaxOxygen{100};
+const float Player::m_FlashInterval{0.2f};
+const float Player::m_InvincibilityOnHitSeconds{2.f};
+
+const float Player::m_JumpWindow{0.5f};
+
 Player::Player(DialogManager &dialog)
     : m_pSpriteSheet(new Texture("player.png")), m_pGUI(new PlayerGUI(*this)), m_DialogManager(dialog)
 {

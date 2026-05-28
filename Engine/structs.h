@@ -33,13 +33,8 @@ struct Rectf
 
 struct Color4f
 {
-    constexpr Color4f() : r(), g(), b(), a()
-    {
-    }
-
-    constexpr explicit Color4f(float r, float g, float b, float a) : r(r), g(g), b(b), a(a)
-    {
-    }
+    Color4f();
+    explicit Color4f(float r, float g, float b, float a);
 
     float r;
     float g;

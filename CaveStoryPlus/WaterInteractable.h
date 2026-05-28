@@ -12,6 +12,6 @@ class WaterInteractable final : public Interactable
     bool OnTouch(Game &game) override;
 
   private:
-    static constexpr float m_SecondsBetweenDrain{0.1f};
+    static const float m_SecondsBetweenDrain;
     float m_DrainTimer{};
 };

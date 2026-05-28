@@ -7,6 +7,9 @@
 #include "Vector2f.h"
 #include "utils.h"
 
+const float GoldInteractable::m_TimePerFrame{0.1f};
+const float GoldInteractable::m_Gravity{-9.81f};
+
 GoldInteractable::GoldInteractable(const Vector2f &cell, Level &level) : Interactable(cell, 0.75f), m_Level(level)
 {
     m_Velocity = Vector2f{utils::RandomFloat(-1.f, 1.f), 0.f};

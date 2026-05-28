@@ -19,8 +19,8 @@ class GoldInteractable final : public Interactable
     Rectf GetAnimationFrameSource() const;
     Circlef GetHitbox() const;
 
-    constexpr static float m_TimePerFrame{0.1f};
-    constexpr static float m_Gravity{-9.81f};
+    static const float m_TimePerFrame;
+    static const float m_Gravity;
 
     Level &m_Level;
     Vector2f m_Velocity{};

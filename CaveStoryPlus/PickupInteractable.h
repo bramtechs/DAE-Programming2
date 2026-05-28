@@ -12,8 +12,9 @@ class PickupInteractable final : public Interactable
     bool OnInteract(Game &game) override;
 
   private:
-    static constexpr float m_TimePerFrame{0.2f};
     static Rectf GetAnimationFrameSource(int frame);
+
+    static const float m_TimePerFrame;
 
     int m_CurrentFrame{};
     float m_AnimationTimer{};

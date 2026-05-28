@@ -4,6 +4,10 @@
 #include "Texture.h"
 #include "pch.h"
 
+const float JumperEnemy::m_Gravity{9.81f};
+const float JumperEnemy::m_JumpForce{8.f};
+const float JumperEnemy::m_ChargeRange{3.f};
+const float JumperEnemy::m_ChargeTime{2.f};
 const Rectf JumperEnemy::m_ChargingSourceRect{0.f, 0.f, 32.f, 32.f};
 const Rectf JumperEnemy::m_IdleSourceRect{32.f, 0.f, 32.f, 32.f};
 const Rectf JumperEnemy::m_JumpingSourceRect{64.f, 0.f, 32.f, 32.f};

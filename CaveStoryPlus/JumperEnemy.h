@@ -40,10 +40,10 @@ class JumperEnemy final : public Enemy
 
     Rectf GetSourceRect() const;
 
-    static constexpr float m_Gravity{9.81f};
-    static constexpr float m_JumpForce{8.f};
-    static constexpr float m_ChargeRange{3.f};
-    static constexpr float m_ChargeTime{2.f};
+    static const float m_Gravity;
+    static const float m_JumpForce;
+    static const float m_ChargeRange;
+    static const float m_ChargeTime;
     static const Rectf m_ChargingSourceRect;
     static const Rectf m_IdleSourceRect;
     static const Rectf m_JumpingSourceRect;

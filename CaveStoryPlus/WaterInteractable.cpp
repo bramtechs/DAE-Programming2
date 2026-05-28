@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "Player.h"
 
+const float WaterInteractable::m_SecondsBetweenDrain{0.1f};
+
 WaterInteractable::WaterInteractable(const Rectf &region) : Interactable(region)
 {
 }
