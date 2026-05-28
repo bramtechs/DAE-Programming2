@@ -375,7 +375,11 @@ void Player::AddGold(int amount)
 
 void Player::AddHealth(int amount)
 {
-    m_Health = std::min(amount + 1, m_MaxHealth);
+    m_Health += amount;
+    if (m_Health > m_MaxHealth)
+    {
+        m_Health = m_MaxHealth;
+    }
 }
 
 int Player::GetGoldNeededForLevel(int level)
