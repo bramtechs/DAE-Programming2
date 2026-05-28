@@ -10,6 +10,7 @@
 #include "PolarStar.h"
 #include "Level.h"
 #include "MimigaVillageNpc.h"
+#include "DoorMimicEnemy.h"
 #include "ShackNpcInteractable.h"
 #include "PickupInteractable.h"
 #include "LifeCapsuleInteractable.h"
@@ -83,6 +84,8 @@ Level *LevelBuilder::BuildCaveLevel() const
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 35.f}));
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 34.f}));
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 33.f}));
+
+    pLevel->SpawnEnemy(new DoorMimicEnemy(Vector2f{55.5f, 35.6f}));
 
     // interactables
 
