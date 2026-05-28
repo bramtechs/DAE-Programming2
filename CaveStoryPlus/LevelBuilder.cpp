@@ -51,12 +51,13 @@ Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
         pLevel = BuildMimigaShackLevel();
         break;
     }
+    default:
+        assert(0 && "Case not implemented");
+        break;
     }
 
-    std::cout << pLevel << std::endl;
-
-    assert(0 && "Case not handled");
-    return nullptr;
+    std::cout << *pLevel << std::endl;
+    return pLevel;
 }
 
 Level *LevelBuilder::BuildCaveLevel() const

@@ -189,8 +189,13 @@ There is also a **DecorInteractable** class that provides shared code for its ch
     - [x] use explicit keyword for constructors
 - [x] week 08 topics applied
     - [x] Copy semantics, Rule of 3
-- [ ] week 09 topics applied (optional)
-- [ ] week 10 topics applied (optional)
+- [x] week 09 topics applied
+    - [x] prevent object slicing
+    - [x] use lvalue reference when needed
+- [x] week 10 topics applied
+    - [x] Move semantics, Rule of 5 
+- [x] week 11 topics applied (optional)
+    - [x] Streams 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -212,6 +217,7 @@ Use this space to list resources you find helpful and would like to give credit 
 * [Cave Story Wiki: Textures of the entire levels](https://cavestory.fandom.com/wiki/Mimiga_Village)
 * ["My favourite animation trick: exponential smoothing"](https://lisyarus.github.io/blog/posts/exponential-smoothing.html)
 * [Cave Story Font as TrueType font](https://fontlibrary.org/en/font/cave-story)
+* [std::getline](https://en.cppreference.com/cpp/string/basic_string/getline)
 * All other game assets are ripped from CaveStory+ and CaveStory.
 * * ..
 

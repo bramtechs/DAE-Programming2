@@ -11,11 +11,11 @@ ColliderReader::ColliderReader(const std::string &colliderFilePath) : m_FilePath
 size_t ColliderReader::ReadAllInto(std::vector<PolygonCollider> &colliders)
 {
     const size_t startCount{colliders.size()};
-    try
+
+    std::ifstream stream{m_FilePath};
+    if (stream)
     {
-        std::ifstream stream{};
-        stream.exceptions(std::ios::badbit); // throw on IO errors
-        stream.open(m_FilePath);
+        // https://en.cppreference.com/cpp/string/basic_string/getline
 
         PolygonCollider next{};
         for (std::string line; std::getline(stream, line);)
@@ -28,9 +28,9 @@ size_t ColliderReader::ReadAllInto(std::vector<PolygonCollider> &colliders)
             }
         }
     }
-    catch (const std::exception &ex)
+    else
     {
-        std::cerr << "Could not read (some) colliders from: " << m_FilePath << "\n" << ex.what() << std::endl;
+        std::cerr << "Could not read colliders from: " << m_FilePath << std::endl;
     }
 
     return colliders.size() - startCount;
