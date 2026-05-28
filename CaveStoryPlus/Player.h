@@ -18,6 +18,11 @@ class Player
     explicit Player(DialogManager &dialogs);
     ~Player();
 
+    Player(const Player &) = delete;
+    Player &operator=(const Player &) = delete;
+    Player(Player &&) = delete;
+    Player &operator=(Player &&) = delete;
+
     void Update(float delta, Level &level);
     void Draw() const;
     void DrawGUI(const Rectf &viewport) const;

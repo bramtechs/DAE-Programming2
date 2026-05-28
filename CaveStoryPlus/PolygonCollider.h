@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <vector>
 
-class PolygonCollider
+class PolygonCollider final
 {
   public:
     PolygonCollider() = default;
@@ -39,13 +39,10 @@ class PolygonCollider
 
     bool IsPointAbove(const Vector2f &point) const;
 
-    const std::vector<Vector2f> &GetPolygon() const
-    {
-        return m_Vertices;
-    }
+    const std::vector<Vector2f> &GetPolygon() const;
 
   private:
-    static constexpr float m_HandleRadius{0.5f};
+    static const float m_HandleRadius;
 
     Rectf GetHandleOfPoint(int pointIndex) const;
 

@@ -448,38 +448,16 @@ bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
                                  const std::vector<PolygonCollider> &colliders, const Vector2f &collisionAxis,
                                  utils::HitInfo &outHitInfo) const
 {
-    bool hasHit{};
-
-    for (int i{}; i < colliders.size(); ++i)
+    for (const PolygonCollider &collider : colliders)
     {
-        const std::vector<Vector2f> &vertices{colliders[i].GetPolygon()};
-        for (int idx{}; idx < vertices.size(); ++idx)
+        const std::vector<Vector2f> &vertices{collider.GetPolygon()};
+        if (utils::Raycast(vertices, start, end, outHitInfo))
         {
-            const Vector2f q1{vertices[idx]};
-            const Vector2f q2{vertices[(idx + 1) % vertices.size()]};
-
-            float lambda1{};
-            float lambda2{};
-            if (utils::IntersectLineSegments(start, end, q1, q2, lambda1, lambda2) && lambda1 > 0.f && lambda1 <= 1.f &&
-                lambda2 > 0.f && lambda2 <= 1.f)
-            {
-                utils::HitInfo hit{};
-                hit.lambda = lambda1;
-                hit.intersectPoint =
-                    Vector2f{start.x + ((end.x - start.x) * lambda1), start.y + ((end.y - start.y) * lambda1)};
-                hit.normal = Vector2f{q2 - q1}.Orthogonal().Normalized();
-
-                if (std::abs(hit.normal.DotProduct(collisionAxis)) > 0.5f &&
-                    (!hasHit || hit.lambda < outHitInfo.lambda))
-                {
-                    hasHit = true;
-                    outHitInfo = hit;
-                }
-            }
+            return true;
         }
     }
 
-    return hasHit;
+    return false;
 }
 
 bool Player::CheckIfHitsLeftWall(const Level &level, float movementX, utils::HitInfo &outHitInfo) const

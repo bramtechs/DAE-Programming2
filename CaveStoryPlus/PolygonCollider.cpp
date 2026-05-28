@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "utils.h"
 
+const float PolygonCollider::m_HandleRadius{5.f};
+
 PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices) : m_Vertices(std::move(vertices))
 {
 }
@@ -160,4 +162,9 @@ bool PolygonCollider::IsPointAbove(const Vector2f &point) const
     }
 
     return true;
+}
+
+const std::vector<Vector2f> &PolygonCollider::GetPolygon() const
+{
+    return m_Vertices;
 }
