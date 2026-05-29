@@ -1,5 +1,6 @@
 #include "PolarStar.h"
 #include "BulletManager.h"
+#include "SoundManager.h"
 #include "Texture.h"
 #include "pch.h"
 #include "utils.h"
@@ -31,10 +32,12 @@ PolarStar &PolarStar::operator=(PolarStar &&o) noexcept
     return *this;
 }
 
-void PolarStar::Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager)
+void PolarStar::Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager,
+                      const SoundManager &sound)
 {
     const float radians{utils::DegreesToRadians(static_cast<float>(orientation))};
     manager.SpawnPolarStarBullet(handPos, radians);
+    sound.PlaySound(SoundManager::Effect::polar_star_shoot);
 }
 
 void PolarStar::Draw(const Vector2f &handPos, Orientation orientation) const

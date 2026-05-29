@@ -2,6 +2,7 @@
 
 class Player;
 class Level;
+class Game;
 
 class LevelBuilder
 {
@@ -15,7 +16,7 @@ class LevelBuilder
         mimigaShack,
     };
 
-    explicit LevelBuilder(const Player &player);
+    explicit LevelBuilder(const Player &player, const Game& game);
 
     Level *BuildLevel(Type type) const;
 
@@ -27,4 +28,5 @@ class LevelBuilder
     Level *BuildMimigaShackLevel() const;
 
     const Player &m_Player;
+    const Game &m_Game;
 };

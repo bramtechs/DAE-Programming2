@@ -15,7 +15,7 @@ class PolarStar final : public Weapon
     PolarStar(PolarStar &&) noexcept;
     PolarStar &operator=(PolarStar &&) noexcept;
 
-    void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager) override;
+    void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager, const SoundManager &sound) override;
     void Draw(const Vector2f &handPos, Orientation orientation) const override;
 
     float GetShootIntervalSeconds() const override

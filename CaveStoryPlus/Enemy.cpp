@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Texture.h"
+#include "SoundManager.h"
 #include "Player.h"
 #include "pch.h"
 #include "utils.h"
@@ -11,6 +12,11 @@ Enemy::Enemy(const Vector2f &size) : m_Size(size)
 bool Enemy::TakeDamage(int damage)
 {
     m_Health -= damage;
+    if (m_pSoundManager)
+    {
+        m_pSoundManager->PlaySound(SoundManager::Effect::enemy_hurt);
+    }
+
     return m_Health <= 0;
 }
 
@@ -47,6 +53,11 @@ Circlef Enemy::GetCircleRegion() const
 void Enemy::SetSpriteSheetTexture(const Texture &texture)
 {
     m_pSpriteSheetTexture = &texture;
+}
+
+void Enemy::SetSoundManager(const SoundManager *pSoundManager)
+{
+    m_pSoundManager = pSoundManager;
 }
 
 void Enemy::InteractWithPlayer(Player &player)

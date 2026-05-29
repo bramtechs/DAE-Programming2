@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "DialogManager.h"
 #include "Editor.h"
+#include "SoundManager.h"
 #include "Game.h"
 #include "Level.h"
 #include "LevelBuilder.h"
@@ -32,8 +33,9 @@ void Game::Initialize()
 {
     m_pTextManager = new TextManager();
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
-    m_pPlayer = new Player(*m_pDialogManager);
-    SwitchLevel(LevelBuilder(*m_pPlayer).BuildLevel(LevelBuilder::Type::cave));
+    m_pSoundManager = new SoundManager();
+    m_pPlayer = new Player(*m_pDialogManager, *m_pSoundManager);
+    SwitchLevel(LevelBuilder(*m_pPlayer, *this).BuildLevel(LevelBuilder::Type::cave));
 }
 
 void Game::Cleanup()
@@ -41,6 +43,7 @@ void Game::Cleanup()
     delete m_pEditor;
     delete m_pActiveLevel;
     delete m_pNextLevel;
+    delete m_pSoundManager;
     delete m_pDialogManager;
     delete m_pTextManager;
     delete m_pPlayer;
@@ -118,8 +121,9 @@ void Game::Draw() const
 void Game::Restart()
 {
     delete m_pPlayer;
-    m_pPlayer = new Player(*m_pDialogManager);
-    SwitchLevel(LevelBuilder(*m_pPlayer).BuildLevel(LevelBuilder::Type::cave));
+    assert(m_pSoundManager);
+    m_pPlayer = new Player(*m_pDialogManager, *m_pSoundManager);
+    SwitchLevel(LevelBuilder(*m_pPlayer, *this).BuildLevel(LevelBuilder::Type::cave));
 }
 
 void Game::SwitchLevel(Level *pLevel)

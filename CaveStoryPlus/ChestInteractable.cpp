@@ -1,5 +1,6 @@
 #include "ChestInteractable.h"
 #include "DialogManager.h"
+#include "SoundManager.h"
 #include "Game.h"
 #include "Player.h"
 #include "PolarStar.h"
@@ -37,8 +38,10 @@ bool ChestInteractable::OnInteract(Game &game)
 {
     if (!m_IsOpened)
     {
-        if (Player * pPlayer{game.GetPlayer()})
+        if (Player* pPlayer{game.GetPlayer()})
         {
+            game.GetSoundManager()->PlaySound(SoundManager::Effect::chestopen);
+
             DialogManager &dialogs{*game.GetDialogManager()};
             dialogs.QueueMessage({"Opened the treasure chest."});
             dialogs.QueueMessage({"Obtained the Polar Star."});

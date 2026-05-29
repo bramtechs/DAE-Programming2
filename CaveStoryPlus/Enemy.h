@@ -2,6 +2,7 @@
 #include "structs.h"
 
 class Player;
+class SoundManager;
 class Texture;
 class Enemy
 {
@@ -37,6 +38,7 @@ class Enemy
     }
 
     void SetSpriteSheetTexture(const Texture &texture);
+    void SetSoundManager(const SoundManager *pSoundManager);
 
     // returns true if died
     virtual bool TakeDamage(int damage);
@@ -81,6 +83,7 @@ class Enemy
     Vector2f m_Position{};
     Vector2f m_Size{};
     const Texture *m_pSpriteSheetTexture{};
+    const SoundManager *m_pSoundManager{};
     int m_Health{3};
     int m_BodyDamage{1};
 };

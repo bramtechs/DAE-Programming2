@@ -14,6 +14,7 @@ extern const float g_TileRows;
 class PlayerGUI;
 class TextManager;
 class DialogManager;
+class SoundManager;
 class Player;
 class Level;
 class Texture;
@@ -73,6 +74,11 @@ class Game final : public BaseGame
         return m_MusicManager;
     }
 
+    SoundManager *GetSoundManager() const
+    {
+        return m_pSoundManager;
+    }
+
   private:
     static Vector2f m_LastMousePos;
 
@@ -83,6 +89,7 @@ class Game final : public BaseGame
     Level *m_pNextLevel{};
     Player *m_pPlayer{};
     Editor *m_pEditor{};
+    SoundManager *m_pSoundManager{};
     MusicManager m_MusicManager{};
 
     // FUNCTIONS

@@ -1,4 +1,5 @@
 #include "DoorInteractable.h"
+#include "SoundManager.h"
 #include "Game.h"
 #include "Level.h"
 #include "pch.h"
@@ -26,8 +27,10 @@ bool DoorInteractable::OnInteract(Game &game)
 {
     if (const Player * pPlayer{game.GetPlayer()})
     {
-        Level *pLevel{LevelBuilder(*pPlayer).BuildLevel(m_LevelType)};
+        game.GetSoundManager()->PlaySound(SoundManager::Effect::door);
+        Level *pLevel{LevelBuilder(*pPlayer, game).BuildLevel(m_LevelType)};
         game.SwitchLevel(pLevel);
+
         if (m_HasCustomSpawn)
         {
             pLevel->SetSpawnPos(m_CustomSpawn);

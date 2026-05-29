@@ -59,6 +59,7 @@ void Level::SpawnEnemy(Enemy *pEnemy)
 {
     assert(pEnemy && "Passing a nullptr as enemy");
     pEnemy->SetSpriteSheetTexture(*m_pEnemiesTexture);
+    pEnemy->SetSoundManager(m_pSoundManager);
     m_Enemies.emplace_back(pEnemy);
 }
 
@@ -109,6 +110,11 @@ void Level::InteractWithInteractables(const Player &player, Game &game, bool hol
 void Level::SetSpawnPos(const Vector2f &pos)
 {
     m_SpawnPos = pos;
+}
+
+void Level::SetSoundManager(const SoundManager *pSoundManager)
+{
+    m_pSoundManager = pSoundManager;
 }
 
 Rectf Level::GetBounds() const

@@ -15,7 +15,7 @@ class BulletManager;
 class Player
 {
   public:
-    explicit Player(DialogManager &dialogs);
+    explicit Player(DialogManager &dialogManager, SoundManager &soundManager);
     ~Player();
 
     Player(const Player &) = delete;
@@ -99,7 +99,7 @@ class Player
         jumping,
         falling,
         sliding,
-        usingdoor,
+        interacting,
     };
 
     void UpdateAnimationFrames(float delta);
@@ -145,6 +145,7 @@ class Player
     Weapon *m_pHeldWeapon{};
     PlayerGUI *m_pGUI{};
     DialogManager &m_DialogManager;
+    SoundManager &m_SoundManager;
 
     float m_HorizontalMoveForce{24.f};
     float m_MaxHorizontalVelocity{4.f};

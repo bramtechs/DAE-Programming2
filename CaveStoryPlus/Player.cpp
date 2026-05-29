@@ -7,6 +7,7 @@
 #include "SDL_keyboard.h"
 #include "Texture.h"
 #include "Weapon.h"
+#include "SoundManager.h"
 #include "PlayerGUI.h"
 #include "pch.h"
 #include "utils.h"
@@ -26,8 +27,9 @@ const float Player::m_InvincibilityOnHitSeconds{2.f};
 
 const float Player::m_JumpWindow{0.5f};
 
-Player::Player(DialogManager &dialog)
-    : m_pSpriteSheet(new Texture("player.png")), m_pGUI(new PlayerGUI(*this)), m_DialogManager(dialog)
+Player::Player(DialogManager &dialogManager, SoundManager &soundManager)
+    : m_pSpriteSheet(new Texture("player.png")), m_pGUI(new PlayerGUI(*this)), m_DialogManager(dialogManager),
+      m_SoundManager(soundManager)
 {
 }
 
@@ -180,7 +182,8 @@ void Player::UpdateShooting(float delta, Level &level)
     {
         if (m_pHeldWeapon && m_LastShootTimer > m_pHeldWeapon->GetShootIntervalSeconds())
         {
-            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation, level.GetBulletManager());
+            m_pHeldWeapon->Shoot(GetHandPosition(), m_WeaponOrientation, level.GetBulletManager(),
+                                 level.GetSoundManager());
             m_LastShootTimer = 0.f;
         }
     }
@@ -370,6 +373,7 @@ void Player::AddGold(int amount)
     {
         ++m_Level;
         m_pGUI->OnLevelUp();
+        m_SoundManager.PlaySound(SoundManager::Effect::levelup);
     }
 }
 
@@ -434,7 +438,7 @@ void Player::UpdateAnimationFrames(float delta)
         m_CurrentAnimationFrame = 8;
         break;
     }
-    case AnimState::usingdoor: {
+    case AnimState::interacting: {
         m_CurrentAnimationFrame = 7;
         break;
     }

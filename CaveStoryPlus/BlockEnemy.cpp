@@ -13,6 +13,12 @@ void BlockEnemy::InteractWithPlayer(Player &player)
 {
 }
 
+bool BlockEnemy::TakeDamage(int damage)
+{
+    SetHealth(GetHealth() - damage);
+    return GetHealth() <= 0;
+}
+
 void BlockEnemy::Update(float delta)
 {
 }

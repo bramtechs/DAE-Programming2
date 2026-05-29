@@ -5,10 +5,12 @@
 #include "structs.h"
 
 #include <ostream>
+#include <cassert>
 #include <string>
 #include <vector>
 
 class Interactable;
+class SoundManager;
 class Game;
 class Editor;
 class Camera;
@@ -45,6 +47,8 @@ class Level final
 
     void SetSpawnPos(const Vector2f &pos);
 
+    void SetSoundManager(const SoundManager *pSoundManager);
+
     Rectf GetBounds() const;
 
     const std::vector<PolygonCollider> GetSolidEnemyColliders() const;
@@ -79,6 +83,12 @@ class Level final
         return m_BulletManager;
     }
 
+    const SoundManager &GetSoundManager() const
+    {
+        assert(m_pSoundManager);
+        return *m_pSoundManager;
+    }
+
     friend std::ostream &operator<<(std::ostream &out, const Level &level);
 
   private:
@@ -100,6 +110,7 @@ class Level final
     std::vector<PolygonCollider> m_Colliders{};
     std::vector<Enemy *> m_Enemies{};
     std::vector<Interactable *> m_Interactables{};
+    const SoundManager *m_pSoundManager{};
     BulletManager m_BulletManager{};
     Vector2f m_CursorPos{};
     Vector2f m_SpawnPos{};

@@ -8,6 +8,8 @@ class BlockEnemy final : public Enemy
 
     void InteractWithPlayer(Player &player) override;
 
+    bool TakeDamage(int damage) override;
+
     void Update(float delta) override;
     void Draw() const override;
 
