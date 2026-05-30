@@ -187,17 +187,18 @@ void Level::Update(float delta, Player &player)
 void Level::SpawnEnemyCollectibles(const Enemy &enemy, bool playerIsDamaged)
 {
     const int enemyGoldDropCount{enemy.GetGoldDropCount()};
+    const Vector2f dropTile{enemy.GetCenter().Floor()};
 
     // assume enemies that don't drop gold can't drop heart (like BlockEnemy)
     if (playerIsDamaged && enemyGoldDropCount > 0 && rand() % 100 < 50)
     {
-        SpawnInteractable(new HeartInteractable(enemy.GetCenter()));
+        SpawnInteractable(new HeartInteractable(dropTile));
         return;
     }
 
     for (int i{}; i < enemyGoldDropCount; ++i)
     {
-        SpawnInteractable(new GoldInteractable(enemy.GetCenter(), *this));
+        SpawnInteractable(new GoldInteractable(dropTile, *this));
     }
 }
 
