@@ -51,7 +51,7 @@ class Level final
 
     Rectf GetBounds() const;
 
-    const std::vector<PolygonCollider> GetSolidEnemyColliders() const;
+    const std::vector<PolygonCollider> &GetSolidEnemyColliders() const;
 
     const std::vector<PolygonCollider> &GetColliders() const
     {

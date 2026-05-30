@@ -124,20 +124,20 @@ Rectf Level::GetBounds() const
     return Rectf{0.f, 0.f, levelWidth, levelHeight};
 }
 
-const std::vector<PolygonCollider> Level::GetSolidEnemyColliders() const
+const std::vector<PolygonCollider> &Level::GetSolidEnemyColliders() const
 {
-    static std::vector<PolygonCollider> s_Colliders{};
+    static std::vector<PolygonCollider> colliders{};
+    colliders.clear();
 
-    s_Colliders.clear();
     for (const Enemy *pEnemy : m_Enemies)
     {
         if (pEnemy && pEnemy->IsSolid())
         {
-            s_Colliders.emplace_back(pEnemy->GetRegion());
+            colliders.emplace_back(pEnemy->GetRegion());
         }
     }
 
-    return s_Colliders;
+    return colliders;
 }
 
 void Level::Update(float delta, Player &player)
@@ -187,14 +187,16 @@ void Level::Update(float delta, Player &player)
 
 void Level::SpawnEnemyCollectibles(const Enemy &enemy, bool playerIsDamaged)
 {
-    if (playerIsDamaged && rand() % 100 < 50)
+    const int enemyGoldDropCount{enemy.GetGoldDropCount()};
+
+    // assume enemies that don't drop gold can't drop heart (like BlockEnemy)
+    if (playerIsDamaged && enemyGoldDropCount > 0 && rand() % 100 < 50)
     {
         SpawnInteractable(new HeartInteractable(enemy.GetCenter()));
         return;
     }
 
-    // when killed the enemy
-    for (int i{}; i < enemy.GetGoldDropCount(); ++i)
+    for (int i{}; i < enemyGoldDropCount; ++i)
     {
         SpawnInteractable(new GoldInteractable(enemy.GetCenter(), *this));
     }

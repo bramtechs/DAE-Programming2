@@ -35,7 +35,7 @@ class Editor
     void DrawTileGrid() const;
     void DrawColliders() const;
 
-    const MultiLineLabel m_HelpLabel;
+    MultiLineLabel m_HelpLabel;
     float m_GridScale{1.f};
     Vector2f m_CursorPos{};
     Level *m_pLevel{};
