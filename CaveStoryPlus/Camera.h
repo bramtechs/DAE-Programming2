@@ -21,8 +21,8 @@ class Camera
     Rectf GetViewPort() const;
 
   private:
+    const Rectf m_ViewPort;
+    const float m_Zoom;
+    const float m_MoveSpeed;
     Vector2f m_Center;
-    Rectf m_ViewPort;
-    float m_Zoom;
-    float m_MoveSpeed;
 };

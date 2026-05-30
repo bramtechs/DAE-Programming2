@@ -28,6 +28,6 @@ class BulletManager final
     void SpawnPolarStarBullet(const Vector2f &pos, float shootAngle);
 
   private:
-    Texture *m_pTexture;
+    const Texture *m_pTexture;
     std::vector<Bullet> m_Bullets;
 };

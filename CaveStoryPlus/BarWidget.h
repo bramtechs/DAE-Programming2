@@ -12,7 +12,7 @@ class BarWidget
     void Draw(const Rectf &region) const;
 
   private:
-    Color4f m_BgColor{73.f / 255.f, 38.f / 255.f, 1.f / 255.f, 1.f};
-    Color4f m_FgColor{254.f / 255.f, 254.f / 255.f, 92.f / 255.f, 1.f};
+    const Color4f m_BgColor;
+    const Color4f m_FgColor;
     float m_Progress{};
 };

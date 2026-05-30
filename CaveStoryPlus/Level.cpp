@@ -18,9 +18,8 @@ const float Level::m_BgTextureScale{g_TileSize / 2.f};
 
 Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
              const Vector2f &spawnPos, MusicManager::Track track)
-    : m_CollidersPath(collidersPath), m_SpawnPos(spawnPos), m_MusicTrack(track)
+    : m_LevelName(displayName), m_CollidersPath(collidersPath), m_MusicTrack(track), m_SpawnPos(spawnPos)
 {
-    m_LevelName = displayName;
     m_pFullTexture = new Texture(fullTexturePath);
     m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});
     m_pEnemiesTexture = new Texture("enemies.png");

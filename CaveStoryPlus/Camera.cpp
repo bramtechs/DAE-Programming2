@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-Camera::Camera(const Rectf &viewPort) : m_Center{}, m_ViewPort{viewPort}, m_Zoom{2.f}, m_MoveSpeed{10.f}
+Camera::Camera(const Rectf &viewPort) : m_ViewPort{viewPort}, m_Zoom{2.f}, m_MoveSpeed{10.f}, m_Center{}
 {
 }
 
@@ -68,7 +68,7 @@ void Camera::ClampInside(const Rectf &clampBounds)
     const float tileRowsInViewport{m_ViewPort.height / combinedZoom};
 
     const Rectf shrunkBounds{
-        clampBounds.left + tileColsInViewport * 0.5f, 
+        clampBounds.left + tileColsInViewport * 0.5f,
         clampBounds.bottom + tileRowsInViewport * 0.5f,
         std::max(0.f, clampBounds.width - tileColsInViewport),
         std::max(0.f, clampBounds.height - tileRowsInViewport),

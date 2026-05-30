@@ -81,7 +81,7 @@ class Enemy
     void DealBodyDamage(Player &player);
 
     Vector2f m_Position{};
-    Vector2f m_Size{};
+    const Vector2f m_Size{};
     const Texture *m_pSpriteSheetTexture{};
     const SoundManager *m_pSoundManager{};
     int m_Health{3};

@@ -99,22 +99,23 @@ class Level final
     void DrawTileGrid() const;
     void DrawColliders() const;
 
+    const std::string m_LevelName;
+    const std::string m_CollidersPath;
+    const MusicManager::Track m_MusicTrack;
+
     Texture *m_pFullTexture{};
     Texture *m_pEnemiesTexture{};
     Texture *m_pNameTexture{};
     Texture *m_pInteractablesTexture{};
+    Vector2f m_SpawnPos{};
+    int m_LevelCols{};
+    int m_LevelRows{};
 
-    std::string m_LevelName{};
-    std::string m_CollidersPath{};
-    MusicManager::Track m_MusicTrack{};
     std::vector<PolygonCollider> m_Colliders{};
     std::vector<Enemy *> m_Enemies{};
     std::vector<Interactable *> m_Interactables{};
     const SoundManager *m_pSoundManager{};
     BulletManager m_BulletManager{};
     Vector2f m_CursorPos{};
-    Vector2f m_SpawnPos{};
     float m_NameShownTimer{2.f};
-    int m_LevelCols{};
-    int m_LevelRows{};
 };

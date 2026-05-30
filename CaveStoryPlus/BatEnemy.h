@@ -29,7 +29,7 @@ class BatEnemy final : public Enemy
 
     float MeasureTotalDistance() const;
 
-    std::vector<Vector2f> m_Waypoints{};
+    const std::vector<Vector2f> m_Waypoints{};
     float m_TimeElapsed{};
     bool m_LookingRight{};
     float m_MoveSpeed{1.25f};

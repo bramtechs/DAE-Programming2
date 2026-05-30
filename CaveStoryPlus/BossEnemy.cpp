@@ -156,8 +156,8 @@ void BossEnemy::DrawGUI(const Rectf &viewport) const
 void BossEnemy::StartAttacking(Player &player, Game &game)
 {
     m_pGame = &game;
-    m_State = State::moving;
     m_pPlayer = &player;
+    m_State = State::moving;
 }
 
 bool BossEnemy::TakeDamage(int amount)
