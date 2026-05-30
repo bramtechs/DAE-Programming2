@@ -29,9 +29,9 @@ void Editor::Update(Camera &camera)
     mouseY = static_cast<int>(camera.GetViewPort().height) - mouseY;
     m_CursorPos = camera.ScreenToWorldPos(Vector2f{static_cast<float>(mouseX), static_cast<float>(mouseY)});
 
-    char pText[64];
-	std::snprintf(pText, sizeof(pText), "%dx%d", static_cast<int>(m_CursorPos.x), static_cast<int>(m_CursorPos.y));
-    SDL_SetWindowTitle(SDL_GL_GetCurrentWindow(), pText);
+    const std::string title{std::to_string(static_cast<int>(m_CursorPos.x)) + "x" +
+                            std::to_string(static_cast<int>(m_CursorPos.y))};
+    SDL_SetWindowTitle(SDL_GL_GetCurrentWindow(), title.c_str());
 
     std::vector<PolygonCollider> &colliders{m_pLevel->GetColliders()};
     for (int i{}; i < colliders.size(); ++i)

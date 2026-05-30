@@ -49,8 +49,7 @@ void NumberLabel::Draw(const Rectf &firstDigitRegion, bool drawPositiveSign) con
 {
     Rectf region{utils::CalcCoverRegion(firstDigitRegion, m_FirstFrameSource)};
 
-    char pText[32];
-    std::snprintf(pText, sizeof(pText), "%d", m_Value);
+    const std::string text{std::to_string(m_Value)};
     bool isPositive{true};
 
     if (drawPositiveSign && m_Value < 0)
@@ -59,16 +58,16 @@ void NumberLabel::Draw(const Rectf &firstDigitRegion, bool drawPositiveSign) con
         region.left += region.width;
     }
 
-    for (int i{}; i < std::strlen(pText); ++i)
+    for (int i{}; i < text.size(); ++i)
     {
-        if (pText[i] == '-')
+        if (text[i] == '-')
         {
             isPositive = false;
             m_pSpriteSheet->Draw(region, GetSignSource(false));
         }
         else
         {
-            const int digit{static_cast<int>(pText[i] - '0')};
+            const int digit{static_cast<int>(text[i] - '0')};
             m_pSpriteSheet->Draw(region, GetDigitSource(digit, isPositive));
         }
 

@@ -24,7 +24,7 @@ class BossEnemy final : public Enemy
     }
 
   private:
-    enum class State : std::uint8_t
+    enum class State
     {
         talking,
         moving,
