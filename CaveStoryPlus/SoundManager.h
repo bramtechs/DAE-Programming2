@@ -22,21 +22,28 @@ class SoundManager final
     };
 
     SoundManager();
+    ~SoundManager();
+
+    SoundManager(const SoundManager &) = delete;
+    SoundManager &operator=(const SoundManager &) = delete;
+
+    SoundManager(SoundManager &&) = delete;
+    SoundManager &operator=(SoundManager &&) = delete;
 
     void PlaySound(Effect effect, int loops = 0) const;
 
   private:
-    const SoundEffect m_ChestOpenSfx;
-    const SoundEffect m_DoorSfx;
-    const SoundEffect m_SplashSfx;
-    const SoundEffect m_PlayerHurtSfx;
-    const SoundEffect m_PlayerJumpSfx;
-    const SoundEffect m_CritterJumpSfx;
-    const SoundEffect m_GetItemSfx;
-    const SoundEffect m_GoldPickupSfx;
-    const SoundEffect m_EnemyHurtSfx;
-    const SoundEffect m_LevelupSfx;
-    const SoundEffect m_PolarStarShootSfx;
-    const SoundEffect m_HealthRefillSfx;
-    const SoundEffect m_WalkSfx;
+    const SoundEffect *m_pChestOpenSfx;
+    const SoundEffect *m_pDoorSfx;
+    const SoundEffect *m_pSplashSfx;
+    const SoundEffect *m_pPlayerHurtSfx;
+    const SoundEffect *m_pPlayerJumpSfx;
+    const SoundEffect *m_pCritterJumpSfx;
+    const SoundEffect *m_pGetItemSfx;
+    const SoundEffect *m_pGoldPickupSfx;
+    const SoundEffect *m_pEnemyHurtSfx;
+    const SoundEffect *m_pLevelupSfx;
+    const SoundEffect *m_pPolarStarShootSfx;
+    const SoundEffect *m_pHealthRefillSfx;
+    const SoundEffect *m_pWalkSfx;
 };
