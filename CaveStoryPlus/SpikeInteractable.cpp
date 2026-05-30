@@ -19,7 +19,8 @@ void SpikeInteractable::Draw() const
 
 bool SpikeInteractable::OnTouch(Game &game)
 {
-    if (Player *pPlayer = game.GetPlayer())
+    Player *pPlayer{game.GetPlayer()};
+    if (pPlayer)
     {
         pPlayer->DealDamage(2);
     }

@@ -25,7 +25,8 @@ void DoorInteractable::Draw() const
 
 bool DoorInteractable::OnInteract(Game &game)
 {
-    if (const Player * pPlayer{game.GetPlayer()})
+    const Player *pPlayer{game.GetPlayer()};
+    if (pPlayer)
     {
         game.GetSoundManager()->PlaySound(SoundManager::Effect::door);
         Level *pLevel{LevelBuilder(*pPlayer, game).BuildLevel(m_LevelType)};

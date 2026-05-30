@@ -38,7 +38,8 @@ bool ChestInteractable::OnInteract(Game &game)
 {
     if (!m_IsOpened)
     {
-        if (Player* pPlayer{game.GetPlayer()})
+        Player *pPlayer{game.GetPlayer()};
+        if (pPlayer)
         {
             game.GetSoundManager()->PlaySound(SoundManager::Effect::chest_open);
 
