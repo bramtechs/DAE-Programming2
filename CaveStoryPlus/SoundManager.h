@@ -17,6 +17,7 @@ class SoundManager final
         gold_pickup,
         level_up,
         polar_star_shoot,
+        health_refill,
         walk
     };
 
@@ -36,5 +37,6 @@ class SoundManager final
     const SoundEffect m_EnemyHurtSfx;
     const SoundEffect m_LevelupSfx;
     const SoundEffect m_PolarStarShootSfx;
+    const SoundEffect m_HealthRefillSfx;
     const SoundEffect m_WalkSfx;
 };

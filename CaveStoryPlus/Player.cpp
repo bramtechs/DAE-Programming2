@@ -405,6 +405,7 @@ void Player::AddGold(int amount)
 void Player::AddHealth(int amount)
 {
     m_Health += amount;
+    m_SoundManager.PlaySound(SoundManager::Effect::health_refill);
     if (m_Health > m_MaxHealth)
     {
         m_Health = m_MaxHealth;
@@ -425,7 +426,7 @@ int Player::GetGoldNeededForLevel(int level)
 void Player::AddMaxHealth(int amount)
 {
     m_MaxHealth += amount;
-    m_Health += amount;
+    AddHealth(amount);
 }
 
 void Player::UpdateAnimationFrames(float delta)
@@ -566,12 +567,6 @@ bool Player::CheckIfHitsCeiling(const Level &level, float movementY, utils::HitI
 bool Player::CheckRaycast(const Level &level, const Vector2f &start, const Vector2f &end, const Vector2f &collisionAxis,
                           utils::HitInfo &outHitInfo) const
 {
-    /*
-    GizmoManager::LineGizmo gizmo{};
-    gizmo.start = start;
-    gizmo.end = end;
-    m_GizmoManager.QueueGizmo(gizmo);
-    */
     bool hit{RaycastAgainstLevel(start, end, level.GetColliders(), collisionAxis, outHitInfo)};
     if (!hit)
     {

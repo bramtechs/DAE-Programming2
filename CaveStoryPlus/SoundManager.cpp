@@ -5,7 +5,8 @@ SoundManager::SoundManager()
     : m_ChestOpenSfx("chest_open.wav"), m_DoorSfx("door.wav"), m_SplashSfx("splash.wav"),
       m_PlayerHurtSfx("player_hurt.wav"), m_PlayerJumpSfx("player_jump.wav"), m_CritterJumpSfx("critter_jump.wav"),
       m_GetItemSfx("get_item.wav"), m_GoldPickupSfx("gold_pickup.wav"), m_EnemyHurtSfx("enemy_hurt.wav"),
-      m_LevelupSfx("level_up.wav"), m_PolarStarShootSfx("polar_star_shoot.wav"), m_WalkSfx("walk.wav")
+      m_LevelupSfx("level_up.wav"), m_PolarStarShootSfx("polar_star_shoot.wav"), m_HealthRefillSfx("health_refill.wav"),
+      m_WalkSfx("walk.wav")
 {
 }
 
@@ -33,6 +34,9 @@ void SoundManager::PlaySound(Effect effect, int loops) const
         break;
     case Effect::critter_jump:
         m_CritterJumpSfx.Play(loops);
+        break;
+    case Effect::health_refill:
+        m_HealthRefillSfx.Play(loops);
         break;
     case Effect::door:
         m_DoorSfx.Play(loops);
