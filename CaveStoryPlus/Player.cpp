@@ -235,6 +235,11 @@ void Player::SetPosition(float left, float bottom)
     m_Position.y = bottom;
 }
 
+void Player::MarkPickupCollected()
+{
+    m_CollectedPickup = true;
+}
+
 Vector2f Player::GetPosition() const
 {
     return m_Position;
@@ -272,13 +277,16 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
-    case SDLK_UP:
+    case SDLK_UP: {
         m_WeaponOrientation = Weapon::Orientation::north;
         break;
-    case SDLK_DOWN:
-        m_WeaponOrientation = Weapon::Orientation::south;
+    }
+    case SDLK_DOWN: {
+        // Disabled as it's not in the original game
+        // m_WeaponOrientation = Weapon::Orientation::south;
         break;
-    case SDLK_z:
+    }
+    case SDLK_z: {
         if (m_IsOnGround)
         {
             // apply initial jump impulse
@@ -287,12 +295,13 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
             m_JumpWindowTimer = m_JumpWindow;
         }
         break;
-
+    }
 #ifndef NDEBUG
-    case SDLK_F4:
+    case SDLK_F4: {
         // cheat to get the Polar Star early
         HoldWeapon(new PolarStar());
         break;
+    }
 #endif
 
     default:
@@ -304,18 +313,20 @@ void Player::HandleKeyUpEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
     {
-    case SDLK_UP:
+    case SDLK_UP: {
         if (m_WeaponOrientation == Weapon::Orientation::north)
         {
             m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
         }
         break;
-    case SDLK_DOWN:
+    }
+    case SDLK_DOWN: {
         if (m_WeaponOrientation == Weapon::Orientation::south)
         {
             m_WeaponOrientation = m_LookingLeft ? Weapon::Orientation::west : Weapon::Orientation::east;
         }
         break;
+    }
     default:
         break;
     }

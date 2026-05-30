@@ -29,6 +29,7 @@ class Player
 
     void SetPosition(const Vector2f &pos);
     void SetPosition(float left, float bottom);
+    void MarkPickupCollected();
 
     void HandleKeyDownEvent(const SDL_KeyboardEvent &e);
     void HandleKeyUpEvent(const SDL_KeyboardEvent &e);
@@ -83,6 +84,11 @@ class Player
     float GetHealthPercentage() const
     {
         return m_Health / static_cast<float>(m_MaxHealth);
+    }
+
+    bool DidCollectPickup() const
+    {
+        return m_CollectedPickup;
     }
 
   private:
@@ -167,4 +173,5 @@ class Player
 
     bool m_LookingLeft{};
     bool m_IsOnGround{};
+    bool m_CollectedPickup{};
 };

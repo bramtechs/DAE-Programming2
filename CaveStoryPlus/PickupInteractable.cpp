@@ -2,6 +2,7 @@
 #include "PickupInteractable.h"
 #include "DialogManager.h"
 #include "Game.h"
+#include "Player.h"
 #include "utils.h"
 #include "Texture.h"
 
@@ -34,6 +35,7 @@ void PickupInteractable::Draw() const
 
 bool PickupInteractable::OnInteract(Game &game)
 {
+    game.GetPlayer()->MarkPickupCollected();
     game.GetDialogManager()->QueueMessage({"Something shines brightly..."});
     game.GetDialogManager()->QueueMessage({"Obtained the Silver Locket."});
     return true;

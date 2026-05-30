@@ -143,6 +143,7 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
 
     pLevel->SpawnInteractable(new MimigaVillageNpc(Vector2f{10.f, 25.f}));
 
+    pLevel->SpawnInteractable(new DoorInteractable(Vector2f{42.f, 7.f}, LevelBuilder::Type::mimigaShack));
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{1.f, 21.f}, LevelBuilder::Type::mimigaReservoir));
 
     return pLevel;
