@@ -80,6 +80,7 @@ Level *LevelBuilder::BuildCaveLevel() const
 
     pLevel->SpawnEnemy(new JumperEnemy(Vector2f{50.5f, 32.5f}, *pLevel));
     pLevel->SpawnEnemy(new JumperEnemy(Vector2f{53.5f, 33.5f}, *pLevel));
+    pLevel->SpawnEnemy(new JumperEnemy(Vector2f{54.5f, 33.5f}, *pLevel));
 
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{42.f, 33.f}));
     pLevel->SpawnEnemy(new BlockEnemy(Vector2f{47.f, 35.f}));
