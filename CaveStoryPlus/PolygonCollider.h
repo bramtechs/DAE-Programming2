@@ -7,7 +7,7 @@
 class PolygonCollider final
 {
   public:
-    PolygonCollider() = default;
+    PolygonCollider();
     explicit PolygonCollider(std::vector<Vector2f> vertices);
     explicit PolygonCollider(const Rectf &rectangle);
 
@@ -47,7 +47,7 @@ class PolygonCollider final
 
     Rectf GetHandleOfPoint(int pointIndex) const;
 
-    Color4f m_Color{1.f, 0.f, 0.f, 0.5f};
     std::vector<Vector2f> m_Vertices{};
+    Color4f m_Color{};
     int m_HandleBeingDragged{-1};
 };

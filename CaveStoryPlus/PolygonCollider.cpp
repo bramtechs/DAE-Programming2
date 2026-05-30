@@ -6,6 +6,10 @@
 const float PolygonCollider::m_HandleRadius{0.5f};
 int PolygonCollider::m_NextColorIndex{};
 
+PolygonCollider::PolygonCollider() : m_Color(PickColor(m_NextColorIndex++))
+{
+}
+
 PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices)
     : m_Vertices(std::move(vertices)), m_Color(PickColor(m_NextColorIndex++))
 {
