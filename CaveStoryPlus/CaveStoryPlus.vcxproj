@@ -214,6 +214,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="PolygonCollider.h" />
     <ClInclude Include="ReservoirFisherNpc.h" />
     <ClInclude Include="ShackNpcInteractable.h" />
+    <ClInclude Include="ReservoirSignInteractable.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpikeInteractable.h" />
     <ClInclude Include="SpriteSheetManager.h" />
@@ -278,6 +279,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="PolygonCollider.cpp" />
     <ClCompile Include="ReservoirFisherNpc.cpp" />
     <ClCompile Include="ShackNpcInteractable.cpp" />
+    <ClCompile Include="ReservoirSignInteractable.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpikeInteractable.cpp" />
     <ClCompile Include="SpriteSheetManager.cpp" />

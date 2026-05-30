@@ -17,6 +17,7 @@
 #include "ReservoirFisherNpc.h"
 #include "WaterInteractable.h"
 #include "GunSmithNpcInteractable.h"
+#include "ReservoirSignInteractable.h"
 #include "SpikeInteractable.h"
 
 #include <iostream>
@@ -148,6 +149,8 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{42.f, 7.f}, LevelBuilder::Type::mimigaShack));
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{1.f, 21.f}, LevelBuilder::Type::mimigaReservoir));
     pLevel->SpawnInteractable(new WaterInteractable(Rectf{4.f, 20.f, 3.f, 1.f}, *m_Game.GetSoundManager()));
+
+    pLevel->SpawnInteractable(new ReservoirSignInteractable(Vector2f{2.5f, 21.f}));
 
     return pLevel;
 }
