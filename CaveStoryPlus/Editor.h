@@ -15,6 +15,8 @@ class Editor
 
     Editor(const Editor &o) = delete;
     Editor &operator=(const Editor &o) = delete;
+    Editor(Editor &&) = delete;
+    Editor &operator=(Editor &&) = delete;
 
     void SetLevel(Level *pLevel);
 
@@ -33,7 +35,7 @@ class Editor
     void DrawTileGrid() const;
     void DrawColliders() const;
 
-    MultiLineLabel m_HelpLabel;
+    const MultiLineLabel m_HelpLabel;
     float m_GridScale{1.f};
     Vector2f m_CursorPos{};
     Level *m_pLevel{};

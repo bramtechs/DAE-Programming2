@@ -1,7 +1,7 @@
 #pragma once
-#include "GizmoManager.h"
 #include "Level.h"
 #include "DialogEvent.h"
+#include "PlayerGUI.h"
 #include "Vector2f.h"
 #include "Weapon.h"
 #include "utils.h"
@@ -127,11 +127,11 @@ class Player
     static const float m_HitboxWidth;
     static const float m_CellSize;
     static const float m_TimePerFrame;
+    static const float m_FlashInterval;
+    static const float m_InvincibilityOnHitSeconds;
     static const int m_SpriteSheetCols;
     static const int m_SpriteSheetRows;
     static const int m_MaxOxygen;
-    static const float m_FlashInterval;
-    static const float m_InvincibilityOnHitSeconds;
 
     // time to hold space for maximum jump power
     static const float m_JumpWindow;
@@ -143,7 +143,7 @@ class Player
     AnimState m_CurrentAnimationState{AnimState::idle};
     Weapon::Orientation m_WeaponOrientation{Weapon::Orientation::east};
     Weapon *m_pHeldWeapon{};
-    PlayerGUI *m_pGUI{};
+    PlayerGUI m_GUI;
     DialogManager &m_DialogManager;
     SoundManager &m_SoundManager;
 

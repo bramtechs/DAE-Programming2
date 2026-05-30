@@ -25,6 +25,11 @@ void DoorMimicEnemy::Draw() const
     GetSpriteSheet().Draw(GetRegion(), GetAnimationSource());
 }
 
+int DoorMimicEnemy::GetGoldDropCount() const
+{
+    return 2;
+}
+
 Rectf DoorMimicEnemy::GetAnimationSource() const
 {
     if (m_AttackedTimer > 0.f)

@@ -9,7 +9,7 @@
 class DialogManager
 {
   public:
-    explicit DialogManager(TextManager &textManager, Game &game);
+    explicit DialogManager(const TextManager &textManager, Game &game);
 
     void Update(float delta);
     void Draw(const Rectf &viewport) const;
@@ -21,7 +21,7 @@ class DialogManager
     void HandleKeyInput(const SDL_KeyboardEvent &e);
 
   private:
-    TextManager &m_TextManager;
+    const TextManager& m_TextManager;
     Game &m_Game;
     std::queue<DialogMessage> m_Messages{};
 };

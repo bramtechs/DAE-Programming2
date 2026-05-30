@@ -17,7 +17,7 @@ class DoorInteractable final : public Interactable
     bool OnInteract(Game &game) override;
 
   private:
-    LevelBuilder::Type m_LevelType;
-    Vector2f m_CustomSpawn;
-    bool m_HasCustomSpawn;
+    const LevelBuilder::Type m_LevelType;
+    const Vector2f m_CustomSpawn;
+    const bool m_HasCustomSpawn;
 };

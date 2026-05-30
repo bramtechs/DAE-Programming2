@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-DialogManager::DialogManager(TextManager &textManager, Game &game) : m_TextManager(textManager), m_Game(game)
+DialogManager::DialogManager(const TextManager &textManager, Game &game) : m_TextManager(textManager), m_Game(game)
 {
 }
 

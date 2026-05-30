@@ -12,10 +12,7 @@ class DoorMimicEnemy final : public Enemy
     void Draw() const override;
 
   private:
-    virtual int GetGoldDropCount() const
-    {
-        return 2;
-    }
+    int GetGoldDropCount() const override;
 
     Rectf GetAnimationSource() const;
 

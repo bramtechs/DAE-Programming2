@@ -25,5 +25,5 @@ class SpikeInteractable final : public Interactable
   private:
     Rectf GetSourceRegion() const;
 
-    Orientation m_Orientation{};
+    const Orientation m_Orientation{};
 };

@@ -36,7 +36,6 @@ void MultiLineLabel::RegisterLines(const std::string &lines, const Color4f &colo
     std::string line{};
     while (std::getline(ss, line))
     {
-
         RegisterLine(line, color);
     }
 }

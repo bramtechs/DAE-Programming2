@@ -50,6 +50,26 @@ Circlef Enemy::GetCircleRegion() const
     return Circlef{GetCenter(), std::min(m_Size.x, m_Size.y) * 0.5f};
 }
 
+void Enemy::SetHealth(int health)
+{
+    m_Health = health;
+}
+
+void Enemy::Translate(const Vector2f &offset)
+{
+    m_Position += offset;
+}
+
+void Enemy::SetPosition(const Vector2f &pos)
+{
+    m_Position = pos;
+}
+
+const Vector2f &Enemy::GetPosition() const
+{
+    return m_Position;
+}
+
 void Enemy::SetSpriteSheetTexture(const Texture &texture)
 {
     m_pSpriteSheetTexture = &texture;
@@ -63,6 +83,11 @@ void Enemy::SetSoundManager(const SoundManager *pSoundManager)
 void Enemy::InteractWithPlayer(Player &player)
 {
     DealBodyDamage(player);
+}
+
+const Texture &Enemy::GetSpriteSheet() const
+{
+    return *m_pSpriteSheetTexture;
 }
 
 void Enemy::DealBodyDamage(Player &player)

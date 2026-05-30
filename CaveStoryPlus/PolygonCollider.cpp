@@ -4,14 +4,17 @@
 #include "utils.h"
 
 const float PolygonCollider::m_HandleRadius{0.5f};
+int PolygonCollider::m_NextColorIndex{};
 
-PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices) : m_Vertices(std::move(vertices))
+PolygonCollider::PolygonCollider(std::vector<Vector2f> vertices)
+    : m_Vertices(std::move(vertices)), m_Color(PickColor(m_NextColorIndex++))
 {
 }
 
-PolygonCollider::PolygonCollider(const Rectf &rectangle)
+PolygonCollider::PolygonCollider(const Rectf &rectangle) : m_Color(PickColor(m_NextColorIndex++))
 {
     // anti clockwise
+    m_Vertices.reserve(4);
     m_Vertices.emplace_back(rectangle.left, rectangle.bottom);
     m_Vertices.emplace_back(rectangle.left + rectangle.width, rectangle.bottom);
     m_Vertices.emplace_back(rectangle.left + rectangle.width, rectangle.bottom + rectangle.height);
@@ -103,15 +106,15 @@ void PolygonCollider::DrawHandles(const Vector2f &tileMousePos) const
     }
 }
 
-void PolygonCollider::PickColor(int index)
+Color4f PolygonCollider::PickColor(int index)
 {
-    const float alpha{0.5f};
-    const Color4f pRainbow[]{Color4f{1.0f, 0.0f, 0.0f, alpha}, Color4f{1.0f, 0.5f, 0.0f, alpha},
-                             Color4f{1.0f, 1.0f, 0.0f, alpha}, Color4f{0.0f, 1.0f, 0.0f, alpha},
-                             Color4f{0.0f, 0.0f, 1.0f, alpha}, Color4f{0.29f, 0.0f, 0.51f, alpha},
-                             Color4f{0.56f, 0.0f, 1.0f, alpha}};
+    const static float alpha{0.5f};
+    const static std::array<Color4f, 7> colors{Color4f{1.0f, 0.0f, 0.0f, alpha}, Color4f{1.0f, 0.5f, 0.0f, alpha},
+                                               Color4f{1.0f, 1.0f, 0.0f, alpha}, Color4f{0.0f, 1.0f, 0.0f, alpha},
+                                               Color4f{0.0f, 0.0f, 1.0f, alpha}, Color4f{0.29f, 0.0f, 0.51f, alpha},
+                                               Color4f{0.56f, 0.0f, 1.0f, alpha}};
 
-    m_Color = pRainbow[index % static_cast<int>(sizeof(pRainbow) / sizeof(Color4f))];
+    return colors[index % colors.size()];
 }
 
 Rectf PolygonCollider::GetHandleOfPoint(int pointIndex) const
@@ -164,7 +167,7 @@ bool PolygonCollider::IsPointAbove(const Vector2f &point) const
     return true;
 }
 
-const std::vector<Vector2f> &PolygonCollider::GetPolygon() const
+const std::vector<Vector2f> &PolygonCollider::GetPolygonVertices() const
 {
     return m_Vertices;
 }

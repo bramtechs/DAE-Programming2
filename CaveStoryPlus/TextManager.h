@@ -19,5 +19,5 @@ class TextManager
     Texture BakeText(const std::string &text, int ptSize, const Color4f &color = Color4f{1.f, 1.f, 1.f, 1.f}) const;
 
   private:
-    TTF_Font *m_pUsedFont{};
+    TTF_Font *const m_pUsedFont{};
 };

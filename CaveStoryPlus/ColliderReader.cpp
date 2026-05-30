@@ -22,9 +22,7 @@ size_t ColliderReader::ReadAllInto(std::vector<PolygonCollider> &colliders)
         {
             if (line.find("[PolygonCollider]") != std::string::npos)
             {
-                PolygonCollider col{ReadSingle(stream)};
-                col.PickColor(static_cast<int>(colliders.size()));
-                colliders.emplace_back(std::move(col));
+                colliders.emplace_back(ReadSingle(stream));
             }
         }
     }
@@ -39,6 +37,7 @@ size_t ColliderReader::ReadAllInto(std::vector<PolygonCollider> &colliders)
 PolygonCollider ColliderReader::ReadSingle(std::ifstream &stream)
 {
     PolygonCollider col{};
+    // https://en.cppreference.com/cpp/string/basic_string/getline
 
     for (std::string line; std::getline(stream, line);)
     {

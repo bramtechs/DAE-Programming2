@@ -22,7 +22,7 @@ class GoldInteractable final : public Interactable
     static const float m_TimePerFrame;
     static const float m_Gravity;
 
-    Level &m_Level;
+    const Level &m_Level;
     Vector2f m_Velocity{};
     float m_AnimTimer{};
     int m_AnimFrame{};

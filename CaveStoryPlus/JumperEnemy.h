@@ -6,7 +6,7 @@ class PolygonCollider;
 class JumperEnemy final : public Enemy
 {
   public:
-    explicit JumperEnemy(const Vector2f &pos, Level &level);
+    explicit JumperEnemy(const Vector2f &pos, const Level &level);
 
     void InteractWithPlayer(Player &player) override;
 
@@ -34,7 +34,7 @@ class JumperEnemy final : public Enemy
     State m_State{};
     float m_ChargeTimer{};
     bool m_IsLookingRight{};
-    Level &m_Level;
+    const Level &m_Level;
 
     bool IsOverlappingLevel(PolygonCollider &outShape) const;
 

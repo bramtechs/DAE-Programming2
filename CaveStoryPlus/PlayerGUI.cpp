@@ -24,7 +24,7 @@ PlayerGUI::~PlayerGUI()
 void PlayerGUI::UpdateTimers(float delta)
 {
     m_AnimTimer += delta;
-    m_ShowLevelUpTimer -= delta;
+    m_LevelUpLabelShownTimer -= delta;
 }
 
 void PlayerGUI::UpdateValues()
@@ -56,7 +56,7 @@ void PlayerGUI::Draw(const Rectf &viewport) const
         m_OxygenLabel.Draw(digitRegion, false);
     }
 
-    if (m_ShowLevelUpTimer > 0.f)
+    if (m_LevelUpLabelShownTimer > 0.f)
     {
         const int frame{(std::fmod(m_AnimTimer, 0.5f) < 0.25f) ? 0 : 1};
         const Rectf source{m_LevelupSources[frame]};
@@ -81,7 +81,7 @@ void PlayerGUI::DrawHUD(const Rectf &region) const
 
 void PlayerGUI::OnLevelUp()
 {
-    m_ShowLevelUpTimer = 1.5f;
+    m_LevelUpLabelShownTimer = 1.5f;
 }
 
 std::array<Rectf, 3> PlayerGUI::GetRowColumns(const Rectf &region, int row, int totalRows) const

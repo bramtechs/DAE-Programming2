@@ -7,5 +7,5 @@ class ReservoirFisherNpc final : public DecorInteractable
     explicit ReservoirFisherNpc(const Vector2f &pos);
 
   private:
-    static Rectf m_SourceRect;
+    static const Rectf m_SourceRect;
 };

@@ -12,7 +12,7 @@ const Rectf JumperEnemy::m_ChargingSourceRect{0.f, 0.f, 32.f, 32.f};
 const Rectf JumperEnemy::m_IdleSourceRect{32.f, 0.f, 32.f, 32.f};
 const Rectf JumperEnemy::m_JumpingSourceRect{64.f, 0.f, 32.f, 32.f};
 
-JumperEnemy::JumperEnemy(const Vector2f &pos, Level &level) : Enemy(Vector2f{1.f, 1.f}), m_Level(level)
+JumperEnemy::JumperEnemy(const Vector2f &pos, const Level &level) : Enemy(Vector2f{1.f, 1.f}), m_Level(level)
 {
     SetCenter(pos);
 }
@@ -72,7 +72,7 @@ bool JumperEnemy::IsOverlappingLevel(PolygonCollider &outShape) const
 {
     for (const PolygonCollider &collider : m_Level.GetColliders())
     {
-        if (utils::IsOverlapping(collider.GetPolygon(), GetCircleRegion()))
+        if (utils::IsOverlapping(collider.GetPolygonVertices(), GetCircleRegion()))
         {
             outShape = collider;
             return true;

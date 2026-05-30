@@ -5,8 +5,8 @@
 #include "BossEnemy.h"
 #include "DialogManager.h"
 
-Rectf ShackNpcInteractable::m_HidingSourceRegion{256.f, 385.f, 32.f, 32.f};
-Rectf ShackNpcInteractable::m_TalkingSourceRegion{256.f, 417.f, 32.f, 32.f};
+const Rectf ShackNpcInteractable::m_HidingSourceRegion{256.f, 385.f, 32.f, 32.f};
+const Rectf ShackNpcInteractable::m_TalkingSourceRegion{256.f, 417.f, 32.f, 32.f};
 
 ShackNpcInteractable::ShackNpcInteractable(const Vector2f &cell) : DecorInteractable(cell, m_HidingSourceRegion)
 {

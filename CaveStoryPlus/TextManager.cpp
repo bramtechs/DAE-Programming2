@@ -6,9 +6,8 @@
 #include <cassert>
 #include <iostream>
 
-TextManager::TextManager()
+TextManager::TextManager() : m_pUsedFont(TTF_OpenFont("Cave-Story.ttf", 22))
 {
-    m_pUsedFont = TTF_OpenFont("Cave-Story.ttf", 22);
     if (m_pUsedFont == nullptr)
     {
         std::cerr << "Failed to open font: " << TTF_GetError() << std::endl;

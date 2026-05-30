@@ -19,16 +19,15 @@ const float Player::m_HitboxHeight{0.8f};
 const float Player::m_HitboxWidth{0.75f};
 const float Player::m_CellSize{32.f};
 const float Player::m_TimePerFrame{0.15f};
+const float Player::m_FlashInterval{0.2f};
+const float Player::m_InvincibilityOnHitSeconds{2.f};
+const float Player::m_JumpWindow{0.5f};
 const int Player::m_SpriteSheetCols{11};
 const int Player::m_SpriteSheetRows{2};
 const int Player::m_MaxOxygen{100};
-const float Player::m_FlashInterval{0.2f};
-const float Player::m_InvincibilityOnHitSeconds{2.f};
-
-const float Player::m_JumpWindow{0.5f};
 
 Player::Player(DialogManager &dialogManager, SoundManager &soundManager)
-    : m_pSpriteSheet(new Texture("player.png")), m_pGUI(new PlayerGUI(*this)), m_DialogManager(dialogManager),
+    : m_pSpriteSheet(new Texture("player.png")), m_GUI(*this), m_DialogManager(dialogManager),
       m_SoundManager(soundManager)
 {
 }
@@ -37,7 +36,6 @@ Player::~Player()
 {
     delete m_pSpriteSheet;
     delete m_pHeldWeapon;
-    delete m_pGUI;
 }
 
 void Player::Update(float delta, Level &level)
@@ -59,8 +57,8 @@ void Player::Update(float delta, Level &level)
     }
     m_SecondsSinceOxygenDrain += delta;
 
-    m_pGUI->UpdateTimers(delta);
-    m_pGUI->UpdateValues();
+    m_GUI.UpdateTimers(delta);
+    m_GUI.UpdateValues();
 }
 
 void Player::UpdateMovement(float delta, Level &level)
@@ -223,7 +221,7 @@ void Player::Draw() const
 
 void Player::DrawGUI(const Rectf &viewport) const
 {
-    m_pGUI->Draw(viewport);
+    m_GUI.Draw(viewport);
 }
 
 void Player::SetPosition(const Vector2f &pos)
@@ -328,7 +326,7 @@ void Player::DealDamage(int damage)
     if (m_InvincibilityTimer <= 0.f)
     {
         m_Health -= damage;
-        m_pGUI->UpdateValues();
+        m_GUI.UpdateValues();
         m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
         std::cout << "Dealt " << damage << " damage to player!" << std::endl;
 
@@ -372,7 +370,7 @@ void Player::AddGold(int amount)
     while (m_Gold >= GetGoldNeededForLevel(m_Level + 1))
     {
         ++m_Level;
-        m_pGUI->OnLevelUp();
+        m_GUI.OnLevelUp();
         m_SoundManager.PlaySound(SoundManager::Effect::levelup);
     }
 }
@@ -470,7 +468,7 @@ bool Player::RaycastAgainstLevel(const Vector2f &start, const Vector2f &end,
 {
     for (const PolygonCollider &collider : colliders)
     {
-        const std::vector<Vector2f> &vertices{collider.GetPolygon()};
+        const std::vector<Vector2f> &vertices{collider.GetPolygonVertices()};
         if (utils::Raycast(vertices, start, end, outHitInfo))
         {
             return true;

@@ -34,7 +34,7 @@ Rectf SpikeInteractable::GetSourceRegion() const
     switch (m_Orientation)
     {
     case Orientation::floor:
-        cell.left += cell.width * 1.f;
+        cell.left += cell.width;
         break;
     case Orientation::ceiling:
         cell.left += cell.width * 3.f;

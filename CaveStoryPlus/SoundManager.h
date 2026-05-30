@@ -19,10 +19,10 @@ class SoundManager
     void PlaySound(Effect effect, int loops = 0) const;
 
   private:
-    SoundEffect m_ChestOpenSfx;
-    SoundEffect m_DoorSfx;
-    SoundEffect m_EnemyHurtSfx;
-    SoundEffect m_LevelupSfx;
-    SoundEffect m_PolarStarShootSfx;
-    SoundEffect m_WalkSfx;
+    const SoundEffect m_ChestOpenSfx;
+    const SoundEffect m_DoorSfx;
+    const SoundEffect m_EnemyHurtSfx;
+    const SoundEffect m_LevelupSfx;
+    const SoundEffect m_PolarStarShootSfx;
+    const SoundEffect m_WalkSfx;
 };

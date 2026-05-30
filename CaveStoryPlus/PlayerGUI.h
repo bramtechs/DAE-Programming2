@@ -36,7 +36,7 @@ class PlayerGUI
     const static std::array<Rectf, 2> m_LevelupSources;
 
     const Player &m_Player;
-    Texture *m_pTexture{};
+    const Texture *m_pTexture{};
 
     NumberLabel m_LevelLabel{};
     NumberLabel m_HealthLabel{};
@@ -48,5 +48,5 @@ class PlayerGUI
                           Color4f{245.f / 255.f, 73.f / 255.f, 39.f / 255.f, 1.f}};
 
     float m_AnimTimer{};
-    float m_ShowLevelUpTimer{};
+    float m_LevelUpLabelShownTimer{};
 };

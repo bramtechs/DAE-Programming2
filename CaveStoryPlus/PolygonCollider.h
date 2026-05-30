@@ -11,8 +11,6 @@ class PolygonCollider final
     explicit PolygonCollider(std::vector<Vector2f> vertices);
     explicit PolygonCollider(const Rectf &rectangle);
 
-    void PickColor(int index);
-
     bool StartDragAround(const Vector2f &tileMousePos);
     void StopDragAround();
 
@@ -39,14 +37,17 @@ class PolygonCollider final
 
     bool IsPointAbove(const Vector2f &point) const;
 
-    const std::vector<Vector2f> &GetPolygon() const;
+    const std::vector<Vector2f> &GetPolygonVertices() const;
 
   private:
     static const float m_HandleRadius;
 
+    static Color4f PickColor(int index);
+    static int m_NextColorIndex;
+
     Rectf GetHandleOfPoint(int pointIndex) const;
 
-    std::vector<Vector2f> m_Vertices{};
     Color4f m_Color{1.f, 0.f, 0.f, 0.5f};
+    std::vector<Vector2f> m_Vertices{};
     int m_HandleBeingDragged{-1};
 };

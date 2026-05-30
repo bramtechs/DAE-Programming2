@@ -36,8 +36,8 @@ class ShackNpcInteractable final : public DecorInteractable
         ShackNpcInteractable &m_Npc;
     };
 
-    static Rectf m_HidingSourceRegion;
-    static Rectf m_TalkingSourceRegion;
+    static const Rectf m_HidingSourceRegion;
+    static const Rectf m_TalkingSourceRegion;
 
     DialogManager *m_pDialogManager{};
     bool m_DoneTalking{};

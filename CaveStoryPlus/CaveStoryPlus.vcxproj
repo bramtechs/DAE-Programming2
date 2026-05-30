@@ -191,7 +191,6 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GizmoManager.h" />
     <ClInclude Include="GoldInteractable.h" />
     <ClInclude Include="GunSmithNpcInteractable.h" />
     <ClInclude Include="HeartInteractable.h" />
@@ -254,7 +253,6 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GizmoManager.cpp" />
     <ClCompile Include="GoldInteractable.cpp" />
     <ClCompile Include="GunSmithNpcInteractable.cpp" />
     <ClCompile Include="HeartInteractable.cpp" />

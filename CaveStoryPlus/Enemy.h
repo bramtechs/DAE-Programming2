@@ -52,30 +52,15 @@ class Enemy
     Circlef GetCircleRegion() const;
 
   protected:
-    void SetHealth(int health)
-    {
-        m_Health = health;
-    }
+    void SetHealth(int health);
 
-    void Translate(const Vector2f &offset)
-    {
-        m_Position += offset;
-    }
+    void Translate(const Vector2f &offset);
 
-    void SetPosition(const Vector2f &pos)
-    {
-        m_Position = pos;
-    }
+    void SetPosition(const Vector2f &pos);
 
-    const Vector2f &GetPosition() const
-    {
-        return m_Position;
-    }
+    const Vector2f &GetPosition() const;
 
-    const Texture &GetSpriteSheet() const
-    {
-        return *m_pSpriteSheetTexture;
-    }
+    const Texture &GetSpriteSheet() const;
 
   private:
     void DealBodyDamage(Player &player);

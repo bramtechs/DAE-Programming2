@@ -23,8 +23,8 @@ class TextLine
   private:
     Texture BakeText() const;
 
-    const TextManager *m_pTextManager;
-    std::string m_Text{};
+    const TextManager *const m_pTextManager;
+    const std::string m_Text{};
     size_t m_CharsVisible{};
     Texture m_Texture;
 };

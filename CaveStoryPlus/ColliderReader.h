@@ -14,5 +14,5 @@ class ColliderReader
   private:
     PolygonCollider ReadSingle(std::ifstream &stream);
 
-    std::string m_FilePath;
+    const std::string m_FilePath;
 };
