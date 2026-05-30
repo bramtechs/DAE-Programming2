@@ -124,10 +124,10 @@ Rectf Level::GetBounds() const
     return Rectf{0.f, 0.f, levelWidth, levelHeight};
 }
 
-const std::vector<PolygonCollider> &Level::GetSolidEnemyColliders() const
+std::vector<PolygonCollider> Level::GetSolidEnemyColliders() const
 {
-    static std::vector<PolygonCollider> colliders{};
-    colliders.clear();
+    std::vector<PolygonCollider> colliders{};
+    colliders.reserve(m_Enemies.size());
 
     for (const Enemy *pEnemy : m_Enemies)
     {
