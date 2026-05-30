@@ -17,6 +17,7 @@ void MusicManager::SwitchTrack(MusicManager::Track track)
             SoundStream::Stop();
 
             const std::string beginPath{GetTrackBeginPath(track)};
+            delete m_pStream;
             m_pStream = new SoundStream(beginPath);
             m_pStream->Play(false);
             m_PlayingBegin = true;
@@ -38,6 +39,7 @@ void MusicManager::Update()
         {
             m_PlayingBegin = false;
             const std::string loopPath{GetTrackLoopPath(m_ActiveTrack)};
+            delete m_pStream;
             m_pStream = new SoundStream(loopPath);
             m_pStream->Play(true);
         }
