@@ -176,12 +176,12 @@ There is also a **DecorInteractable** class that provides shared code for its ch
     - [x] Class relationships: composition, aggregation, association, inheritance
     - [x] Delegating constructors to avoid duplicate code (see **Interactable** .cpp file)
     - [X] Use of inheritance (see Class structure above)
-- [ ] week 06 topics applied
+- [x] week 06 topics applied
     - [x] Polymorphism
     - [x] C++ style casting (used static_cast)
     - [X] Use of (pure) virtual (see **Interactable** class)
     - [x] Camera (object space, world space, camera space)
-    - [ ] Sound
+    - [x] Sound
     - [x] Music
 - [x] week 07 topics applied
     - [x] friend keyword (see **Level** class)
@@ -202,7 +202,7 @@ There is also a **DecorInteractable** class that provides shared code for its ch
 <!-- CONTACT -->
 ## Contact
 
-Your Name - bram.deraeve@student.howest.be
+Bram Deraeve - bram.deraeve@student.howest.be
 
 Project Link: [https://github.com/HowestDAE/gd25-bramderaeve](https://github.com/HowestDAE/gd25-bramderaeve)
 
