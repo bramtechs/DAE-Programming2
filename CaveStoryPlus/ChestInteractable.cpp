@@ -40,7 +40,7 @@ bool ChestInteractable::OnInteract(Game &game)
     {
         if (Player* pPlayer{game.GetPlayer()})
         {
-            game.GetSoundManager()->PlaySound(SoundManager::Effect::chestopen);
+            game.GetSoundManager()->PlaySound(SoundManager::Effect::chest_open);
 
             DialogManager &dialogs{*game.GetDialogManager()};
             dialogs.QueueMessage({"Opened the treasure chest."});

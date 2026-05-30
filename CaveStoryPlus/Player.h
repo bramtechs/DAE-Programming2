@@ -111,6 +111,8 @@ class Player
     void UpdateAnimationFrames(float delta);
     void UpdateAnimationState(AnimState state, int startFrame, int endFrame);
     void UpdateMovement(float delta, Level &level);
+    void ApplyJumpBoost(float delta);
+    void StartJump();
     void UpdateShooting(float delta, Level &level);
 
     bool RaycastAgainstLevel(const Vector2f &start, const Vector2f &end, const std::vector<PolygonCollider> &colliders,

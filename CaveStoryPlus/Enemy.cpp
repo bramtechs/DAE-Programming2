@@ -90,6 +90,11 @@ const Texture &Enemy::GetSpriteSheet() const
     return *m_pSpriteSheetTexture;
 }
 
+const SoundManager& Enemy::GetSoundManager() const
+{
+    return *m_pSoundManager;
+}
+
 void Enemy::DealBodyDamage(Player &player)
 {
     if (utils::IsOverlapping(GetRegion(), player.GetRegion()))

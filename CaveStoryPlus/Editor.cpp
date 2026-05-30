@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "utils.h"
 
+#include <iostream>
 #include <cmath>
 
 Editor::Editor() : m_HelpLabel("Cave-Story.ttf", 32)
@@ -88,6 +89,8 @@ void Editor::SaveColliders() const
         {
             writer.Serialize(colliders[i]);
         }
+
+        std::cout << "Saved colliders to: " << m_pLevel->GetCollidersFilePath() << std::endl;
     }
 }
 

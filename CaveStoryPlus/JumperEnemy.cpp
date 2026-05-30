@@ -1,6 +1,7 @@
 #include "JumperEnemy.h"
 #include "Player.h"
 #include "PolygonCollider.h"
+#include "SoundManager.h"
 #include "Texture.h"
 #include "pch.h"
 
@@ -37,6 +38,7 @@ void JumperEnemy::Update(float delta)
         if (m_ChargeTimer > m_ChargeTime)
         {
             m_State = State::jumping;
+            GetSoundManager().PlaySound(SoundManager::Effect::critter_jump);
             m_LastPosition = GetPosition();
             m_ChargeTimer = 0.f;
             m_Velocity.x = m_IsLookingRight ? 1.f : -1.f;
@@ -45,8 +47,8 @@ void JumperEnemy::Update(float delta)
     }
     else if (m_State == State::jumping)
     {
-        Translate(m_Velocity * delta);
         m_Velocity.y -= m_Gravity * delta;
+        Translate(m_Velocity * delta);
 
         PolygonCollider collider{};
         if (IsOverlappingLevel(collider))

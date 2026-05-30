@@ -8,7 +8,8 @@
 
 const float PickupInteractable::m_TimePerFrame{0.2f};
 
-PickupInteractable::PickupInteractable(const Vector2f &cell) : Interactable(cell)
+PickupInteractable::PickupInteractable(const Vector2f &cell)
+    : Interactable(cell)
 {
 }
 

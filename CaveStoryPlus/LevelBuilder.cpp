@@ -112,9 +112,9 @@ Level *LevelBuilder::BuildCaveLevel() const
     pLevel->SpawnInteractable(new SpikeInteractable(Vector2f{33.f, 12.f}, SpikeInteractable::Orientation::ceiling));
 
     // water
-    pLevel->SpawnInteractable(new WaterInteractable(Rectf{38.f, 3.f, 20.f, 3.f}));
-    pLevel->SpawnInteractable(new WaterInteractable(Rectf{32.f, 3.f, 4.f, 2.f}));
-    pLevel->SpawnInteractable(new WaterInteractable(Rectf{26.f, 6.f, 6.f, 1.f}));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{38.f, 3.f, 20.f, 3.f}, *m_Game.GetSoundManager()));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{32.f, 3.f, 4.f, 2.f}, *m_Game.GetSoundManager()));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{26.f, 6.f, 6.f, 1.f}, *m_Game.GetSoundManager()));
 
     return pLevel;
 }
@@ -146,6 +146,7 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
 
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{42.f, 7.f}, LevelBuilder::Type::mimigaShack));
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{1.f, 21.f}, LevelBuilder::Type::mimigaReservoir));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{4.f, 20.f, 3.f, 1.f}, *m_Game.GetSoundManager()));
 
     return pLevel;
 }
@@ -161,7 +162,7 @@ Level *LevelBuilder::BuildMimigaReservoirLevel() const
 
     pLevel->SpawnInteractable(new PickupInteractable(Vector2f{5.f, 4.f}));
     pLevel->SpawnInteractable(new ReservoirFisherNpc(Vector2f{5.5f, 6.63f}));
-    pLevel->SpawnInteractable(new WaterInteractable(Rectf{1.f, 1.f, 23.f, 5.5f}));
+    pLevel->SpawnInteractable(new WaterInteractable(Rectf{1.f, 1.f, 23.f, 5.5f}, *m_Game.GetSoundManager()));
 
     return pLevel;
 }

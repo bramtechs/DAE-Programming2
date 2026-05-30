@@ -62,6 +62,8 @@ class Enemy
 
     const Texture &GetSpriteSheet() const;
 
+    const SoundManager &GetSoundManager() const;
+
   private:
     void DealBodyDamage(Player &player);
 

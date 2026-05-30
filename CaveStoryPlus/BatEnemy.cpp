@@ -60,11 +60,11 @@ void BatEnemy::DrawDebug() const
 
 Rectf BatEnemy::GetAnimationSource(bool right, int frame) const
 {
-    const float tileSize{32.f};
+    const float frameSize{32.f};
     const int x{2 + frame};
     const int y{2 + (right ? 1 : 0)};
-    return Rectf{static_cast<float>(x * tileSize), //
-                 static_cast<float>(y * tileSize), tileSize, tileSize};
+    return Rectf{static_cast<float>(x * frameSize), //
+                 static_cast<float>(y * frameSize), frameSize, frameSize};
 }
 
 void BatEnemy::PositionAlongRoute(float offset)

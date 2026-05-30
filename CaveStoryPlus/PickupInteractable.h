@@ -1,6 +1,7 @@
 #pragma once
 #include "Interactable.h"
 
+class SoundManager;
 class PickupInteractable final : public Interactable
 {
   public:

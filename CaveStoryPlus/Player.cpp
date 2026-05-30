@@ -164,12 +164,18 @@ void Player::UpdateMovement(float delta, Level &level)
 
         if (pStates[SDL_SCANCODE_Z])
         {
-            m_Velocity.y += m_JumpForce * delta * 2.3f;
-            if (m_IsOnGround)
-            {
-                m_Position.y += m_HitboxHeight / g_TileSize * 2.f; // ensure not in ground
-            }
+            ApplyJumpBoost(delta);
         }
+    }
+}
+
+void Player::ApplyJumpBoost(float delta)
+{
+    m_Velocity.y += m_JumpForce * delta * 2.3f;
+    if (m_IsOnGround)
+    {
+        // ensure not in ground
+        m_Position.y += m_HitboxHeight / g_TileSize * 2.f;
     }
 }
 
@@ -238,6 +244,7 @@ void Player::SetPosition(float left, float bottom)
 void Player::MarkPickupCollected()
 {
     m_CollectedPickup = true;
+    m_SoundManager.PlaySound(SoundManager::Effect::get_item);
 }
 
 Vector2f Player::GetPosition() const
@@ -273,6 +280,15 @@ bool Player::IsHoldingWeapon() const
     return m_pHeldWeapon != nullptr;
 }
 
+void Player::StartJump()
+{
+    // apply initial jump impulse
+    m_Velocity.y += m_JumpForce;
+    m_IsOnGround = false;
+    m_JumpWindowTimer = m_JumpWindow;
+    m_SoundManager.PlaySound(SoundManager::Effect::player_jump);
+}
+
 void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
 {
     switch (e.keysym.sym)
@@ -289,10 +305,7 @@ void Player::HandleKeyDownEvent(const SDL_KeyboardEvent &e)
     case SDLK_z: {
         if (m_IsOnGround)
         {
-            // apply initial jump impulse
-            m_Velocity.y += m_JumpForce;
-            m_IsOnGround = false;
-            m_JumpWindowTimer = m_JumpWindow;
+            StartJump();
         }
         break;
     }
@@ -337,6 +350,7 @@ void Player::DealDamage(int damage)
     if (m_InvincibilityTimer <= 0.f)
     {
         m_Health -= damage;
+        m_SoundManager.PlaySound(SoundManager::Effect::player_hurt);
         m_GUI.UpdateValues();
         m_InvincibilityTimer = m_InvincibilityOnHitSeconds;
         std::cout << "Dealt " << damage << " damage to player!" << std::endl;
@@ -378,11 +392,13 @@ bool Player::HasMaximumHealth() const
 void Player::AddGold(int amount)
 {
     m_Gold += amount;
+    m_SoundManager.PlaySound(SoundManager::Effect::gold_pickup);
+
     while (m_Gold >= GetGoldNeededForLevel(m_Level + 1))
     {
         ++m_Level;
         m_GUI.OnLevelUp();
-        m_SoundManager.PlaySound(SoundManager::Effect::levelup);
+        m_SoundManager.PlaySound(SoundManager::Effect::level_up);
     }
 }
 
