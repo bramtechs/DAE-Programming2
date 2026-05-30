@@ -36,9 +36,9 @@ void Interactable::Translate(const Vector2f &offset)
     m_Region.bottom += offset.y;
 }
 
-void Interactable::SetSpriteSheetTexture(Texture *pTexture)
+void Interactable::SetSpriteSheetTexture(const Texture &texture)
 {
-    m_pSpriteSheetTexture = pTexture;
+    m_pSpriteSheetTexture = &texture;
 }
 
 Rectf Interactable::GetRegion() const

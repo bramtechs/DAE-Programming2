@@ -17,12 +17,14 @@ class Camera;
 class Texture;
 class Enemy;
 class Player;
+class SpriteSheetManager;
 
 class Level final
 {
   public:
-    explicit Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
-                   const Vector2f &spawnPos, MusicManager::Track track);
+    explicit Level(const SpriteSheetManager &spriteSheetManager, const std::string &fullTexturePath,
+                   const std::string &collidersPath, const std::string &displayName, const Vector2f &spawnPos,
+                   MusicManager::Track track);
     ~Level();
     Level(const Level &) = delete;
     Level(Level &&) = delete;
@@ -102,11 +104,10 @@ class Level final
     const std::string m_LevelName;
     const std::string m_CollidersPath;
     const MusicManager::Track m_MusicTrack;
+    const SpriteSheetManager &m_SpriteSheetManager;
 
     Texture *m_pFullTexture{};
-    Texture *m_pEnemiesTexture{};
     Texture *m_pNameTexture{};
-    Texture *m_pInteractablesTexture{};
     Vector2f m_SpawnPos{};
     int m_LevelCols{};
     int m_LevelRows{};

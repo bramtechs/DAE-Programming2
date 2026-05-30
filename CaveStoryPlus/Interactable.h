@@ -42,7 +42,7 @@ class Interactable
 
     void Translate(const Vector2f &offset);
 
-    void SetSpriteSheetTexture(Texture *pTexture);
+    void SetSpriteSheetTexture(const Texture &texture);
 
     bool IsInside(const Player &player) const;
     Rectf GetRegion() const;
@@ -57,5 +57,5 @@ class Interactable
 
   private:
     Rectf m_Region{};
-    Texture *m_pSpriteSheetTexture{};
+    const Texture *m_pSpriteSheetTexture{};
 };

@@ -2,6 +2,7 @@
 
 class Player;
 class Level;
+class SpriteSheetManager;
 class Game;
 
 class LevelBuilder
@@ -29,4 +30,5 @@ class LevelBuilder
 
     const Player &m_Player;
     const Game &m_Game;
+    const SpriteSheetManager &m_SpriteSheetManager;
 };

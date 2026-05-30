@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "HeartInteractable.h"
+#include "SpriteSheetManager.h"
 #include "GoldInteractable.h"
 #include "Interactable.h"
 #include "Texture.h"
@@ -16,14 +17,14 @@
 
 const float Level::m_BgTextureScale{g_TileSize / 2.f};
 
-Level::Level(const std::string &fullTexturePath, const std::string &collidersPath, const std::string &displayName,
-             const Vector2f &spawnPos, MusicManager::Track track)
-    : m_LevelName(displayName), m_CollidersPath(collidersPath), m_MusicTrack(track), m_SpawnPos(spawnPos)
+Level::Level(const SpriteSheetManager &spriteSheetManager, const std::string &fullTexturePath,
+             const std::string &collidersPath, const std::string &displayName, const Vector2f &spawnPos,
+             MusicManager::Track track)
+    : m_LevelName(displayName), m_CollidersPath(collidersPath), m_MusicTrack(track),
+      m_SpriteSheetManager(spriteSheetManager), m_SpawnPos(spawnPos)
 {
     m_pFullTexture = new Texture(fullTexturePath);
     m_pNameTexture = new Texture(displayName, "Cave-Story.ttf", 48, Color4f{1.f, 1.f, 1.f, 1.f});
-    m_pEnemiesTexture = new Texture("enemies.png");
-    m_pInteractablesTexture = new Texture("interactables.png");
 
     m_LevelCols = static_cast<int>(m_pFullTexture->GetWidth()) / 16;
     m_LevelRows = static_cast<int>(m_pFullTexture->GetHeight()) / 16;
@@ -40,8 +41,6 @@ Level::~Level()
 {
     delete m_pFullTexture;
     delete m_pNameTexture;
-    delete m_pEnemiesTexture;
-    delete m_pInteractablesTexture;
 
     for (Enemy *pEnemy : m_Enemies)
     {
@@ -57,7 +56,7 @@ Level::~Level()
 void Level::SpawnEnemy(Enemy *pEnemy)
 {
     assert(pEnemy && "Passing a nullptr as enemy");
-    pEnemy->SetSpriteSheetTexture(*m_pEnemiesTexture);
+    pEnemy->SetSpriteSheetTexture(m_SpriteSheetManager.GetEnemiesTexture());
     pEnemy->SetSoundManager(m_pSoundManager);
     m_Enemies.emplace_back(pEnemy);
 }
@@ -66,7 +65,7 @@ void Level::SpawnInteractable(Interactable *pInteractable)
 {
     assert(pInteractable && "Passing a nullptr as interactable");
 
-    pInteractable->SetSpriteSheetTexture(m_pInteractablesTexture);
+    pInteractable->SetSpriteSheetTexture(m_SpriteSheetManager.GetInteractablesTexture());
 
     // try to re-use free slot of previous deleted interactable
     for (int i{}; i < m_Interactables.size(); ++i)

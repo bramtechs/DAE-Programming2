@@ -22,7 +22,8 @@
 #include <iostream>
 #include <cassert>
 
-LevelBuilder::LevelBuilder(const Player &player, const Game &game) : m_Player(player), m_Game(game)
+LevelBuilder::LevelBuilder(const Player &player, const Game &game)
+    : m_Player(player), m_Game(game), m_SpriteSheetManager(*game.GetSpriteSheetManager())
 {
 }
 
@@ -63,8 +64,8 @@ Level *LevelBuilder::BuildLevel(LevelBuilder::Type type) const
 
 Level *LevelBuilder::BuildCaveLevel() const
 {
-    Level *pLevel{new Level("cave_first_map.png", "cave_first_map.txt", "First Cave", Vector2f(37.f, 33.f),
-                            MusicManager::Track::cave)};
+    Level *pLevel{new Level(m_SpriteSheetManager, "cave_first_map.png", "cave_first_map.txt", "First Cave",
+                            Vector2f(37.f, 33.f), MusicManager::Track::cave)};
     pLevel->SetSoundManager(m_Game.GetSoundManager());
 
     // enemies
@@ -121,8 +122,8 @@ Level *LevelBuilder::BuildCaveLevel() const
 
 Level *LevelBuilder::BuildHermitGunsmithLevel() const
 {
-    Level *pLevel{new Level("cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt", "Hermit Gunsmith",
-                            Vector2f(7.f, 6.f), MusicManager::Track::cave)};
+    Level *pLevel{new Level(m_SpriteSheetManager, "cave_hermit_gunsmith.png", "cave_hermit_gunsmith_txt",
+                            "Hermit Gunsmith", Vector2f(7.f, 6.f), MusicManager::Track::cave)};
     pLevel->SetSoundManager(m_Game.GetSoundManager());
 
     pLevel->SpawnInteractable(new DoorInteractable(Vector2f{7.f, 6.f}, LevelBuilder::Type::cave, Vector2f{53.f, 8.f}));
@@ -138,8 +139,8 @@ Level *LevelBuilder::BuildHermitGunsmithLevel() const
 
 Level *LevelBuilder::BuildMimigaVillageLevel() const
 {
-    Level *pLevel{new Level("mimiga_village.png", "mimiga_village_map.txt", "Mimiga Village", Vector2f(8.f, 53.f),
-                            MusicManager::Track::village)};
+    Level *pLevel{new Level(m_SpriteSheetManager, "mimiga_village.png", "mimiga_village_map.txt", "Mimiga Village",
+                            Vector2f(8.f, 53.f), MusicManager::Track::village)};
     pLevel->SetSoundManager(m_Game.GetSoundManager());
 
     pLevel->SpawnInteractable(new MimigaVillageNpc(Vector2f{10.f, 25.f}));
@@ -153,8 +154,8 @@ Level *LevelBuilder::BuildMimigaVillageLevel() const
 
 Level *LevelBuilder::BuildMimigaReservoirLevel() const
 {
-    Level *pLevel{new Level("mimiga_village_reservoir.png", "mimiga_village_reservoir_map.txt", "Reservoir",
-                            Vector2f{36.f, 5.f}, MusicManager::Track::village)};
+    Level *pLevel{new Level(m_SpriteSheetManager, "mimiga_village_reservoir.png", "mimiga_village_reservoir_map.txt",
+                            "Reservoir", Vector2f{36.f, 5.f}, MusicManager::Track::village)};
     pLevel->SetSoundManager(m_Game.GetSoundManager());
 
     pLevel->SpawnInteractable(
@@ -169,8 +170,8 @@ Level *LevelBuilder::BuildMimigaReservoirLevel() const
 
 Level *LevelBuilder::BuildMimigaShackLevel() const
 {
-    Level *pLevel{new Level("mimiga_village_shack.png", "mimiga_village_shack_map.txt", "Shack", Vector2f{5.f, 6.f},
-                            MusicManager::Track::none)};
+    Level *pLevel{new Level(m_SpriteSheetManager, "mimiga_village_shack.png", "mimiga_village_shack_map.txt", "Shack",
+                            Vector2f{5.f, 6.f}, MusicManager::Track::none)};
     pLevel->SetSoundManager(m_Game.GetSoundManager());
 
     pLevel->SpawnInteractable(new ShackNpcInteractable(Vector2f{12.f, 6.f}));

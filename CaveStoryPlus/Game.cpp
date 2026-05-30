@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Level.h"
 #include "LevelBuilder.h"
+#include "SpriteSheetManager.h"
 #include "Player.h"
 #include "PlayerGUI.h"
 #include "SDL_keycode.h"
@@ -35,6 +36,7 @@ void Game::Initialize()
     m_pDialogManager = new DialogManager(*m_pTextManager, *this);
     m_pSoundManager = new SoundManager();
     m_pPlayer = new Player(*m_pDialogManager, *m_pSoundManager);
+    m_pSpriteSheetManager = new SpriteSheetManager();
     SwitchLevel(LevelBuilder(*m_pPlayer, *this).BuildLevel(LevelBuilder::Type::cave));
 }
 
@@ -46,6 +48,7 @@ void Game::Cleanup()
     delete m_pSoundManager;
     delete m_pDialogManager;
     delete m_pTextManager;
+    delete m_pSpriteSheetManager;
     delete m_pPlayer;
 }
 

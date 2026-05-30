@@ -216,6 +216,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClInclude Include="ShackNpcInteractable.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpikeInteractable.h" />
+    <ClInclude Include="SpriteSheetManager.h" />
     <ClInclude Include="TextLine.h" />
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="PickupInteractable.h" />
@@ -279,6 +280,7 @@ xcopy "$(ProjectDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="ShackNpcInteractable.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpikeInteractable.cpp" />
+    <ClCompile Include="SpriteSheetManager.cpp" />
     <ClCompile Include="TextLine.cpp" />
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="PickupInteractable.cpp" />

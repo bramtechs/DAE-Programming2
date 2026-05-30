@@ -15,6 +15,7 @@ class PlayerGUI;
 class TextManager;
 class DialogManager;
 class SoundManager;
+class SpriteSheetManager;
 class Player;
 class Level;
 class Texture;
@@ -79,6 +80,11 @@ class Game final : public BaseGame
         return m_pSoundManager;
     }
 
+    const SpriteSheetManager *GetSpriteSheetManager() const
+    {
+        return m_pSpriteSheetManager;
+    }
+
   private:
     static Vector2f m_LastMousePos;
 
@@ -91,6 +97,7 @@ class Game final : public BaseGame
     Editor *m_pEditor{};
     SoundManager *m_pSoundManager{};
     MusicManager m_MusicManager{};
+    SpriteSheetManager *m_pSpriteSheetManager{};
 
     // FUNCTIONS
     void Initialize();
