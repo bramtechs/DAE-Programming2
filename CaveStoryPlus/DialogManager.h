@@ -6,7 +6,7 @@
 #include <queue>
 #include <string>
 
-class DialogManager
+class DialogManager final
 {
   public:
     explicit DialogManager(const TextManager &textManager, Game &game);
