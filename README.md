@@ -243,11 +243,12 @@ Project Link: [https://github.com/HowestDAE/gd25-bramderaeve](https://github.com
 ## Acknowledgments
 
 * [Cave Story Wiki: Textures of the entire levels](https://cavestory.fandom.com/wiki/Mimiga_Village)
-* ["My favourite animation trick: exponential smoothing"](https://lisyarus.github.io/blog/posts/exponential-smoothing.html)
+* [My favourite animation trick: exponential smoothing](https://lisyarus.github.io/blog/posts/exponential-smoothing.html)
 * [Cave Story Font as TrueType font](https://fontlibrary.org/en/font/cave-story)
 * All other game assets are ripped from CaveStory+ and CaveStory.
 * [std::queue (FIFO container)](https://en.cppreference.com/cpp/container/queue)
 * [std::string find](https://en.cppreference.com/cpp/string/basic_string/find)
+* [std::string substr](https://en.cppreference.com/cpp/string/basic_string/substr)
 * [std::vector insert](https://en.cppreference.com/cpp/container/vector/insert)
 * [std::vector erase](https://en.cppreference.com/cpp/container/vector/erase)
 * [std::quoted](https://en.cppreference.com/cpp/io/manip/quoted)
