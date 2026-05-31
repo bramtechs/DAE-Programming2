@@ -121,27 +121,27 @@ If not already: ensure that CaveStoryPlus has the Engine project set as a projec
 You start of in the Cave level. Use the arrow keys and Z to move to the left side of the screen.
 Make sure to avoid the various spikes and enemies!
 
-![](doc/first_cave.png){ width=75% }
+![](doc/first_cave.png)
 
 On the left you will see a Life Capsule. You can pick it up by pressing arrow Down.
 Then press X to read through the dialog message.
 
-![](doc/approaching_life_capsule.png){ width=75% }
+![](doc/approaching_life_capsule.png)
 
 On the bottom right of the map you will find the Gunsmith building where you can collect the Polar Star gun.
 
-![](doc/return_from_gunsmith.png){ width=75% }
+![](doc/return_from_gunsmith.png)
 
 Make your way to the top-right of the level, after defeating 
 the enemies in your way you can go throught he door to the next level.
 
-![](doc/end_first_cave.png){ width=75% }
+![](doc/end_first_cave.png)
 
 In the second level: you have access to the Reservoir on
 the left and the Boss Room on the far bottom right.
 There are NPCs and objects to interact with.
 
-![](doc/mimiga_village.png){ width=75% }
+![](doc/mimiga_village.png)
 
 ### Controls
 
