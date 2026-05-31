@@ -32,16 +32,20 @@ void BulletManager::Draw() const
 
 bool BulletManager::InteractWithEnemy(Enemy &enemy)
 {
+    bool killed{};
     for (Bullet &bullet : m_Bullets)
     {
         if (bullet.IsActive() && bullet.IsOverlapping(enemy.GetRegion()))
         {
-            enemy.TakeDamage(bullet.GetDamage());
+            if (!killed && enemy.TakeDamage(bullet.GetDamage()))
+            {
+                killed = true;
+            }
             bullet.SetActive(false);
         }
     }
 
-    return enemy.GetHealth() <= 0;
+    return killed;
 }
 
 void BulletManager::InteractWithLevel(Level &level)
