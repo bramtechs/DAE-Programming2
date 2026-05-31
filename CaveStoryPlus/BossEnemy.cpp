@@ -107,7 +107,6 @@ void BossEnemy::Update(float delta)
     else if (m_pGame && m_State == State::fleeing && heightAboveFloor > 30.f)
     {
         m_pGame->GetDialogManager()->QueueMessage({"(You won.)"});
-        SetPosition(Vector2f{-10.f, -10.f});
         m_State = State::done;
     }
 
