@@ -12,6 +12,6 @@ public:
 
 private:
     std::ofstream m_Stream;
-    std::string m_FilePath;
+    const std::string m_FilePath;
 };
 

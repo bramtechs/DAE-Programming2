@@ -4,11 +4,10 @@
 #include "TextManager.h"
 
 #include <algorithm>
-#include <cassert>
 #include <string>
 
-TextLine::TextLine(std::string text, const TextManager *pTextManager)
-    : m_pTextManager(pTextManager), m_Text(std::move(text)), m_Texture(BakeText())
+TextLine::TextLine(std::string text, const TextManager& textManager)
+    : m_TextManager(textManager), m_Text(std::move(text)), m_Texture(BakeText())
 {
 }
 
@@ -16,8 +15,7 @@ Texture TextLine::BakeText() const
 {
     const int clamped{utils::Clamp(static_cast<int>(m_CharsVisible), 1, static_cast<int>(m_Text.size()))};
     const std::string slice{m_Text.substr(0, static_cast<size_t>(clamped))};
-    assert(m_pTextManager && "TextManager is null");
-    return m_pTextManager->BakeText(slice, 48);
+    return m_TextManager.BakeText(slice, 48);
 }
 
 void TextLine::Draw(const Vector2f &bottomLeft) const

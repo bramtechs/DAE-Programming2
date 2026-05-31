@@ -17,20 +17,19 @@ class MusicManager final
     ~MusicManager();
 
     MusicManager(const MusicManager &) = delete;
-    MusicManager(MusicManager &&) = default;
     MusicManager &operator=(const MusicManager &) = delete;
-    MusicManager &operator=(MusicManager &&) = default;
+    MusicManager(MusicManager &&) = delete;
+    MusicManager &operator=(MusicManager &&) = delete;
 
     void Update();
 
     void SwitchTrack(Track track);
 
   private:
-    SoundStream *m_pStream;
-
     static std::string GetTrackBeginPath(Track track);
     static std::string GetTrackLoopPath(Track track);
 
+    SoundStream *m_pStream{};
     Track m_ActiveTrack{Track::none};
     bool m_PlayingBegin{};
 };

@@ -13,6 +13,8 @@ class MultiLineLabel
 
     MultiLineLabel(const MultiLineLabel &o) = delete;
     MultiLineLabel &operator=(const MultiLineLabel &o) = delete;
+    MultiLineLabel(const MultiLineLabel &&o) = delete;
+    MultiLineLabel &operator=(const MultiLineLabel &&o) = delete;
 
     void RegisterLine(const std::string &text, const Color4f &color = Color4f{1.f, 1.f, 1.f, 1.f});
     void RegisterLines(const std::string &lines, const Color4f &color = Color4f{1.f, 1.f, 1.f, 1.f});

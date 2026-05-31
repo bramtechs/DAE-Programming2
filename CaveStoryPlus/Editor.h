@@ -26,7 +26,6 @@ class Editor
 
     void ProcessMouseDownEvent(const SDL_MouseButtonEvent &e);
     void ProcessMouseUpEvent(const SDL_MouseButtonEvent &e);
-
     void ProcessKeyDownEvent(const SDL_KeyboardEvent &e);
 
   private:

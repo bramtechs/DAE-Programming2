@@ -15,8 +15,9 @@ class PolarStar final : public Weapon
     PolarStar(PolarStar &&) noexcept;
     PolarStar &operator=(PolarStar &&) noexcept;
 
-    void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager, const SoundManager &sound) override;
-    void Draw(const Vector2f &handPos, Orientation orientation) const override;
+    virtual void Shoot(const Vector2f &handPos, Orientation orientation, BulletManager &manager,
+                       const SoundManager &sound) override;
+    virtual void Draw(const Vector2f &handPos, Orientation orientation) const override;
 
     float GetShootIntervalSeconds() const override
     {
@@ -24,5 +25,5 @@ class PolarStar final : public Weapon
     }
 
   private:
-    Texture *m_pTexture;
+    const Texture *m_pTexture;
 };

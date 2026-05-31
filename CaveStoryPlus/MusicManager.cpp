@@ -4,6 +4,26 @@
 
 #include <cassert>
 
+MusicManager::~MusicManager()
+{
+    delete m_pStream;
+}
+
+void MusicManager::Update()
+{
+    if (m_PlayingBegin && m_pStream != nullptr)
+    {
+        if (!m_pStream->IsPlaying())
+        {
+            m_PlayingBegin = false;
+            const std::string loopPath{GetTrackLoopPath(m_ActiveTrack)};
+            delete m_pStream;
+            m_pStream = new SoundStream(loopPath);
+            m_pStream->Play(true);
+        }
+    }
+}
+
 void MusicManager::SwitchTrack(MusicManager::Track track)
 {
     if (track == Track::none)
@@ -24,26 +44,6 @@ void MusicManager::SwitchTrack(MusicManager::Track track)
         }
     }
     m_ActiveTrack = track;
-}
-
-MusicManager::~MusicManager()
-{
-    delete m_pStream;
-}
-
-void MusicManager::Update()
-{
-    if (m_PlayingBegin && m_pStream != nullptr)
-    {
-        if (!m_pStream->IsPlaying())
-        {
-            m_PlayingBegin = false;
-            const std::string loopPath{GetTrackLoopPath(m_ActiveTrack)};
-            delete m_pStream;
-            m_pStream = new SoundStream(loopPath);
-            m_pStream->Play(true);
-        }
-    }
 }
 
 std::string MusicManager::GetTrackBeginPath(Track track)

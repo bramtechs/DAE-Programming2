@@ -10,11 +10,12 @@ class Player;
 class PlayerGUI
 {
   public:
-    PlayerGUI(const Player &player);
+    explicit PlayerGUI(const Player &player);
     ~PlayerGUI();
+
     PlayerGUI(const PlayerGUI &) = delete;
-    PlayerGUI(PlayerGUI &&) = delete;
     PlayerGUI &operator=(const PlayerGUI &) = delete;
+    PlayerGUI(PlayerGUI &&) = delete;
     PlayerGUI &operator=(PlayerGUI &&) = delete;
 
     void UpdateTimers(float delta);

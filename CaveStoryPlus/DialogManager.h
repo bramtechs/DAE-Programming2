@@ -10,6 +10,11 @@ class DialogManager final
 {
   public:
     explicit DialogManager(const TextManager &textManager, Game &game);
+    
+    DialogManager(const DialogManager &) = delete;
+    DialogManager &operator=(const DialogEvent &) = delete;
+    DialogManager(DialogManager &&) noexcept = delete;
+    DialogManager &operator=(DialogManager &&) noexcept = delete;
 
     void Update(float delta);
     void Draw(const Rectf &viewport) const;

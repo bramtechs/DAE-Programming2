@@ -17,6 +17,6 @@ class SpriteSheetManager final
     const Texture &GetInteractablesTexture() const;
 
   private:
-    Texture *m_pEnemiesTexture;
-    Texture *m_pInteractablesTexture;
+    const Texture *m_pEnemiesTexture;
+    const Texture *m_pInteractablesTexture;
 };

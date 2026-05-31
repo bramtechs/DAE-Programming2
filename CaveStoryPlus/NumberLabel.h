@@ -5,10 +5,12 @@ class Texture;
 class NumberLabel
 {
   public:
-    NumberLabel(int value = 0);
+    explicit NumberLabel(int value = 0);
     ~NumberLabel();
+
     NumberLabel(const NumberLabel &);
     NumberLabel &operator=(const NumberLabel &);
+    
     NumberLabel(NumberLabel &&) = delete;
     NumberLabel &operator=(NumberLabel &&) = delete;
 

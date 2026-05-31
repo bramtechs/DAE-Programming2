@@ -34,7 +34,7 @@ class DialogMessage
     bool IsDone() const;
 
   private:
-    const TextManager *m_pTextManager;
+    const TextManager &m_TextManager;
     std::vector<TextLine> m_TextLines{};
     DialogEvent *m_pEvent{};
 

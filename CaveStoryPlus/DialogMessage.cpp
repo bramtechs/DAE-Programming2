@@ -8,13 +8,13 @@
 const float DialogMessage::m_SecondsPerChar{0.05f};
 
 DialogMessage::DialogMessage(std::vector<std::string> &&lines, const TextManager &textManager)
-    : m_pTextManager(&textManager)
+    : m_TextManager(textManager)
 {
     m_TextLines.reserve(lines.size());
 
     for (std::string &line : lines)
     {
-        m_TextLines.emplace_back(std::move(line), m_pTextManager);
+        m_TextLines.emplace_back(std::move(line), m_TextManager);
     }
 }
 
@@ -25,7 +25,7 @@ DialogMessage::~DialogMessage()
 }
 
 DialogMessage::DialogMessage(DialogMessage &&o) noexcept
-    : m_pTextManager(o.m_pTextManager), m_TextLines(std::move(o.m_TextLines)), m_pEvent(o.m_pEvent), m_Timer(o.m_Timer),
+    : m_TextManager(o.m_TextManager), m_TextLines(std::move(o.m_TextLines)), m_pEvent(o.m_pEvent), m_Timer(o.m_Timer),
       m_LinesVisible(o.m_LinesVisible)
 {
     o.m_TextLines.clear();
@@ -37,7 +37,6 @@ DialogMessage &DialogMessage::operator=(DialogMessage &&o) noexcept
     if (this != &o)
     {
         delete m_pEvent;
-        m_pTextManager = o.m_pTextManager;
         m_TextLines = std::move(o.m_TextLines);
         m_pEvent = o.m_pEvent;
         m_Timer = o.m_Timer;
