@@ -47,7 +47,7 @@ Cave Story is a 2004 Metroidvania game. It was developed over five years by Japa
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![alt text](image.png)
+![alt text](doc/image.png)
 Here's why:
 * It is a remaster of a classic indie game with a passionate fanbase I somehow haven't gotten around to play earlier.
 * The game high variety of worlds with lively and rich characters.
@@ -101,15 +101,16 @@ This section gives a clear and detailed overview of which parts of the original 
 
 <!-- GETTING STARTED -->
 ## Getting Started
-Detailed instructions on how to run your game project are in this section.
 
 ### Prerequisites
 
 * Visual Studio 2022
+* "Desktop development with C++" workload installed through Visual Studio Installer
 
 ### How to run the project
 
-The game project is called CaveStoryPlus.
+The game project is called CaveStoryPlus, right click it and set as "Set as Startup Project".
+If not already: ensure that CaveStoryPlus has the Engine project set as a project build dependency.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -117,8 +118,30 @@ The game project is called CaveStoryPlus.
 <!-- HOW TO PLAY -->
 ## How to play
 
-Use this space to show useful examples of how a game can be played. 
-Additional screenshots and demos work well in this space. 
+You start of in the Cave level. Use the arrow keys and Z to move to the left side of the screen.
+Make sure to avoid the various spikes and enemies!
+
+![](doc/first_cave.png){ width=75% }
+
+On the left you will see a Life Capsule. You can pick it up by pressing arrow Down.
+Then press X to read through the dialog message.
+
+![](doc/approaching_life_capsule.png){ width=75% }
+
+On the bottom right of the map you will find the Gunsmith building where you can collect the Polar Star gun.
+
+![](doc/return_from_gunsmith.png){ width=75% }
+
+Make your way to the top-right of the level, after defeating 
+the enemies in your way you can go throught he door to the next level.
+
+![](doc/end_first_cave.png){ width=75% }
+
+In the second level: you have access to the Reservoir on
+the left and the Boss Room on the far bottom right.
+There are NPCs and objects to interact with.
+
+![](doc/mimiga_village.png){ width=75% }
 
 ### Controls
 
@@ -133,11 +156,12 @@ Additional screenshots and demos work well in this space.
 ## Class structure 
 
 ### Object composition 
-**Player** object contains pointer to child class object of **Weapon**. 
-The **Player** class also has a field of a **DialogManager** and **PlayerGUI**.
+The **Player** object owns a pointer to child class object of **Weapon** and its **Texture**sheet.
+The **Player** class also has non-owning reference to the **DialogManager**, **SoundManager** =.
+but does own a **PlayerGUI** object.
 
-An object of **Level** class contains pointers to different Texture sheets.
-It also contains a **BulletManager** among various **std::vector**s of objects in the game.
+An object of **Level** class contains a non owning pointer to the **SpriteSheetManager**.
+It also owns a **BulletManager** among various **std::vector**s containing objects in the game.
 
 A **BossEnemy** object holds a **BarWidget** as a field or component.
 
@@ -147,7 +171,13 @@ for example **DoorInteractable**, **GoldInteractable** and **ChestInteractable**
 
 There is also a **DecorInteractable** class that provides shared code for its children classes (NPCs).
 
-### ..
+The **DialogEvent** abstract base class is inherited by a lot of classes:
+(**GiveHealthDialogEvent**, **RespawnDialogEvent**, **SpawnBossDialogEvent**, ...)  to allow logic to
+happen whenever the player read through a certain **DialogMessage**.
+
+### Managers
+There are many managers that handle the different systems of the game,
+like: **BulletManager**, **SpriteSheetManager**, **SoundManager**, **MusicManager**, **DialogManager**, ...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
