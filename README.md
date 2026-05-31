@@ -157,7 +157,7 @@ There are NPCs and objects to interact with.
 
 ### Object composition 
 The **Player** object owns a pointer to child class object of **Weapon** and its **Texture**sheet.
-The **Player** class also has non-owning reference to the **DialogManager**, **SoundManager** =.
+The **Player** class also has non-owning reference to the **DialogManager** and **SoundManager**,
 but does own a **PlayerGUI** object.
 
 An object of **Level** class contains a non owning pointer to the **SpriteSheetManager**.
@@ -243,7 +243,7 @@ Project Link: [https://github.com/HowestDAE/gd25-bramderaeve](https://github.com
 ## Acknowledgments
 
 * [Cave Story Wiki: Textures of the entire levels](https://cavestory.fandom.com/wiki/Mimiga_Village)
-* [My favourite animation trick: exponential smoothing](https://lisyarus.github.io/blog/posts/exponential-smoothing.html)
+* [My favourite animation trick: exponential smoothing](https://lisyarus.github.io/blog/posts/exponential-smoothing.html) (used for smooth camera movement)
 * [Cave Story Font as TrueType font](https://fontlibrary.org/en/font/cave-story)
 * All other game assets are ripped from CaveStory+ and CaveStory.
 * [std::queue (FIFO container)](https://en.cppreference.com/cpp/container/queue)
