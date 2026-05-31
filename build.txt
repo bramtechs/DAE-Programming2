@@ -1,1 +1,0 @@
-cd ~/dev/gd25-bramderaeve/ && cmake --build build --parallel && cd ~/dev/gd25-bramderaeve/CaveStoryPlus/Resources/ && ~/dev/gd25-bramderaeve/build/CaveStoryPlus/CaveStoryPlus 
